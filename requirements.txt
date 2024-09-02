@@ -1,6 +1,5 @@
 streamlit
 matplotlib
-io
 openai
 python-docx
 PIL
