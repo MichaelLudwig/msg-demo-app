@@ -66,9 +66,6 @@ def create_donut_chart(percentage):
     plt.close(fig)
     return buf
 
-# Streamlit App
-st.title("Tabelle mit Fertigstellungsgrad")
-
 # Dummy-Daten
 data = [
     {"text": "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed do eiusmod tempor incididunt ut labore et dolore.", "percentage": 15},
