@@ -1,5 +1,7 @@
 streamlit
 matplotlib
+numpy
+pandas
 openai
 python-docx
 altair>=4.0.0
