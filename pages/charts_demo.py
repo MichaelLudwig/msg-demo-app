@@ -8,7 +8,7 @@ from vega_datasets import data
 
 #--------------Balkendiagamm------------------------------------------------------
 
-st.header("Balkendiagramm", anchor="balkendiagramm", divider="blue")
+st.header("Barchart", anchor="barchart", divider="blue")
 
 # Daten für die CO2-Emissionen und Kostenverteilung
 emission_categories = ['<12', '12 bis <17', '17 bis <22', '22 bis <27', '27 bis <32', '32 bis <37', '37 bis <42', '42 bis <47', '47 bis <52', '>=52']
