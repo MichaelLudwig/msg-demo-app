@@ -14,35 +14,6 @@ digraph G {
 
 st.graphviz_chart(dot)
 
-st.title("AWS Architektur: EC2-Instanzen, VPC-Endpunkt, und S3")
-
-# Diagramm erstellen
-dot = """
-digraph G {
-    rankdir=LR;
-
-    subgraph cluster_vpc {
-        label = "VPC";
-        color = green;
-
-        subgraph cluster_subnet1 {
-            label = "Private subnet";
-            color = lightblue;
-            EC2_1 [label="EC2 Instance", shape=box, style=filled, color=orange];
-        }
-
-        subgraph cluster_subnet2 {
-            label = "Private subnet";
-            color = lightblue;
-            EC2_2 [label="EC2 Instance", shape=box, style=filled, color=orange];
-        }
-    }
-
-}
-"""
-
-# Diagramm in Streamlit anzeigen
-st.graphviz_chart(dot)
 
 
 st.title("Komplexe AWS Architektur")
