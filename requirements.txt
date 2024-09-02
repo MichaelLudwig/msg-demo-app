@@ -6,5 +6,5 @@ openai
 python-docx
 altair>=4.0.0
 vega_datasets
-graphviz
 diagrams
+graphviz
