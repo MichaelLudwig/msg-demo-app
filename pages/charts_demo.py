@@ -208,3 +208,38 @@ def get_chart_2303(use_container_width: bool):
 
     st.altair_chart(chart, theme="streamlit", use_container_width=True)
 get_chart_2303(True)
+
+#------------------ US Airports ------------------------------------------------------
+st.header("US Airports", anchor="airports", divider="blue")
+
+def get_chart_99637(use_container_width: bool):
+    import altair as alt
+    from vega_datasets import data
+
+    airports = data.airports()
+    states = alt.topo_feature(data.us_10m.url, feature='states')
+
+    # US states background
+    background = alt.Chart(states).mark_geoshape(
+        fill='lightgray',
+        stroke='white'
+    ).properties(
+        width=500,
+        height=300
+    ).project('albersUsa')
+
+    # airport positions on background
+    points = alt.Chart(airports).mark_circle(
+        size=10,
+        color='steelblue'
+    ).encode(
+        longitude='longitude:Q',
+        latitude='latitude:Q',
+        tooltip=['name', 'city', 'state']
+    )
+
+    chart = background + points
+
+    st.altair_chart(chart, theme="streamlit", use_container_width=True)
+
+get_chart_99637(True)
