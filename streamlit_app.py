@@ -12,6 +12,9 @@ digraph G {
     EC2 -> S3
 }
 """
+st.graphviz_chart(dot)
+
+
 st.page_link("pages/charts_demo.py", label="Chart Demo", icon="📊")
 st.page_link("pages/report_demo.py", label="Report Demo", icon="📝")
 
