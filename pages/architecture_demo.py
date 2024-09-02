@@ -1,3 +1,4 @@
+import streamlit as st
 from diagrams import Diagram, Cluster
 from diagrams.aws.compute import EC2
 from diagrams.aws.network import ELB, Route53
