@@ -44,6 +44,7 @@ digraph G {
         AppServer1_Prod -> RDS_Prod;
         AppServer2_Prod -> RDS_Prod;
         WebServer1_Prod -> S3_Prod;
+        WebServer2_Prod -> S3_Prod;
         RDS_Prod -> S3_Prod;
     }
 
