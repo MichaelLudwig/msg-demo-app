@@ -1,5 +1,5 @@
 import streamlit as st
-import matplotlib as plt
+import matplotlib.pyplot as plt
 from io import BytesIO
 from docx import Document
 from docx.shared import Inches
