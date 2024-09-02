@@ -107,18 +107,18 @@ digraph G {
             label = "AZ-1";
             color = orange;
             style = dashed;
-            DynamoDB [label="Amazon DynamoDB", shape=cylinder, style=filled, color=purple];
+            DynamoDB [label="Amazon DynamoDB", shape=cylinder, style=filled, color=grey];
         }
 
         subgraph cluster_db2 {
             label = "AZ-2";
             color = orange;
             style = dashed;
-            RDS [label="Amazon RDS", shape=cylinder, style=filled, color=purple];
+            RDS [label="Amazon RDS", shape=cylinder, style=filled, color=grey];
         }
 
         S3 [label="Amazon S3 Bucket", shape=folder, style=filled, color=green];
-        LoadBalancer [label="Elastic Load Balancer", shape=ellipse, style=filled, color=purple];
+        LoadBalancer [label="Elastic Load Balancer", shape=ellipse, style=filled, color=grey];
         Route53 [label="Amazon Route 53 Hosted Zone", shape=triangle, style=filled, color=black];
         CloudFront [label="Amazon CloudFront", shape=hexagon, style=filled, color=lightblue];
 
