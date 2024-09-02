@@ -16,7 +16,7 @@ st.graphviz_chart(dot)
 
 
 
-st.title("Komplexe AWS Architektur")
+st.title("AWS Architektur")
 
 # Ein komplexes Diagramm erstellen
 dot = """
