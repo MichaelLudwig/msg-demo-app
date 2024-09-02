@@ -43,8 +43,6 @@ digraph G {
         WebServer2_Prod -> AppServer2_Prod;
         AppServer1_Prod -> RDS_Prod;
         AppServer2_Prod -> RDS_Prod;
-        WebServer1_Prod -> S3_Prod;
-        WebServer2_Prod -> S3_Prod;
         RDS_Prod -> S3_Prod;
     }
 
@@ -54,23 +52,21 @@ digraph G {
         node [style=filled,color=white];
         label = "Development Environment";
         
-        ELB_Dev [label="Load Balancer", shape=ellipse];
         WebServer1_Dev [label="Web Server 1", shape=box];
-        WebServer2_Dev [label="Web Server 2", shape=box];
+        AppServer1_Dev [label="App Server 1", shape=box];
         RDS_Dev [label="RDS Database", shape=cylinder];
         S3_Dev [label="S3 Storage", shape=folder];
         
-        ELB_Dev -> WebServer1_Dev;
-        ELB_Dev -> WebServer2_Dev;
-        WebServer1_Dev -> RDS_Dev;
-        WebServer2_Dev -> RDS_Dev;
+        
+        WebServer1_Dev -> AppServer1_Dev;
+        AppServer1_Dev -> RDS_Dev;
         RDS_Dev -> S3_Dev;
     }
 
     Route53 [label="Route 53 DNS", shape=hexagon];
 
     Route53 -> ELB_Prod;
-    Route53 -> ELB_Dev;
+    Route53 -> WebServer1_Dev;
 }
 """
 
