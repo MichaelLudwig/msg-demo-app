@@ -74,40 +74,28 @@ digraph G {
 st.graphviz_chart(dot)
 
 
-from diagrams import Diagram, Cluster, Edge
-from diagrams.aws.network import VPC, PrivateSubnet, PublicSubnet, NATGateway
-from diagrams.aws.compute import EC2
-from diagrams.aws.storage import S3
-from diagrams.aws.database import Dynamodb
-from diagrams.aws.integration import SQS
-from diagrams.aws.security import IAM
-from diagrams.aws.management import SystemsManagerParameterStore
+from diagrams import Cluster, Diagram
+from diagrams.aws.compute import ECS
+from diagrams.aws.database import ElastiCache, RDS
+from diagrams.aws.network import ELB
+from diagrams.aws.network import Route53
 
-with Diagram("AWS Global Region", show=False, direction="TB"):
-    s3_source = S3("S3 (Source Bucket)")
-    dynamodb = Dynamodb("Amazon DynamoDB")
-    ec2_job_sender = EC2("Amazon EC2 (Job Sender)")
-    sqs = SQS("Amazon SQS")
-    param_store = SystemsManagerParameterStore("Parameter Store")
-    iam_roles = IAM("AWS IAM Roles")
-    
-    with Cluster("VPC"):
-        with Cluster("Availability Zone 1"):
-            nat_gateway_az1 = NATGateway("NAT Gateway")
-            worker_cluster_az1 = EC2("Worker Cluster Instance")
-            
-        with Cluster("Availability Zone 2"):
-            nat_gateway_az2 = NATGateway("NAT Gateway")
-            worker_cluster_az2 = EC2("Worker Cluster Instance")
+with Diagram("Clustered Web Services", show=False):
+    dns = Route53("dns")
+    lb = ELB("lb")
 
-        auto_scaling_group = [worker_cluster_az1, worker_cluster_az2]
-    
-    s3_destination = S3("S3 (Destination Bucket)")
-    
-    # Connections
-    dynamodb >> s3_source >> ec2_job_sender
-    ec2_job_sender >> sqs
-    sqs >> auto_scaling_group
-    auto_scaling_group >> nat_gateway_az1 >> s3_destination
-    auto_scaling_group >> nat_gateway_az2 >> s3_destination
+    with Cluster("Services"):
+        svc_group = [ECS("web1"),
+                     ECS("web2"),
+                     ECS("web3")]
+
+    with Cluster("DB Cluster"):
+        db_primary = RDS("userdb")
+        db_primary - [RDS("userdb ro")]
+
+    memcached = ElastiCache("memcached")
+
+    dns >> lb >> svc_group
+    svc_group >> db_primary
+    svc_group >> memcached
 
