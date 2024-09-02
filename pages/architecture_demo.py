@@ -14,52 +14,45 @@ digraph G {
 
 st.graphviz_chart(dot)
 
-
-
-st.title("AWS Architektur: EC2, Datenbank, Webserver, Load Balancer und Netzwerk")
+st.title("AWS Architektur: EC2-Instanzen, VPC-Endpunkt, und S3")
 
 # Diagramm erstellen
 dot = """
 digraph G {
-    rankdir=TB;  # Top to Bottom Layout
+    rankdir=LR;
 
-    subgraph cluster_network {
-        label = "VPC (Virtual Private Cloud)";
-        color = lightgrey;
+    subgraph cluster_vpc {
+        label = "VPC";
+        color = green;
 
-        InternetGateway [label="Internet Gateway", shape=diamond];
-
-        subgraph cluster_load_balancer {
-            label = "Load Balancer";
+        subgraph cluster_subnet1 {
+            label = "Private subnet";
             color = lightblue;
-            style = filled;
-            LB [label="Load Balancer", shape=ellipse];
+            EC2_1 [label="EC2 Instance", shape=box, style=filled, color=orange];
         }
 
-        subgraph cluster_web_server {
-            label = "Web Server";
-            color = lightyellow;
-            style = filled;
-            WebServer [label="EC2 Web Server", shape=box];
+        subgraph cluster_subnet2 {
+            label = "Private subnet";
+            color = lightblue;
+            EC2_2 [label="EC2 Instance", shape=box, style=filled, color=orange];
         }
-
-        subgraph cluster_database {
-            label = "Database";
-            color = lightgreen;
-            style = filled;
-            Database [label="RDS Database", shape=cylinder];
-        }
-
-        InternetGateway -> LB;
-        LB -> WebServer;
-        WebServer -> Database;
     }
 
-    # External connections
-    Internet [label="Internet", shape=cloud];
-    Internet -> InternetGateway;
+    Endpoint [label="Endpoint", shape=circle, style=filled, color=purple];
+    S3 [label="S3", shape=folder, style=filled, color=green];
+
+    EC2_1 -> Endpoint;
+    EC2_2 -> Endpoint;
+    Endpoint -> S3;
 }
 """
+
+# Diagramm in Streamlit anzeigen
+st.graphviz_chart(dot)
+
+st.title("AWS Architektur: EC2, Datenbank, Webserver, Load Balancer und Netzwerk")
+
+
 
 # Diagramm in Streamlit anzeigen
 st.graphviz_chart(dot)
