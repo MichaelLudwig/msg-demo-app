@@ -2,4 +2,3 @@ streamlit
 matplotlib
 openai
 python-docx
-PIL
