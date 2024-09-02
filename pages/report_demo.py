@@ -5,6 +5,11 @@ from docx import Document
 from docx.shared import Inches
 from PIL import Image
 
+st.sidebar.page_link("streamlit_app.py", label="Home", icon="🏠")
+st.sidebar.page_link("pages/architecture_demo.py", label="Architecture Demo", icon="☁️")
+st.sidebar.page_link("pages/charts_demo.py", label="Chart Demo", icon="📊")
+st.sidebar.page_link("pages/report_demo.py", label="Report Demo", icon="📝")
+
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
