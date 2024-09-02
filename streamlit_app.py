@@ -5,8 +5,8 @@ from docx import Document
 from docx.shared import Inches
 from PIL import Image
 
-st.page_link("streamlit_app.py", label="Home", icon="🏠")
-st.page_link("pages/charts.py", label="Chart Demo", icon="1️⃣")
+#st.page_link("streamlit_app.py", label="Home", icon="🏠")
+#st.page_link("pages/charts.py", label="Chart Demo", icon="1️⃣")
 
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
