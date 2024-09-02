@@ -38,12 +38,10 @@ digraph G {
         }
     }
 
-    Endpoint [label="Endpoint", shape=circle, style=filled, color=purple];
-    S3 [label="S3", shape=folder, style=filled, color=green];
+    S3 [label="S3 Bucket", shape=cylinder];
 
-    EC2_1 -> Endpoint;
-    EC2_2 -> Endpoint;
-    Endpoint -> S3;
+    EC2_1 -> S3;
+    EC2_2 -> S3;
 }
 """
 
