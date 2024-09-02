@@ -5,7 +5,7 @@ import numpy as np
 import altair as alt
 from vega_datasets import data
 
-st.header(body, anchor="balkendiagramm", divider="blue")
+st.header("Balkendiagramm", anchor="balkendiagramm", divider="blue")
 
 #--------------Balkendiagamm------------------------------------------------------
 
