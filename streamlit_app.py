@@ -1,8 +1,8 @@
 import streamlit as st
 import matplotlib as plt
 from io import BytesIO
-from docx import Document
-from docx.shared import Inches
+#from docx import Document
+#from docx.shared import Inches
 from PIL import Image
 
 # Funktion zum Erstellen eines Donut-Charts
