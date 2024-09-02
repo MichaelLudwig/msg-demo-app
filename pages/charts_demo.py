@@ -168,7 +168,6 @@ def get_chart_98552(use_container_width: bool):
 get_chart_98552(True)
 
 #------------------Gantt Chart ------------------------------------------------------
-
 st.header("Gantt Chart", anchor="ganttchart", divider="blue")
 
 def get_chart_56029(use_container_width: bool):
@@ -191,3 +190,21 @@ def get_chart_56029(use_container_width: bool):
 
 
 get_chart_56029(True)
+
+#------------------Gantt Chart ------------------------------------------------------
+st.header("Gantt Chart", anchor="ganttchart", divider="blue")
+
+def get_chart_2303(use_container_width: bool):
+    import altair as alt
+    from vega_datasets import data
+
+    source = data.movies.url
+
+    chart = alt.Chart(source).mark_rect().encode(
+        alt.X('IMDB_Rating:Q', bin=alt.Bin(maxbins=60)),
+        alt.Y('Rotten_Tomatoes_Rating:Q', bin=alt.Bin(maxbins=40)),
+        alt.Color('count():Q', scale=alt.Scale(scheme='greenblue'))
+    )
+
+    st.altair_chart(chart, theme="streamlit", use_container_width=True)
+get_chart_2303(True)
