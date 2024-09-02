@@ -326,10 +326,6 @@ def get_chart_78749(use_container_width: bool):
 
     chart = alt.layer(base, *polynomial_fit)
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Altair native theme"])
+    st.altair_chart(chart, theme="streamlit", use_container_width=True)
 
-    with tab1:
-        st.altair_chart(chart, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.altair_chart(chart, theme=None, use_container_width=True)
     get_chart_78749(True)
