@@ -38,10 +38,6 @@ digraph G {
         }
     }
 
-    S3 [label="S3 Bucket", shape=cylinder];
-
-    EC2_1 -> S3;
-    EC2_2 -> S3;
 }
 """
 
