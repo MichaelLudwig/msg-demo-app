@@ -162,12 +162,8 @@ def get_chart_98552(use_container_width: bool):
         color='symbol:N'
     )
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Altair native theme"])
+    st.altair_chart(chart, theme="streamlit", use_container_width=True)
 
-    with tab1:
-        st.altair_chart(chart, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.altair_chart(chart, theme=None, use_container_width=True)
 
 get_chart_98552(True)
 
@@ -191,11 +187,7 @@ def get_chart_56029(use_container_width: bool):
         y='task'
     )
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Altair native theme"])
+    st.altair_chart(chart, theme="streamlit", use_container_width=True)
 
-    with tab1:
-        st.altair_chart(chart, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.altair_chart(chart, theme=None, use_container_width=True)
 
 get_chart_56029(True)
