@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import numpy as np
 import altair as alt
-#from vega_datasets import data
+from vega_datasets import data
 
 #--------------Donut Charts------------------------------------------------------
 
