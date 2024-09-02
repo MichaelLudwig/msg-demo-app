@@ -44,13 +44,6 @@ digraph G {
 # Diagramm in Streamlit anzeigen
 st.graphviz_chart(dot)
 
-st.title("AWS Architektur: EC2, Datenbank, Webserver, Load Balancer und Netzwerk")
-
-
-
-# Diagramm in Streamlit anzeigen
-st.graphviz_chart(dot)
-
 
 st.title("Komplexe AWS Architektur")
 
