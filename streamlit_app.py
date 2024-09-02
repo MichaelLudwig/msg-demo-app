@@ -5,6 +5,7 @@ from docx import Document
 from docx.shared import Inches
 from PIL import Image
 
+
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
