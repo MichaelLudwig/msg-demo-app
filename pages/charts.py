@@ -5,9 +5,10 @@ import numpy as np
 import altair as alt
 from vega_datasets import data
 
-st.header("Balkendiagramm", anchor="balkendiagramm", divider="blue")
 
 #--------------Balkendiagamm------------------------------------------------------
+
+st.header("Balkendiagramm", anchor="balkendiagramm", divider="blue")
 
 # Daten für die CO2-Emissionen und Kostenverteilung
 emission_categories = ['<12', '12 bis <17', '17 bis <22', '22 bis <27', '27 bis <32', '32 bis <37', '37 bis <42', '42 bis <47', '47 bis <52', '>=52']
@@ -51,6 +52,8 @@ st.pyplot(fig)
 
 #--------------Piechart------------------------------------------------------
 
+st.header("Piechart", anchor="piechart", divider="blue")
+
 # Daten für die Segmente
 labels = ['Benzin', 'Diesel', 'Kerosin', 'Erdgas', 'Fernwärme', 'Heizöl', 'Strom']
 sizes = [16.7, 12.0, 4.5, 28.2, 5.3, 3.8, 29.4]
@@ -81,6 +84,7 @@ st.pyplot(fig)
 
 #------------------krasser Chart ------------------------------------------------------
 
+st.header("Klima Chart", anchor="climachart", divider="blue")
 
 @st.cache_data
 def get_chart_98185(use_container_width: bool):
