@@ -22,12 +22,6 @@ st.graphviz_chart('''
         run -> kernel
         kernel -> zombie
         kernel -> sleep
-        kernel -> runmem
-        sleep -> swap
-        swap -> runswap
-        runswap -> new
-        runswap -> runmem
-        new -> runmem
-        sleep -> runmem
+        
     }
 ''')
