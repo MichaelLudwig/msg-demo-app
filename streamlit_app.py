@@ -1,5 +1,7 @@
 import streamlit as st
 import graphviz
+import altair as alt
+from vega_datasets import data
 
 st.page_link("streamlit_app.py", label="Home", icon="🏠")
 
