@@ -1,1 +1,6 @@
 streamlit
+matplotlib.pyplot
+io
+openai
+python-docx
+PIL
