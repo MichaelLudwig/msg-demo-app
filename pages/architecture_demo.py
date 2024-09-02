@@ -21,7 +21,7 @@ st.title("Komplexe AWS Architektur")
 # Ein komplexes Diagramm erstellen
 dot = """
 digraph G {
-    rankdir=LR;
+    
 
     subgraph cluster_0 {
         style=filled;
