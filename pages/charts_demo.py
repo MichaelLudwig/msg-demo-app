@@ -191,8 +191,8 @@ def get_chart_56029(use_container_width: bool):
 
 get_chart_56029(True)
 
-#------------------Gantt Chart ------------------------------------------------------
-st.header("Gantt Chart", anchor="ganttchart", divider="blue")
+#------------------Heatmap ------------------------------------------------------
+st.header("Heatmap", anchor="heatmap", divider="blue")
 
 def get_chart_2303(use_container_width: bool):
     import altair as alt
