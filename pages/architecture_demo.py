@@ -70,3 +70,75 @@ digraph G {
 
 # Diagramm in Streamlit anzeigen
 st.graphviz_chart(dot)
+
+
+
+st.title("AWS Architektur: Webservers, Load Balancer, App Tier, und Datenbanken")
+
+# Diagramm erstellen
+dot = """
+digraph G {
+    rankdir=TB;
+
+    subgraph cluster_region {
+        label = "Region";
+        color = black;
+        style = dashed;
+
+        subgraph cluster_autoscaling {
+            label = "Auto Scaling Group";
+            color = black;
+            style = dashed;
+
+            WebServer1 [label="Web Server", shape=box, style=filled, color=orange];
+            WebServer2 [label="Web Server", shape=box, style=filled, color=orange];
+        }
+
+        subgraph cluster_app_tier {
+            label = "App Tier";
+            color = black;
+            style = dashed;
+
+            AppServer1 [label="App Server", shape=box, style=filled, color=lightblue];
+            AppServer2 [label="App Server", shape=box, style=filled, color=lightblue];
+        }
+
+        subgraph cluster_db {
+            label = "AZ-1";
+            color = orange;
+            style = dashed;
+            DynamoDB [label="Amazon DynamoDB", shape=cylinder, style=filled, color=purple];
+        }
+
+        subgraph cluster_db2 {
+            label = "AZ-2";
+            color = orange;
+            style = dashed;
+            RDS [label="Amazon RDS", shape=cylinder, style=filled, color=purple];
+        }
+
+        S3 [label="Amazon S3 Bucket", shape=folder, style=filled, color=green];
+        LoadBalancer [label="Elastic Load Balancer", shape=ellipse, style=filled, color=purple];
+        Route53 [label="Amazon Route 53 Hosted Zone", shape=triangle, style=filled, color=black];
+        CloudFront [label="Amazon CloudFront", shape=hexagon, style=filled, color=lightblue];
+
+        Route53 -> LoadBalancer;
+        LoadBalancer -> WebServer1;
+        LoadBalancer -> WebServer2;
+
+        WebServer1 -> AppServer1;
+        WebServer2 -> AppServer2;
+
+        AppServer1 -> DynamoDB;
+        AppServer2 -> RDS;
+
+        WebServer1 -> S3;
+        CloudFront -> S3;
+    }
+
+    S3 -> CloudFront;
+}
+"""
+
+# Diagramm in Streamlit anzeigen
+st.graphviz_chart(dot)
