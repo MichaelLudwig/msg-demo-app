@@ -8,7 +8,7 @@ from vega_datasets import data
 
 #--------------Balkendiagamm------------------------------------------------------
 
-st.header("Barchart", anchor="barchart", divider="blue")
+st.header("Bar Chart", anchor="barchart", divider="blue")
 
 # Daten für die CO2-Emissionen und Kostenverteilung
 emission_categories = ['<12', '12 bis <17', '17 bis <22', '22 bis <27', '27 bis <32', '32 bis <37', '37 bis <42', '42 bis <47', '47 bis <52', '>=52']
@@ -52,7 +52,7 @@ st.pyplot(fig)
 
 #--------------Piechart------------------------------------------------------
 
-st.header("Piechart", anchor="piechart", divider="blue")
+st.header("Pie Chart", anchor="piechart", divider="blue")
 
 # Daten für die Segmente
 labels = ['Benzin', 'Diesel', 'Kerosin', 'Erdgas', 'Fernwärme', 'Heizöl', 'Strom']
@@ -170,3 +170,32 @@ def get_chart_98552(use_container_width: bool):
         st.altair_chart(chart, theme=None, use_container_width=True)
 
 get_chart_98552(True)
+
+#------------------Gantt Chart ------------------------------------------------------
+
+st.header("Gantt Chart", anchor="ganttchart", divider="blue")
+
+def get_chart_56029(use_container_width: bool):
+    import altair as alt
+    import pandas as pd
+
+    source = pd.DataFrame([
+        {"task": "A", "start": 1, "end": 3},
+        {"task": "B", "start": 3, "end": 8},
+        {"task": "C", "start": 8, "end": 10}
+    ])
+
+    chart = alt.Chart(source).mark_bar().encode(
+        x='start',
+        x2='end',
+        y='task'
+    )
+
+    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Altair native theme"])
+
+    with tab1:
+        st.altair_chart(chart, theme="streamlit", use_container_width=True)
+    with tab2:
+        st.altair_chart(chart, theme=None, use_container_width=True)
+
+get_chart_56029(True)
