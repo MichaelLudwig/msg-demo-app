@@ -1,7 +1,7 @@
 import streamlit as st
 import graphviz
 
-st.title("AWS Architektur")
+st.title("Architektur")
 
 # Ein einfaches Diagramm erstellen
 dot = """
@@ -14,17 +14,55 @@ digraph G {
 
 st.graphviz_chart(dot)
 
-st.graphviz_chart('''
-    digraph {
-        run -> intr
-        intr -> runbl
-        runbl -> run
-        run -> kernel
-        kernel -> zombie
-        kernel -> sleep
-        
+
+
+st.title("AWS Architektur: EC2, Datenbank, Webserver, Load Balancer und Netzwerk")
+
+# Diagramm erstellen
+dot = """
+digraph G {
+    rankdir=TB;  # Top to Bottom Layout
+
+    subgraph cluster_network {
+        label = "VPC (Virtual Private Cloud)";
+        color = lightgrey;
+
+        InternetGateway [label="Internet Gateway", shape=diamond];
+
+        subgraph cluster_load_balancer {
+            label = "Load Balancer";
+            color = lightblue;
+            style = filled;
+            LB [label="Load Balancer", shape=ellipse];
+        }
+
+        subgraph cluster_web_server {
+            label = "Web Server";
+            color = lightyellow;
+            style = filled;
+            WebServer [label="EC2 Web Server", shape=box];
+        }
+
+        subgraph cluster_database {
+            label = "Database";
+            color = lightgreen;
+            style = filled;
+            Database [label="RDS Database", shape=cylinder];
+        }
+
+        InternetGateway -> LB;
+        LB -> WebServer;
+        WebServer -> Database;
     }
-''')
+
+    # External connections
+    Internet [label="Internet", shape=cloud];
+    Internet -> InternetGateway;
+}
+"""
+
+# Diagramm in Streamlit anzeigen
+st.graphviz_chart(dot)
 
 
 st.title("Komplexe AWS Architektur")
