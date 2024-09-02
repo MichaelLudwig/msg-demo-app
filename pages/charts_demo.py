@@ -90,7 +90,7 @@ st.header("Klima Chart", anchor="climachart", divider="blue")
 @st.cache_data
 def get_chart_98185(use_container_width: bool):
     
-    from vega_datasets import data
+    #from vega_datasets import data
 
     source = data.seattle_weather.url
 
@@ -152,8 +152,8 @@ st.header("Aktien Chart", anchor="stockchart", divider="blue")
 
 #@st.experimental_memo
 def get_chart_98552(use_container_width: bool):
-    import altair as alt
-    from vega_datasets import data
+    #import altair as alt
+    #from vega_datasets import data
 
     source = data.stocks()
 
@@ -196,8 +196,8 @@ get_chart_56029(True)
 st.header("Heatmap", anchor="heatmap", divider="blue")
 
 def get_chart_2303(use_container_width: bool):
-    import altair as alt
-    from vega_datasets import data
+    #import altair as alt
+    #from vega_datasets import data
 
     source = data.movies.url
 
@@ -249,9 +249,9 @@ get_chart_99637(True)
 st.header("Interaktiver Chart", anchor="interactive", divider="blue")
 
 def get_chart_61030(use_container_width: bool):
-    import altair as alt
-    import pandas as pd
-    import numpy as np
+    #import altair as alt
+    #import pandas as pd
+    #import numpy as np
 
     np.random.seed(0)
 
@@ -309,9 +309,9 @@ get_chart_61030(True)
 st.header("Regression Chart", anchor="regression", divider="blue")
 
 def get_chart_78749(use_container_width: bool):
-    import numpy as np
-    import pandas as pd
-    import altair as alt
+    #import numpy as np
+    #import pandas as pd
+    #import altair as alt
 
     # Generate some random data
     rng = np.random.RandomState(1)
