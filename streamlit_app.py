@@ -1,5 +1,5 @@
 import streamlit as st
-
+import graphviz
 
 st.page_link("streamlit_app.py", label="Home", icon="🏠")
 
