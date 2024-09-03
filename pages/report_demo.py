@@ -127,15 +127,13 @@ def save_sessionstate_to_json():
     json_io = io.BytesIO(json_bytes)
     
     # Download-Button anzeigen
-    st.download_button(
+    st.sidebar.download_button(
         label="Aktuelles Projekt speichern",
         data=json_io,
         file_name="session_state.json",
         mime="application/json"
     )
 
-# Streamlit UI Elemente
-st.write("SessionState:", st.session_state.my_state)
 
 # Download-Button anzeigen
 save_sessionstate_to_json()
@@ -147,15 +145,10 @@ def upload_sessionstate_from_json(uploaded_file):
         st.session_state.update(session_dict)
         st.success("SessionState erfolgreich aktualisiert!")
 
-# Streamlit UI Elemente
-st.write("Aktueller SessionState:", st.session_state.my_state)
 
 # JSON-Datei hochladen
-uploaded_file = st.file_uploader("Lade eine JSON-Datei hoch, um den SessionState zu aktualisieren", type="json")
+uploaded_file = st.sidebar.file_uploader("Bestehendes Projekt per JSON Datei hochladen", type="json")
 
 # Button zum Hochladen und SessionState aktualisieren
 if uploaded_file is not None:
     upload_sessionstate_from_json(uploaded_file)
-
-# Zeige den aktualisierten SessionState
-st.write("Aktualisierter SessionState:", st.session_state.my_state)
