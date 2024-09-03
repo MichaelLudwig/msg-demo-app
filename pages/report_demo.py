@@ -109,3 +109,32 @@ if st.button('Speichern'):
         file_name="Tabelle_Fertigstellungsgrad.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
+
+
+# Beispielhafter SessionState
+if 'my_state' not in st.session_state:
+    st.session_state.my_state = {'key1': 'value1', 'key2': 42}
+
+# Funktion zum Speichern des SessionState in JSON und Download anbieten
+def save_sessionstate_to_json():
+    # SessionState in ein JSON-kompatibles Format umwandeln
+    session_dict = {k: v for k, v in st.session_state.items()}
+    
+    # JSON in einen BytesIO-Stream schreiben
+    json_str = json.dumps(session_dict, indent=4)
+    json_bytes = json_str.encode('utf-8')
+    json_io = io.BytesIO(json_bytes)
+    
+    # Download-Button anzeigen
+    st.download_button(
+        label="Download SessionState als JSON",
+        data=json_io,
+        file_name="session_state.json",
+        mime="application/json"
+    )
+
+# Streamlit UI Elemente
+st.write("SessionState:", st.session_state.my_state)
+
+# Download-Button anzeigen
+save_sessionstate_to_json()
