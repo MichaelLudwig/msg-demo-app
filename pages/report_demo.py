@@ -5,6 +5,7 @@ from docx import Document
 from docx.shared import Inches
 from PIL import Image
 import json
+import io
 
 
 
