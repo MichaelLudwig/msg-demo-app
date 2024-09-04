@@ -7,6 +7,8 @@ from PIL import Image
 import json
 import io
 
+st.set_page_config(layout="wide")
+
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
