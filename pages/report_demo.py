@@ -91,14 +91,15 @@ data = [
      "percentage": 65},
 ]
 
-
+# Tabelle mit vier Spalten anzeigen und bearbeiten
+st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
 
 # Überschriften für die Tabelle
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
-col1.write("**Anforderung**")
-col2.write("**Erforderliche Maßnahme**")
-col3.write("**Wirtschaftliche Maßnahme**")
-col4.write("**Erfüllungsgrad**")
+col1.write("### Anforderung")
+col2.write("### Erforderliche Maßnahme")
+col3.write("### Wirtschaftliche Maßnahme")
+col4.write("*### Erfüllungsgrad")
 
 # Inhalte der Tabelle
 for row in data:
