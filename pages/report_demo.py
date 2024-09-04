@@ -53,7 +53,7 @@ data = [
     {"anforderung": "Rauchabzugsanlagen in Treppenhäusern", 
      "maßnahme": "Mechanische Rauch- und Wärmeabzugsanlagen", 
      "wirtschaftliche_maßnahme": "Natürliche Rauchabzugsanlagen (Fenster)", 
-     "percentage": 85},
+     "percentage": 86},
     
     {"anforderung": "Flucht- und Rettungswege", 
      "maßnahme": "Freihaltung und Kennzeichnung durch Sicherheitsbeleuchtung", 
