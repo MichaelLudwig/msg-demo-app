@@ -7,8 +7,6 @@ from PIL import Image
 import json
 import io
 
-
-
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
@@ -38,29 +36,72 @@ def create_donut_chart(percentage):
     return buf
 
 # Streamlit App
-st.title("Tabelle mit Fertigstellungsgrad")
+st.title("Brandschutzgutachten - Tabelle mit Fertigstellungsgrad")
 
-# Dummy-Daten
+# Daten basierend auf den Brandschutzanforderungen
 data = [
-    {"text": "Lorem ipsum dolor sit amet, consectetur adipiscing. Sed do eiusmod tempor incididunt ut labore et dolore.", "percentage": 15},
-    {"text": "Sed do eiusmod tempor incididunt ut labore et dolore. Magna aliqua. Ut enim ad minim veniam, quis nostrud.", "percentage": 30},
-    {"text": "Magna aliqua. Ut enim ad minim veniam, quis nostrud. Exercitation ullamco laboris nisi ut aliquip ex ea.", "percentage": 55},
-    {"text": "Exercitation ullamco laboris nisi ut aliquip ex ea. Lorem ipsum dolor sit amet, consectetur adipiscing. ", "percentage": 90},
+    {"anforderung": "Brandschutztüren in Flucht- und Rettungswegen", 
+     "maßnahme": "Installation von feuerhemmenden Türen (T30)", 
+     "wirtschaftliche_maßnahme": "Einsatz von zugelassenen T30-Brandschutztüren aus Stahl", 
+     "percentage": 100},
+    
+    {"anforderung": "Brandmeldeanlagen (DIN 14675)", 
+     "maßnahme": "Zentrale Brandmeldeanlage (BMA)", 
+     "wirtschaftliche_maßnahme": "Rauchmelder nur in den Wohnungen", 
+     "percentage": 70},
+    
+    {"anforderung": "Rauchabzugsanlagen in Treppenhäusern", 
+     "maßnahme": "Mechanische Rauch- und Wärmeabzugsanlagen", 
+     "wirtschaftliche_maßnahme": "Natürliche Rauchabzugsanlagen (Fenster)", 
+     "percentage": 85},
+    
+    {"anforderung": "Flucht- und Rettungswege", 
+     "maßnahme": "Freihaltung und Kennzeichnung durch Sicherheitsbeleuchtung", 
+     "wirtschaftliche_maßnahme": "Einfache Beleuchtung ohne Sicherheitsbeleuchtung", 
+     "percentage": 60},
+    
+    {"anforderung": "Feuerwiderstandsfähige Decken und Wände (DIN 4102)", 
+     "maßnahme": "Feuerbeständige Materialien (F90)", 
+     "wirtschaftliche_maßnahme": "Feuerhemmende Materialien (F30)", 
+     "percentage": 75},
+    
+    {"anforderung": "Sicherheitsbeleuchtung (DIN EN 1838)", 
+     "maßnahme": "Sicherheitsbeleuchtung an Notausgängen", 
+     "wirtschaftliche_maßnahme": "Notbeleuchtung nur an Treppenabgängen", 
+     "percentage": 50},
+    
+    {"anforderung": "Löschwasserversorgung (DIN 1988-600)", 
+     "maßnahme": "Vorhaltung einer Löschwasseranlage", 
+     "wirtschaftliche_maßnahme": "Anschluss an externes Löschwassernetz", 
+     "percentage": 80},
+    
+    {"anforderung": "Abschottung von Leitungen (DIN 4102-11)", 
+     "maßnahme": "Feuerwiderstandsfähige Abschottung von Leitungen", 
+     "wirtschaftliche_maßnahme": "Teilweise Abschottung bei Hauptleitungen", 
+     "percentage": 70},
+    
+    {"anforderung": "Aufstellflächen für Feuerwehrfahrzeuge", 
+     "maßnahme": "Bereitstellung geeigneter Aufstellflächen", 
+     "wirtschaftliche_maßnahme": "Minimalistische Auslegung der Flächen", 
+     "percentage": 90},
+    
+    {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
+     "maßnahme": "Permanente Überwachung der Notrufsysteme", 
+     "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
+     "percentage": 70},
 ]
 
 # Tabelle anzeigen und bearbeiten
 for row in data:
     col1, col2 = st.columns([3, 1])
 
-    # Text in der ersten Spalte anzeigen
-    col1.write(row["text"])
+    # Anforderungen und Maßnahmen in der ersten Spalte anzeigen
+    col1.write(f"**Anforderung:** {row['anforderung']}")
+    col1.write(f"**Erforderliche Maßnahme:** {row['maßnahme']}")
+    col1.write(f"**Wirtschaftliche Maßnahme:** {row['wirtschaftliche_maßnahme']}")
 
-    
     # Slider zur Anpassung des Prozentsatzes
-    row["percentage"] = col1.slider(f"Prozentwert für diesen Eintrag:", min_value=0, max_value=100, value=row["percentage"], step=5)
-    
-    # Schließen des farbigen Containers
-    st.markdown("</div>", unsafe_allow_html=True)
+    row["percentage"] = col1.slider(f"Erfüllungsgrad für '{row['anforderung']}'", min_value=0, max_value=100, value=row["percentage"], step=5)
     
     # Donut-Chart in der zweiten Spalte anzeigen
     donut_chart = create_donut_chart(row["percentage"])
@@ -70,30 +111,38 @@ for row in data:
 if st.button('Speichern'):
     # Word-Dokument erstellen
     doc = Document()
-    doc.add_heading('Tabelle mit Fertigstellungsgrad', 0)
+    doc.add_heading('Brandschutzgutachten - Tabelle mit Fertigstellungsgrad', 0)
     
     # Tabelle im Word-Dokument erstellen
-    table = doc.add_table(rows=1, cols=2)
+    table = doc.add_table(rows=1, cols=4)
     hdr_cells = table.rows[0].cells
-    hdr_cells[0].text = 'Beschreibung'
-    hdr_cells[1].text = 'Fertigstellungsgrad'
+    hdr_cells[0].text = 'Anforderung'
+    hdr_cells[1].text = 'Erforderliche Maßnahme'
+    hdr_cells[2].text = 'Wirtschaftliche Maßnahme'
+    hdr_cells[3].text = 'Fertigstellungsgrad'
     
     for row in data:
         # Neue Zeile in der Tabelle erstellen
         row_cells = table.add_row().cells
         
-        # Text in der ersten Spalte
-        row_cells[0].text = row["text"]
+        # Text in den Spalten
+        row_cells[0].text = row["anforderung"]
+        row_cells[1].text = row["maßnahme"]
+        row_cells[2].text = row["wirtschaftliche_maßnahme"]
         
-        # Donut-Chart in der zweiten Spalte
+        # Donut-Chart als Bild hinzufügen
         donut_chart = create_donut_chart(row["percentage"])
         
-        # Bild in der zweiten Spalte speichern und hinzufügen
+        # Bild in der letzten Spalte speichern und hinzufügen
         image_stream = Image.open(donut_chart)
         image_path = f"temp_{row['percentage']}.png"
         image_stream.save(image_path)
-        row_cells[1].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
-    
+        row_cells[3].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
+
+    # Word-Dokument speichern
+    doc.save('Brandschutzgutachten.docx')
+    st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
+
     # Speichern des Word-Dokuments
     #doc.save('Tabelle_Fertigstellungsgrad.docx')
     #st.success("Das Word-Dokument wurde erfolgreich erstellt und gespeichert.")
