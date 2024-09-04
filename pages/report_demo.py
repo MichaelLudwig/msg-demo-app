@@ -7,6 +7,8 @@ from PIL import Image
 import json
 import io
 
+st.set_page_config(layout="wide")
+
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
@@ -187,7 +189,7 @@ if st.button('Speichern'):
     row_cells = table.add_row().cells
     row_cells[0].text = "Gesamteinschätzung"
     row_cells[1].text = gesamt_einschaetzung
-    row_cells[2].text = "Die getroffenen Maßnahmen im Brandschutz des betrachteten 10-stöckigen Gebäudes mit 100 Wohneinheiten erfüllen die grundlegenden Anforderungen weitgehend. Insbesondere der Einsatz von Brandschutztüren und die Sicherstellung der Löschwasserversorgung sind sehr gut umgesetzt. Verbesserungsbedarf gibt es bei der Installation der Brandmeldeanlagen und der Sicherheitsbeleuchtung, wo nur minimale Anforderungen erfüllt wurden. Insgesamt wird der Fertigstellungsgrad mit einem soliden Durchschnitt von etwa 75 Prozent bewertet, was einer 'guten' Einstufung entspricht. Um den optimalen Schutz zu gewährleisten, sollten insbesondere die Maßnahmen in Fluchtwegen und bei der Überwachung von Notrufsystemen verbessert werden."
+    row_cells[2].text = "Die getroffenen Maßnahmen im Brandschutz sind überwiegend zufriedenstellend umgesetzt. Der durchschnittliche Fertigstellungsgrad liegt bei etwa 75 %, was auf eine solide Erfüllung der Anforderungen hinweist. Einige Bereiche, wie Brandmeldeanlagen und Sicherheitsbeleuchtung, könnten jedoch noch verbessert werden. Insgesamt ist die Brandschutzsituation als gut zu bewerten."
 
     # Bild für den Gesamtfertigstellungsgrad hinzufügen
     average_donut_chart = create_donut_chart(average_percentage)
