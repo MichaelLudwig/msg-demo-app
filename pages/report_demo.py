@@ -112,7 +112,7 @@ for row in data:
     col3.write(row["wirtschaftliche_maßnahme"])
 
     # Slider in der vierten Spalte anzeigen
-    row["percentage"] = col4.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
+    row["percentage"] = col3.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
 
     # Donut-Chart als Indikator anzeigen
     donut_chart = create_donut_chart(row["percentage"])
