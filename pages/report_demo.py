@@ -35,8 +35,19 @@ def create_donut_chart(percentage):
     plt.close(fig)
     return buf
 
+# Funktion zur Berechnung der Gesamteinschätzung basierend auf dem Durchschnitt
+def get_gesamt_einschaetzung(average_percentage):
+    if average_percentage > 90:
+        return "Sehr gut"
+    elif average_percentage > 75:
+        return "Gut"
+    elif average_percentage > 50:
+        return "Befriedigend"
+    else:
+        return "Unzureichend"
+
 # Streamlit App
-st.title("Brandschutzgutachten")
+st.title("Brandschutzgutachten - Tabelle mit Fertigstellungsgrad")
 
 # Daten basierend auf den Brandschutzanforderungen
 data = [
@@ -48,17 +59,17 @@ data = [
     {"anforderung": "Brandmeldeanlagen (DIN 14675)", 
      "maßnahme": "Zentrale Brandmeldeanlage (BMA)", 
      "wirtschaftliche_maßnahme": "Rauchmelder nur in den Wohnungen", 
-     "percentage": 85},
+     "percentage": 70},
     
     {"anforderung": "Rauchabzugsanlagen in Treppenhäusern", 
      "maßnahme": "Mechanische Rauch- und Wärmeabzugsanlagen", 
      "wirtschaftliche_maßnahme": "Natürliche Rauchabzugsanlagen (Fenster)", 
-     "percentage": 86},
+     "percentage": 85},
     
     {"anforderung": "Flucht- und Rettungswege", 
      "maßnahme": "Freihaltung und Kennzeichnung durch Sicherheitsbeleuchtung", 
      "wirtschaftliche_maßnahme": "Einfache Beleuchtung ohne Sicherheitsbeleuchtung", 
-     "percentage": 55},
+     "percentage": 60},
     
     {"anforderung": "Feuerwiderstandsfähige Decken und Wände (DIN 4102)", 
      "maßnahme": "Feuerbeständige Materialien (F90)", 
@@ -78,7 +89,7 @@ data = [
     {"anforderung": "Abschottung von Leitungen (DIN 4102-11)", 
      "maßnahme": "Feuerwiderstandsfähige Abschottung von Leitungen", 
      "wirtschaftliche_maßnahme": "Teilweise Abschottung bei Hauptleitungen", 
-     "percentage": 60},
+     "percentage": 70},
     
     {"anforderung": "Aufstellflächen für Feuerwehrfahrzeuge", 
      "maßnahme": "Bereitstellung geeigneter Aufstellflächen", 
@@ -88,20 +99,24 @@ data = [
     {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
      "maßnahme": "Permanente Überwachung der Notrufsysteme", 
      "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
-     "percentage": 65},
+     "percentage": 70},
 ]
 
-
+# Tabelle mit vier Spalten anzeigen und bearbeiten
+st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
 
 # Überschriften für die Tabelle
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
-col1.write("### Anforderung")
-col2.write("### Erforderliche Maßnahme")
-col3.write("### Wirtschaftliche Maßnahme")
-col4.write("### Erfüllungsgrad")
+col1.write("**Anforderung**")
+col2.write("**Erforderliche Maßnahme**")
+col3.write("**Wirtschaftliche Maßnahme**")
+col4.write("**Erfüllungsgrad**")
+
+# Berechnung des Gesamtdurchschnitts
+total_percentage = 0
 
 # Inhalte der Tabelle
-for row in data:
+for i, row in enumerate(data):  # Nutze i für eindeutigen Key
     col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
 
     # Inhalte der ersten drei Spalten anzeigen
@@ -109,18 +124,38 @@ for row in data:
     col2.write(row["maßnahme"])
     col3.write(row["wirtschaftliche_maßnahme"])
 
-    # Slider in der vierten Spalte anzeigen
-    row["percentage"] = col3.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
+    # Slider mit eindeutiger ID (Key) in der vierten Spalte anzeigen
+    row["percentage"] = col4.slider(f"Erfüllungsgrad {i+1}", min_value=0, max_value=100, value=row["percentage"], step=5, key=f"slider_{i}")
 
     # Donut-Chart als Indikator anzeigen
     donut_chart = create_donut_chart(row["percentage"])
     col4.image(donut_chart, use_column_width=True)
 
+    # Summiere den Erfüllungsgrad für die spätere Berechnung des Durchschnitts
+    total_percentage += row["percentage"]
+
+# Durchschnitt berechnen
+average_percentage = total_percentage / len(data)
+
+# Gesamteinschätzung basierend auf dem durchschnittlichen Erfüllungsgrad
+gesamt_einschaetzung = get_gesamt_einschaetzung(average_percentage)
+
+# Anzeige der Gesamteinschätzung in der letzten Zeile
+col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
+col1.write("**Gesamteinschätzung**")
+col2.write(f"**{gesamt_einschaetzung}**")
+col3.write("**--**")
+
+# Anzeige des durchschnittlichen Fertigstellungsgrads und Donut-Chart in der letzten Spalte
+col4.write(f"**{average_percentage:.2f}%**")
+average_donut_chart = create_donut_chart(average_percentage)
+col4.image(average_donut_chart, use_column_width=True)
+
 # Speichern Button
 if st.button('Speichern'):
     # Word-Dokument erstellen
     doc = Document()
-    doc.add_heading('Brandschutzgutachten', 0)
+    doc.add_heading('Brandschutzgutachten - Tabelle mit Fertigstellungsgrad', 0)
     
     # Tabelle im Word-Dokument erstellen
     table = doc.add_table(rows=1, cols=4)
@@ -148,19 +183,19 @@ if st.button('Speichern'):
         image_stream.save(image_path)
         row_cells[3].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
 
-    # Speichern des Word-Dokuments
-    #doc.save('Tabelle_Fertigstellungsgrad.docx')
-    #st.success("Das Word-Dokument wurde erfolgreich erstellt und gespeichert.")
+    # Letzte Zeile für die Gesamteinschätzung
+    row_cells = table.add_row().cells
+    row_cells[0].text = "Gesamteinschätzung"
+    row_cells[1].text = gesamt_einschaetzung
+    row_cells[2].text = "--"
 
-     # Das Word-Dokument in einem BytesIO-Objekt speichern
-    doc_io = BytesIO()
-    doc.save(doc_io)
-    doc_io.seek(0)
-    
-    # Download Button anzeigen
-    st.download_button(
-        label="Download Word-Dokument",
-        data=doc_io,
-        file_name="Brandschutzgutachten.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    )
+    # Bild für den Gesamtfertigstellungsgrad hinzufügen
+    average_donut_chart = create_donut_chart(average_percentage)
+    image_stream = Image.open(average_donut_chart)
+    image_path = "temp_average.png"
+    image_stream.save(image_path)
+    row_cells[3].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
+
+    # Word-Dokument speichern
+    doc.save('Brandschutzgutachten.docx')
+    st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
