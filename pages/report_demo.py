@@ -91,8 +91,7 @@ data = [
      "percentage": 65},
 ]
 
-# Tabelle mit vier Spalten anzeigen und bearbeiten
-st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
+
 
 # Überschriften für die Tabelle
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
