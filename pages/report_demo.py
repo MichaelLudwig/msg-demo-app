@@ -91,21 +91,32 @@ data = [
      "percentage": 70},
 ]
 
-# Tabelle anzeigen und bearbeiten
+# Tabelle mit vier Spalten anzeigen und bearbeiten
+st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
+
+# Überschriften
+st.write(
+    """
+    | **Anforderung** | **Erforderliche Maßnahme** | **Wirtschaftliche Maßnahme** | **Erfüllungsgrad** |
+    |-----------------|----------------------------|------------------------------|--------------------|
+    """
+)
+
+# Inhalte
 for row in data:
-    col1, col2 = st.columns([3, 1])
+    col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
 
-    # Anforderungen und Maßnahmen in der ersten Spalte anzeigen
-    col1.write(f"**Anforderung:** {row['anforderung']}")
-    col1.write(f"**Erforderliche Maßnahme:** {row['maßnahme']}")
-    col1.write(f"**Wirtschaftliche Maßnahme:** {row['wirtschaftliche_maßnahme']}")
+    # Inhalte der ersten drei Spalten anzeigen
+    col1.write(row["anforderung"])
+    col2.write(row["maßnahme"])
+    col3.write(row["wirtschaftliche_maßnahme"])
 
-    # Slider zur Anpassung des Prozentsatzes
-    row["percentage"] = col1.slider(f"Erfüllungsgrad für '{row['anforderung']}'", min_value=0, max_value=100, value=row["percentage"], step=5)
-    
-    # Donut-Chart in der zweiten Spalte anzeigen
+    # Slider in der vierten Spalte anzeigen
+    row["percentage"] = col4.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
+
+    # Donut-Chart als Indikator anzeigen
     donut_chart = create_donut_chart(row["percentage"])
-    col2.image(donut_chart, use_column_width=True)
+    col4.image(donut_chart, use_column_width=True)
 
 # Speichern Button
 if st.button('Speichern'):
@@ -125,7 +136,7 @@ if st.button('Speichern'):
         # Neue Zeile in der Tabelle erstellen
         row_cells = table.add_row().cells
         
-        # Text in den Spalten
+        # Text in den ersten drei Spalten
         row_cells[0].text = row["anforderung"]
         row_cells[1].text = row["maßnahme"]
         row_cells[2].text = row["wirtschaftliche_maßnahme"]
@@ -138,6 +149,11 @@ if st.button('Speichern'):
         image_path = f"temp_{row['percentage']}.png"
         image_stream.save(image_path)
         row_cells[3].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
+
+    # Word-Dokument speichern
+    doc.save('Brandschutzgutachten.docx')
+    st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
+
 
     # Word-Dokument speichern
     doc.save('Brandschutzgutachten.docx')
