@@ -96,9 +96,24 @@ data = [
 # Tabelle mit vier Spalten anzeigen und bearbeiten
 st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
 
+# Überschriften
+st.write(
+    """
+    | **Anforderung** | **Erforderliche Maßnahme** | **Wirtschaftliche Maßnahme** | **Erfüllungsgrad** |
+    |-----------------|----------------------------|------------------------------|--------------------|
+    """
+)
 
+# Überschriften für die Tabelle
+col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
+col1.write("**Anforderung**")
+col2.write("**Erforderliche Maßnahme**")
+col3.write("**Wirtschaftliche Maßnahme**")
+col4.write("**Erfüllungsgrad**")
 
-st.set_page_config(layout="wide")
+# Inhalte der Tabelle
+for row in data:
+    col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
 
     # Slider in der vierten Spalte anzeigen
     row["percentage"] = col3.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
