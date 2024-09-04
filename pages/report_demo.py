@@ -48,7 +48,7 @@ data = [
     {"anforderung": "Brandmeldeanlagen (DIN 14675)", 
      "maßnahme": "Zentrale Brandmeldeanlage (BMA)", 
      "wirtschaftliche_maßnahme": "Rauchmelder nur in den Wohnungen", 
-     "percentage": 70},
+     "percentage": 85},
     
     {"anforderung": "Rauchabzugsanlagen in Treppenhäusern", 
      "maßnahme": "Mechanische Rauch- und Wärmeabzugsanlagen", 
@@ -58,7 +58,7 @@ data = [
     {"anforderung": "Flucht- und Rettungswege", 
      "maßnahme": "Freihaltung und Kennzeichnung durch Sicherheitsbeleuchtung", 
      "wirtschaftliche_maßnahme": "Einfache Beleuchtung ohne Sicherheitsbeleuchtung", 
-     "percentage": 60},
+     "percentage": 55},
     
     {"anforderung": "Feuerwiderstandsfähige Decken und Wände (DIN 4102)", 
      "maßnahme": "Feuerbeständige Materialien (F90)", 
@@ -78,7 +78,7 @@ data = [
     {"anforderung": "Abschottung von Leitungen (DIN 4102-11)", 
      "maßnahme": "Feuerwiderstandsfähige Abschottung von Leitungen", 
      "wirtschaftliche_maßnahme": "Teilweise Abschottung bei Hauptleitungen", 
-     "percentage": 70},
+     "percentage": 60},
     
     {"anforderung": "Aufstellflächen für Feuerwehrfahrzeuge", 
      "maßnahme": "Bereitstellung geeigneter Aufstellflächen", 
@@ -88,7 +88,7 @@ data = [
     {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
      "maßnahme": "Permanente Überwachung der Notrufsysteme", 
      "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
-     "percentage": 70},
+     "percentage": 65},
 ]
 
 # Tabelle mit vier Spalten anzeigen und bearbeiten
