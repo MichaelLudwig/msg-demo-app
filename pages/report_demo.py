@@ -146,7 +146,7 @@ gesamt_einschaetzung = get_gesamt_einschaetzung(average_percentage)
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
 col1.write("**Gesamteinschätzung**")
 col2.write(f"**{gesamt_einschaetzung}**")
-col3.write("**--**")
+col3.write("Die getroffenen Maßnahmen im Brandschutz sind überwiegend zufriedenstellend umgesetzt. Der durchschnittliche Fertigstellungsgrad liegt bei etwa 75 %, was auf eine solide Erfüllung der Anforderungen hinweist. Einige Bereiche, wie Brandmeldeanlagen und Sicherheitsbeleuchtung, könnten jedoch noch verbessert werden. Insgesamt ist die Brandschutzsituation als gut zu bewerten.")
 
 # Anzeige des durchschnittlichen Fertigstellungsgrads und Donut-Chart in der letzten Spalte
 col4.write(f"**{average_percentage:.2f}%**")
