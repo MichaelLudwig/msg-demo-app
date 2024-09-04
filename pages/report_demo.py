@@ -47,7 +47,7 @@ def get_gesamt_einschaetzung(average_percentage):
         return "Unzureichend"
 
 # Streamlit App
-st.title("Brandschutzgutachten - Tabelle mit Fertigstellungsgrad")
+st.title("Brandschutzgutachten")
 
 # Daten basierend auf den Brandschutzanforderungen
 data = [
@@ -125,7 +125,7 @@ for i, row in enumerate(data):  # Nutze i für eindeutigen Key
     col3.write(row["wirtschaftliche_maßnahme"])
 
     # Slider mit eindeutiger ID (Key) in der vierten Spalte anzeigen
-    row["percentage"] = col4.slider(f"Erfüllungsgrad {i+1}", min_value=0, max_value=100, value=row["percentage"], step=5, key=f"slider_{i}")
+    row["percentage"] = col3.slider(f"Erfüllungsgrad {i+1}", min_value=0, max_value=100, value=row["percentage"], step=5, key=f"slider_{i}")
 
     # Donut-Chart als Indikator anzeigen
     donut_chart = create_donut_chart(row["percentage"])
