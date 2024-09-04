@@ -80,7 +80,7 @@ data = [
     {"anforderung": "Abschottung von Leitungen (DIN 4102-11)", 
      "maßnahme": "Feuerwiderstandsfähige Abschottung von Leitungen", 
      "wirtschaftliche_maßnahme": "Teilweise Abschottung bei Hauptleitungen", 
-     "percentage": 70},
+     "percentage": 65},
     
     {"anforderung": "Aufstellflächen für Feuerwehrfahrzeuge", 
      "maßnahme": "Bereitstellung geeigneter Aufstellflächen", 
@@ -90,19 +90,12 @@ data = [
     {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
      "maßnahme": "Permanente Überwachung der Notrufsysteme", 
      "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
-     "percentage": 70},
+     "percentage": 75},
 ]
 
 # Tabelle mit vier Spalten anzeigen und bearbeiten
 st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
 
-# Überschriften
-st.write(
-    """
-    | **Anforderung** | **Erforderliche Maßnahme** | **Wirtschaftliche Maßnahme** | **Erfüllungsgrad** |
-    |-----------------|----------------------------|------------------------------|--------------------|
-    """
-)
 
 # Überschriften für die Tabelle
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
