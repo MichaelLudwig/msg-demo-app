@@ -7,8 +7,6 @@ from PIL import Image
 import json
 import io
 
-st.set_page_config(layout="wide")
-
 # Funktion zum Erstellen eines Donut-Charts
 def create_donut_chart(percentage):
     if percentage <= 25:
@@ -80,7 +78,7 @@ data = [
     {"anforderung": "Abschottung von Leitungen (DIN 4102-11)", 
      "maßnahme": "Feuerwiderstandsfähige Abschottung von Leitungen", 
      "wirtschaftliche_maßnahme": "Teilweise Abschottung bei Hauptleitungen", 
-     "percentage": 65},
+     "percentage": 70},
     
     {"anforderung": "Aufstellflächen für Feuerwehrfahrzeuge", 
      "maßnahme": "Bereitstellung geeigneter Aufstellflächen", 
@@ -90,12 +88,11 @@ data = [
     {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
      "maßnahme": "Permanente Überwachung der Notrufsysteme", 
      "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
-     "percentage": 95},
+     "percentage": 70},
 ]
 
 # Tabelle mit vier Spalten anzeigen und bearbeiten
 st.write("### Anforderungen, Maßnahmen, wirtschaftliche Umsetzung und Erfüllungsgrad")
-
 
 # Überschriften für die Tabelle
 col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
@@ -108,8 +105,13 @@ col4.write("**Erfüllungsgrad**")
 for row in data:
     col1, col2, col3, col4 = st.columns([2, 2, 2, 1])
 
+    # Inhalte der ersten drei Spalten anzeigen
+    col1.write(row["anforderung"])
+    col2.write(row["maßnahme"])
+    col3.write(row["wirtschaftliche_maßnahme"])
+
     # Slider in der vierten Spalte anzeigen
-    row["percentage"] = col3.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
+    row["percentage"] = col4.slider(f"Erfüllungsgrad", min_value=0, max_value=100, value=row["percentage"], step=5)
 
     # Donut-Chart als Indikator anzeigen
     donut_chart = create_donut_chart(row["percentage"])
@@ -150,67 +152,3 @@ if st.button('Speichern'):
     # Word-Dokument speichern
     doc.save('Brandschutzgutachten.docx')
     st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
-
-
-    # Word-Dokument speichern
-    doc.save('Brandschutzgutachten.docx')
-    st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
-
-    # Speichern des Word-Dokuments
-    #doc.save('Tabelle_Fertigstellungsgrad.docx')
-    #st.success("Das Word-Dokument wurde erfolgreich erstellt und gespeichert.")
-
-     # Das Word-Dokument in einem BytesIO-Objekt speichern
-    doc_io = BytesIO()
-    doc.save(doc_io)
-    doc_io.seek(0)
-    
-    # Download Button anzeigen
-    st.download_button(
-        label="Download Word-Dokument",
-        data=doc_io,
-        file_name="Tabelle_Fertigstellungsgrad.docx",
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    )
-
-
-# Beispielhafter SessionState
-if 'my_state' not in st.session_state:
-    st.session_state.my_state = {'key1': 'value1', 'key2': 42}
-
-# Funktion zum Speichern des SessionState in JSON und Download anbieten
-def save_sessionstate_to_json():
-    # SessionState in ein JSON-kompatibles Format umwandeln
-    session_dict = {k: v for k, v in st.session_state.items()}
-    
-    # JSON in einen BytesIO-Stream schreiben
-    json_str = json.dumps(session_dict, indent=4)
-    json_bytes = json_str.encode('utf-8')
-    json_io = io.BytesIO(json_bytes)
-    
-    # Download-Button anzeigen
-    st.sidebar.download_button(
-        label="Aktuelles Projekt speichern",
-        data=json_io,
-        file_name="session_state.json",
-        mime="application/json"
-    )
-
-
-# Download-Button anzeigen
-save_sessionstate_to_json()
-
-def upload_sessionstate_from_json(uploaded_file):
-    if uploaded_file is not None:
-        # JSON-Daten lesen und in den SessionState schreiben
-        session_dict = json.load(uploaded_file)
-        st.session_state.update(session_dict)
-        st.success("SessionState erfolgreich aktualisiert!")
-
-
-# JSON-Datei hochladen
-uploaded_file = st.sidebar.file_uploader("Bestehendes Projekt per JSON Datei hochladen", type="json")
-
-# Button zum Hochladen und SessionState aktualisieren
-if uploaded_file is not None:
-    upload_sessionstate_from_json(uploaded_file)
