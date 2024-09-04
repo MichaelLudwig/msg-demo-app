@@ -90,7 +90,7 @@ data = [
     {"anforderung": "Notrufeinrichtungen in Aufzügen (DIN EN 81-28)", 
      "maßnahme": "Permanente Überwachung der Notrufsysteme", 
      "wirtschaftliche_maßnahme": "Einfache Notrufsysteme ohne permanente Überwachung", 
-     "percentage": 75},
+     "percentage": 95},
 ]
 
 # Tabelle mit vier Spalten anzeigen und bearbeiten
