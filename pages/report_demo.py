@@ -36,7 +36,7 @@ def create_donut_chart(percentage):
     return buf
 
 # Streamlit App
-st.title("Brandschutzgutachten - Tabelle mit Fertigstellungsgrad")
+st.title("Brandschutzgutachten")
 
 # Daten basierend auf den Brandschutzanforderungen
 data = [
@@ -120,7 +120,7 @@ for row in data:
 if st.button('Speichern'):
     # Word-Dokument erstellen
     doc = Document()
-    doc.add_heading('Brandschutzgutachten - Tabelle mit Fertigstellungsgrad', 0)
+    doc.add_heading('Brandschutzgutachten', 0)
     
     # Tabelle im Word-Dokument erstellen
     table = doc.add_table(rows=1, cols=4)
@@ -161,6 +161,6 @@ if st.button('Speichern'):
     st.download_button(
         label="Download Word-Dokument",
         data=doc_io,
-        file_name="Tabelle_Fertigstellungsgrad.docx",
+        file_name="Brandschutzgutachten.docx",
         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
