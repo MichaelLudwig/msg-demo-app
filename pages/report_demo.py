@@ -39,11 +39,11 @@ def create_donut_chart(percentage):
 
 # Funktion zur Berechnung der Gesamteinschätzung basierend auf dem Durchschnitt
 def get_gesamt_einschaetzung(average_percentage):
-    if average_percentage > 90:
+    if average_percentage >= 90:
         return "Sehr gut"
-    elif average_percentage > 75:
+    elif average_percentage >= 75:
         return "Gut"
-    elif average_percentage > 50:
+    elif average_percentage >= 50:
         return "Befriedigend"
     else:
         return "Unzureichend"
