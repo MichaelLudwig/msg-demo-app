@@ -148,6 +148,19 @@ if st.button('Speichern'):
         image_stream.save(image_path)
         row_cells[3].add_paragraph().add_run().add_picture(image_path, width=Inches(1.5))
 
-    # Word-Dokument speichern
-    doc.save('Brandschutzgutachten.docx')
-    st.success("Das Brandschutzgutachten wurde erfolgreich gespeichert!")
+    # Speichern des Word-Dokuments
+    #doc.save('Tabelle_Fertigstellungsgrad.docx')
+    #st.success("Das Word-Dokument wurde erfolgreich erstellt und gespeichert.")
+
+     # Das Word-Dokument in einem BytesIO-Objekt speichern
+    doc_io = BytesIO()
+    doc.save(doc_io)
+    doc_io.seek(0)
+    
+    # Download Button anzeigen
+    st.download_button(
+        label="Download Word-Dokument",
+        data=doc_io,
+        file_name="Tabelle_Fertigstellungsgrad.docx",
+        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
