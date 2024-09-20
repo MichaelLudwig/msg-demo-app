@@ -148,12 +148,13 @@ def build_chart(data, use_container_width: bool):
     
     # Zeige die sortierten Daten an (optional, für Debugging)
     st.write(df[['Aufgabe', 'Start', 'Ende', 'Abhängigkeiten']])
+    st.write(df)
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
 if 'inputtext' not in st.session_state:
     st.session_state.inputtext = ""
 
-st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=200)
+st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=300)
 
 if st.button("Gantt-Chart erstellen"):
     if st.session_state.inputtext:
