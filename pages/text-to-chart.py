@@ -49,5 +49,3 @@ if st.button("Gantt-Chart erstellen"):
     else:
         st.warning("Bitte geben Sie zuerst eine Beschreibung Ihres Vorhabens ein.")
 
-# Chart anzeigen ---------------------------------------------------------------------------------------------------------------------------------------
-build_chart(True)
