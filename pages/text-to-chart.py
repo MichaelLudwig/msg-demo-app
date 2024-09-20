@@ -32,7 +32,14 @@ def get_chart_56029(use_container_width: bool):
     st.altair_chart(chart, theme="streamlit", use_container_width=True)
 
 
-get_chart_56029(True)
+
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
+if 'inputtext' not in st.session_state:
+    st.session_state.inputtext = ""
+
 st.session_state.inputtext = st.text_area(f"Prompt zum generieren des Ganttcharts", value=st.session_state.inputtext, height=200)
+
+
+# Chart anzeigen ---------------------------------------------------------------------------------------------------------------------------------------
+get_chart_56029(True)
