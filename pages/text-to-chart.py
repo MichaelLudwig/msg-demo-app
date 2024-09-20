@@ -111,22 +111,31 @@ def build_chart(data, use_container_width: bool):
         text='Aufgabe:N'
     )
 
+    # Erstelle eine separate DataFrame für die Abhängigkeiten
+    dependencies = []
+    for i, row in df.iterrows():
+        for dep in row['Abhängigkeiten']:
+            dependencies.append({
+                'von_aufgabe': df.loc[dep, 'Aufgabe'],
+                'zu_aufgabe': row['Aufgabe'],
+                'von_ende': df.loc[dep, 'Ende'],
+                'zu_start': row['Start'],
+                'von_y': df.loc[dep, 'y_order'],
+                'zu_y': row['y_order']
+            })
+    dep_df = pd.DataFrame(dependencies)
+
     # Pfeile für Abhängigkeiten
-    arrows = alt.Chart(df).transform_flatten(
-        ['Abhängigkeiten']
-    ).transform_lookup(
-        lookup='Abhängigkeiten',
-        from_=alt.LookupData(df, 'index', ['Ende', 'y_order'])
-    ).mark_line(
+    arrows = alt.Chart(dep_df).mark_line(
         color='red',
         strokeWidth=1,
         strokeDash=[2, 2],
         point=alt.OverlayMarkDef(color='red', shape='triangle-right', size=60)
     ).encode(
-        x='Ende:Q',
-        y='y_order:O',
-        x2='Start:Q',
-        y2='y_order_2:O'
+        x='von_ende:Q',
+        y='von_y:O',
+        x2='zu_start:Q',
+        y2='zu_y:O'
     )
 
     chart = (bars + text + arrows).properties(
