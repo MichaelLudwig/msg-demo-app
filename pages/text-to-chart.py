@@ -62,9 +62,6 @@ Hier ist der Plan:
     
     content = response.choices[0].message.content.strip()
     
-    st.write("Rohe API-Antwort:")
-    st.code(content, language="json")
-    
     try:
         # Versuche, nur den JSON-Teil zu extrahieren
         json_start = content.find('[')
@@ -72,16 +69,21 @@ Hier ist der Plan:
         if json_start != -1 and json_end != -1:
             json_content = content[json_start:json_end]
             parsed_data = json.loads(json_content)
-            st.success("JSON erfolgreich geparst!")
             return parsed_data
         else:
             raise ValueError("Konnte kein gültiges JSON-Array in der Antwort finden.")
     except json.JSONDecodeError as e:
         st.error(f"JSON Parsing-Fehler: {str(e)}")
+        st.error("Rohe API-Antwort:")
+        st.code(content, language="json")
     except ValueError as e:
         st.error(str(e))
+        st.error("Rohe API-Antwort:")
+        st.code(content, language="json")
     except Exception as e:
         st.error(f"Unerwarteter Fehler: {str(e)}")
+        st.error("Rohe API-Antwort:")
+        st.code(content, language="json")
     
     st.error("Konnte die Daten nicht parsen. Bitte überprüfen Sie die API-Antwort oben.")
     return []
