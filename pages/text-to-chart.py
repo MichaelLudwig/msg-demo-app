@@ -5,7 +5,7 @@ import altair as alt
 import json
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-openAI_model = "gpt-4-0125-preview"
+openAI_model = "gpt-4o-mini"
 
 st.set_page_config(layout="wide")
 main_heading=st.title("AI Text-Chart Demo")
@@ -40,58 +40,31 @@ def get_chart_data(prompt):
         model=openAI_model,
         messages=[
             {"role": "system", "content": "Du bist ein Assistent, der Projektpläne in strukturierte Daten umwandelt."},
-            {"role": "user", "content": f"Wandle den folgenden Projektplan in strukturierte Daten für ein Gantt-Chart um:\n\n{prompt}"}
-        ],
-        functions=[
-            {
-                "name": "generate_gantt_data",
-                "description": "Generates structured data for a Gantt chart based on a project plan description",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "tasks": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "Aufgabe": {
-                                        "type": "string",
-                                        "description": "The name of the task"
-                                    },
-                                    "Start": {
-                                        "type": "integer",
-                                        "description": "The start month of the task (0-based)"
-                                    },
-                                    "Ende": {
-                                        "type": "integer",
-                                        "description": "The end month of the task (0-based)"
-                                    },
-                                    "Abhängigkeiten": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "integer"
-                                        },
-                                        "description": "Array of indices of tasks that this task depends on"
-                                    }
-                                },
-                                "required": ["Aufgabe", "Start", "Ende", "Abhängigkeiten"]
-                            },
-                            "description": "The list of tasks for the Gantt chart"
-                        }
-                    },
-                    "required": ["tasks"]
-                }
-            }
-        ],
-        function_call={"name": "generate_gantt_data"}
-    )
+            {"role": "user", "content": f"""
+Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart mit Abhängigkeiten geeignet ist. 
+Jedes Objekt sollte 'Aufgabe', 'Start', 'Ende' und 'Abhängigkeiten' enthalten. 
+'Start' und 'Ende' sollten numerische Werte sein, die die Monate seit Projektbeginn darstellen. 
+'Abhängigkeiten' sollte ein Array von Indizes der Aufgaben sein, von denen diese Aufgabe abhängt.
+Gib NUR das JSON-Array zurück, ohne zusätzlichen Text.
+Beispielformat:
+[
+    {{"Aufgabe": "Aufgabe 1", "Start": 0, "Ende": 2, "Abhängigkeiten": []}},
+    {{"Aufgabe": "Aufgabe 2", "Start": 1, "Ende": 3, "Abhängigkeiten": [0]}}
+]
 
+Hier ist der Plan:
+
+{prompt}
+"""}
+        ],
+        temperature=0.7,
+    )
+    
     try:
-        result = json.loads(response.choices[0].message.function_call.arguments)
-        return result["tasks"]
-    except (json.JSONDecodeError, AttributeError, KeyError) as e:
-        st.error(f"Fehler beim Parsen der API-Antwort: {str(e)}")
-        st.error(f"Rohe API-Antwort: {response}")
+        return json.loads(response.choices[0].message.content)
+    except json.JSONDecodeError:
+        st.print(response.choices[0].message.content)
+        st.error("Fehler beim Parsen der API-Antwort. Bitte versuchen Sie es erneut.")
         return []
 
 def build_chart(data, use_container_width: bool):
