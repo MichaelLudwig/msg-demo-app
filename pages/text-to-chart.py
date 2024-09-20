@@ -102,6 +102,12 @@ def build_chart(data, use_container_width: bool):
         color=alt.Color('Aufgabe:N', legend=None)
     )
 
+    # Meilensteine als Rauten
+    milestones = base.mark_point(shape='diamond', size=100).encode(
+        x='Start:Q',
+        color=alt.Color('Aufgabe:N', legend=None)
+    ).transform_filter(alt.datum.Start == alt.datum.Ende)
+
     # Texte für Aufgaben
     text = base.mark_text(
         align='left',
@@ -138,8 +144,7 @@ def build_chart(data, use_container_width: bool):
         y2='zu_y:O'
     )
 
-    #chart = (bars + text + arrows).properties(
-    chart = (bars + text).properties(
+    chart = (bars + milestones + text).properties(
         width=600,
         height=400
     ).interactive()
