@@ -9,7 +9,7 @@ openAI_model = "gpt-4o-mini"
 
 st.set_page_config(layout="wide")
 main_heading=st.title("AI Text-Chart Demo")
-st.success("""
+st.info("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens an.
 
 Jede Aufgabe sollte mindestens eine Startzeit oder Abhängigkeit zu einem Vorgänger enthalten. Außerdem wird eine Endzeit oder eine Dauer benötigt.
@@ -18,7 +18,7 @@ Verwende klare Formulierungen für Abhängigkeiten, z.B. "beginnt nach Abschluss
 Die KI wird fehlende Informationen basierend auf den angegebenen Abhängigkeiten und Dauern bestmöglich ergänzen.
 """)
 
-st.info("""
+st.success("""
 Beispiel:
 "Unser App-Entwicklungsprojekt beginnt mit der Marktanalyse, die 2 Monate dauert. 
 Anschließend starten wir das Design und Prototyping, das 3 Monate in Anspruch nimmt. 
