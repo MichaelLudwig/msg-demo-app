@@ -52,9 +52,12 @@ def build_chart(data, use_container_width: bool):
     
     source = pd.DataFrame(data)
     
+    # Sortiere die Aufgaben nach Startzeit
+    source = source.sort_values('Start')
+    
     # Basis-Chart für Balken
     base = alt.Chart(source).encode(
-        y=alt.Y('Aufgabe:N', sort='-x'),
+        y=alt.Y('Aufgabe:N', sort=None),  # Keine automatische Sortierung
         x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)')),
         x2='Ende:Q'
     )
@@ -74,7 +77,12 @@ def build_chart(data, use_container_width: bool):
     )
 
     # Pfeile für Abhängigkeiten
-    arrows = alt.Chart(source).mark_line(
+    arrows = alt.Chart(source).transform_flatten(
+        ['Abhängigkeiten']
+    ).transform_lookup(
+        lookup='Abhängigkeiten',
+        from_=alt.LookupData(source, 'index', ['Ende', 'Aufgabe'])
+    ).mark_line(
         color='red',
         strokeWidth=1,
         strokeDash=[2, 2],
@@ -82,11 +90,8 @@ def build_chart(data, use_container_width: bool):
     ).encode(
         x='Ende:Q',
         y='Aufgabe:N',
-        detail='Aufgabe:N',
-        href='Abhängigkeiten:N'
-    ).transform_lookup(
-        lookup='Abhängigkeiten',
-        from_=alt.LookupData(source, 'Aufgabe', ['Start', 'Aufgabe'])
+        x2='Ende_2:Q',
+        y2='Aufgabe_2:N'
     )
 
     chart = (bars + text + arrows).properties(
