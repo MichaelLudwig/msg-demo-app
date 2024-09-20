@@ -133,7 +133,7 @@ def build_chart(data, use_container_width: bool):
 if 'inputtext' not in st.session_state:
     st.session_state.inputtext = ""
 
-st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=300)
+st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=200)
 
 if st.button("Gantt-Chart erstellen"):
     if st.session_state.inputtext:
