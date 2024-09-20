@@ -95,6 +95,7 @@ def build_chart(data, use_container_width: bool):
     ).interactive()
 
     st.altair_chart(chart, theme="streamlit", use_container_width=use_container_width)
+    st.write(data)
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
 if 'inputtext' not in st.session_state:
