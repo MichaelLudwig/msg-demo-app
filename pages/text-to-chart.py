@@ -20,14 +20,15 @@ def get_chart_data(prompt):
         messages=[
             {"role": "system", "content": "Du bist ein Assistent, der Projektpläne in strukturierte Daten umwandelt."},
             {"role": "user", "content": f"""
-Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart geeignet ist. 
-Jedes Objekt sollte 'task', 'start' und 'end' enthalten. 
-'start' und 'end' sollten numerische Werte sein, die die Tage seit Projektbeginn darstellen. 
+Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart mit Abhängigkeiten geeignet ist. 
+Jedes Objekt sollte 'Aufgabe', 'Start', 'Ende' und 'Abhängigkeiten' enthalten. 
+'Start' und 'Ende' sollten numerische Werte sein, die die Monate seit Projektbeginn darstellen. 
+'Abhängigkeiten' sollte ein Array von Indizes der Aufgaben sein, von denen diese Aufgabe abhängt.
 Gib NUR das JSON-Array zurück, ohne zusätzlichen Text.
 Beispielformat:
 [
-    {{"task": "Aufgabe 1", "start": 0, "end": 30}},
-    {{"task": "Aufgabe 2", "start": 15, "end": 45}}
+    {{"Aufgabe": "Aufgabe 1", "Start": 0, "Ende": 2, "Abhängigkeiten": []}},
+    {{"Aufgabe": "Aufgabe 2", "Start": 1, "Ende": 3, "Abhängigkeiten": [0]}}
 ]
 
 Hier ist der Plan:
@@ -50,11 +51,49 @@ def build_chart(data, use_container_width: bool):
         return
     
     source = pd.DataFrame(data)
-    chart = alt.Chart(source).mark_bar().encode(
-        x='start',
-        x2='end',
-        y='task'
+    
+    # Basis-Chart für Balken
+    base = alt.Chart(source).encode(
+        y=alt.Y('Aufgabe:N', sort='-x'),
+        x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)')),
+        x2='Ende:Q'
     )
+
+    # Balken für Aufgaben
+    bars = base.mark_bar().encode(
+        color=alt.Color('Aufgabe:N', legend=None)
+    )
+
+    # Texte für Aufgaben
+    text = base.mark_text(
+        align='left',
+        baseline='middle',
+        dx=5
+    ).encode(
+        text='Aufgabe:N'
+    )
+
+    # Pfeile für Abhängigkeiten
+    arrows = alt.Chart(source).mark_line(
+        color='red',
+        strokeWidth=1,
+        strokeDash=[2, 2],
+        point=alt.OverlayMarkDef(color='red', shape='triangle-right')
+    ).encode(
+        x='Ende:Q',
+        y='Aufgabe:N',
+        detail='Aufgabe:N',
+        href='Abhängigkeiten:N'
+    ).transform_lookup(
+        lookup='Abhängigkeiten',
+        from_=alt.LookupData(source, 'Aufgabe', ['Start', 'Aufgabe'])
+    )
+
+    chart = (bars + text + arrows).properties(
+        width=600,
+        height=400
+    ).interactive()
+
     st.altair_chart(chart, theme="streamlit", use_container_width=use_container_width)
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
