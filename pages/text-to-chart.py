@@ -80,10 +80,13 @@ def build_chart(data, use_container_width: bool):
     # Erstelle eine benutzerdefinierte Reihenfolge für die Y-Achse
     df['y_order'] = range(len(df))
     
+    # Berechne die maximale Projektdauer
+    max_end = df['Ende'].max()
+    
     # Basis-Chart für Balken
     base = alt.Chart(df).encode(
         y=alt.Y('y_order:O', axis=alt.Axis(title='Aufgaben'), sort='ascending'),
-        x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)')),
+        x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)', values=list(range(int(max_end)+1)), tickMinStep=1)),
         x2='Ende:Q'
     )
 
