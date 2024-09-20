@@ -32,7 +32,7 @@ Die Marketingkampagne beginnt 1 Monat vor dem geplanten Launch am Ende des Betat
 
 
 #--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
-st.sidebar.title("App-Steuerung")
+#st.sidebar.title("App-Steuerung")
 
 # Chart Logik ---------------------------------------------------------------------------------------------------------------------------------------
 def get_chart_data(prompt):
