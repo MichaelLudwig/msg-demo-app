@@ -63,7 +63,7 @@ Hier ist der Plan:
     try:
         return json.loads(response.choices[0].message.content)
     except json.JSONDecodeError:
-        st.print(response.choices[0].message)
+        st.print(response)
         st.error("Fehler beim Parsen der API-Antwort. Bitte versuchen Sie es erneut.")
         return []
 
