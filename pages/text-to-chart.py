@@ -1,5 +1,8 @@
 import streamlit as st
 from openai import OpenAI
+import numpy as np
+import pandas as pd
+import altair as alt
 
 
 OpenAI.api_key = st.secrets["OPENAI_API_KEY"]
