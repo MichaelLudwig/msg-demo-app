@@ -50,14 +50,18 @@ def build_chart(data, use_container_width: bool):
         st.warning("Keine gültigen Daten für das Chart vorhanden.")
         return
     
-    source = pd.DataFrame(data)
+    df = pd.DataFrame(data)
     
-    # Sortiere die Aufgaben nach Startzeit
-    source = source.sort_values('Start')
+    # Sortiere die Aufgaben
+    df['hat_abhängigkeiten'] = df['Abhängigkeiten'].apply(lambda x: len(x) > 0)
+    df = df.sort_values(['hat_abhängigkeiten', 'Start'])
+    
+    # Erstelle eine benutzerdefinierte Reihenfolge für die Y-Achse
+    df['y_order'] = range(len(df))
     
     # Basis-Chart für Balken
-    base = alt.Chart(source).encode(
-        y=alt.Y('Aufgabe:N', sort=None),  # Keine automatische Sortierung
+    base = alt.Chart(df).encode(
+        y=alt.Y('y_order:O', axis=alt.Axis(title='Aufgaben'), sort='ascending'),
         x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)')),
         x2='Ende:Q'
     )
@@ -77,11 +81,11 @@ def build_chart(data, use_container_width: bool):
     )
 
     # Pfeile für Abhängigkeiten
-    arrows = alt.Chart(source).transform_flatten(
+    arrows = alt.Chart(df).transform_flatten(
         ['Abhängigkeiten']
     ).transform_lookup(
         lookup='Abhängigkeiten',
-        from_=alt.LookupData(source, 'index', ['Ende', 'Aufgabe'])
+        from_=alt.LookupData(df, 'index', ['Ende', 'y_order'])
     ).mark_line(
         color='red',
         strokeWidth=1,
@@ -89,9 +93,9 @@ def build_chart(data, use_container_width: bool):
         point=alt.OverlayMarkDef(color='red', shape='triangle-right')
     ).encode(
         x='Ende:Q',
-        y='Aufgabe:N',
+        y='y_order:O',
         x2='Ende_2:Q',
-        y2='Aufgabe_2:N'
+        y2='y_order_2:O'
     )
 
     chart = (bars + text + arrows).properties(
@@ -100,7 +104,9 @@ def build_chart(data, use_container_width: bool):
     ).interactive()
 
     st.altair_chart(chart, theme="streamlit", use_container_width=use_container_width)
-    st.write(data)
+    
+    # Zeige die sortierten Daten an (optional, für Debugging)
+    st.write(df[['Aufgabe', 'Start', 'Ende', 'Abhängigkeiten']])
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
 if 'inputtext' not in st.session_state:
