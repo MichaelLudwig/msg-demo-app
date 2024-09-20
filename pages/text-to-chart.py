@@ -130,7 +130,7 @@ def build_chart(data, use_container_width: bool):
         color='grey',
         strokeWidth=1,
         strokeDash=[2, 2],
-        point=alt.OverlayMarkDef(color='red', shape='triangle-right', size=60)
+        point=alt.OverlayMarkDef(color='grey', shape='triangle-right', size=60)
     ).encode(
         x='von_ende:Q',
         y='von_y:O',
@@ -138,7 +138,8 @@ def build_chart(data, use_container_width: bool):
         y2='zu_y:O'
     )
 
-    chart = (bars + text + arrows).properties(
+    #chart = (bars + text + arrows).properties(
+    chart = (bars + text).properties(
         width=600,
         height=400
     ).interactive()
