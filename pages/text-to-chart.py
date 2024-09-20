@@ -125,20 +125,39 @@ def build_chart(data, use_container_width: bool):
             })
     dep_df = pd.DataFrame(dependencies)
 
-    # Pfeile für Abhängigkeiten
-    arrows = alt.Chart(dep_df).mark_line(
+    # Vertikale Linien für Abhängigkeiten
+    vertical_lines = alt.Chart(dep_df).mark_rule(
         color='red',
         strokeWidth=1,
-        strokeDash=[2, 2],
-        point=alt.OverlayMarkDef(color='red', shape='triangle-right', size=60)
+        strokeDash=[2, 2]
     ).encode(
         x='von_ende:Q',
         y='von_y:O',
-        x2='zu_start:Q',
         y2='zu_y:O'
     )
 
-    chart = (bars + text + arrows).properties(
+    # Horizontale Linien für Abhängigkeiten
+    horizontal_lines = alt.Chart(dep_df).mark_rule(
+        color='red',
+        strokeWidth=1,
+        strokeDash=[2, 2]
+    ).encode(
+        x='von_ende:Q',
+        x2='zu_start:Q',
+        y='zu_y:O'
+    )
+
+    # Pfeilspitzen
+    arrowheads = alt.Chart(dep_df).mark_point(
+        shape='triangle-right',
+        size=60,
+        color='red'
+    ).encode(
+        x='zu_start:Q',
+        y='zu_y:O'
+    )
+
+    chart = (bars + text + vertical_lines + horizontal_lines + arrowheads).properties(
         width=600,
         height=400
     ).interactive()
