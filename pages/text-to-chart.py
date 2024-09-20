@@ -60,12 +60,31 @@ Hier ist der Plan:
         temperature=0.7,
     )
     
+    content = response.choices[0].message.content.strip()
+    
+    st.write("Rohe API-Antwort:")
+    st.code(content, language="json")
+    
     try:
-        return json.loads(response.choices[0].message.content)
-    except json.JSONDecodeError:
-        st.error("Fehler beim Parsen der API-Antwort. Hier ist die erhaltene Antwort:")
-        st.code(response.choices[0].message.content, language="json")
-        return []
+        # Versuche, nur den JSON-Teil zu extrahieren
+        json_start = content.find('[')
+        json_end = content.rfind(']') + 1
+        if json_start != -1 and json_end != -1:
+            json_content = content[json_start:json_end]
+            parsed_data = json.loads(json_content)
+            st.success("JSON erfolgreich geparst!")
+            return parsed_data
+        else:
+            raise ValueError("Konnte kein gültiges JSON-Array in der Antwort finden.")
+    except json.JSONDecodeError as e:
+        st.error(f"JSON Parsing-Fehler: {str(e)}")
+    except ValueError as e:
+        st.error(str(e))
+    except Exception as e:
+        st.error(f"Unerwarteter Fehler: {str(e)}")
+    
+    st.error("Konnte die Daten nicht parsen. Bitte überprüfen Sie die API-Antwort oben.")
+    return []
 
 def build_chart(data, use_container_width: bool):
     if not data:
@@ -162,7 +181,7 @@ def build_chart(data, use_container_width: bool):
     
     # Zeige die sortierten Daten an (optional, für Debugging)
     st.write(df[['Aufgabe', 'Start', 'Ende', 'Abhängigkeiten']])
-    st.write(df)
+    #st.write(df)
 
 # Eingabefelder ---------------------------------------------------------------------------------------------------------------------------------------
 if 'inputtext' not in st.session_state:
