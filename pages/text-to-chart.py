@@ -63,8 +63,8 @@ Hier ist der Plan:
     try:
         return json.loads(response.choices[0].message.content)
     except json.JSONDecodeError:
-        st.error("Fehler beim Parsen der API-Antwort. Bitte versuchen Sie es erneut.")
         st.print(json.loads(response.choices[0].message.content))
+        st.error("Fehler beim Parsen der API-Antwort. Bitte versuchen Sie es erneut.")
         return []
 
 def build_chart(data, use_container_width: bool):
