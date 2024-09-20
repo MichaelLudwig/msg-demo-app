@@ -127,7 +127,7 @@ def build_chart(data, use_container_width: bool):
 
     # Pfeile für Abhängigkeiten
     arrows = alt.Chart(dep_df).mark_line(
-        color='red',
+        color='grey',
         strokeWidth=1,
         strokeDash=[2, 2],
         point=alt.OverlayMarkDef(color='red', shape='triangle-right', size=60)
