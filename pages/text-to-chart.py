@@ -83,12 +83,12 @@ def build_chart(data, use_container_width: bool):
     # Berechne die maximale Projektdauer
     max_end = df['Ende'].max()
     
-    # Erweiterte Palette mit 20 hellen Farben
-    helle_farben = [
-        '#FFB3BA', '#BAFFC9', '#BAE1FF', '#FFFFBA', '#FFDFBA', 
-        '#E0BBE4', '#D4F0F0', '#FFC6FF', '#FFD1DC', '#BAFFD1', 
-        '#CCE2FF', '#FFFFD1', '#FFE5BA', '#E9D1FF', '#D1FFFD', 
-        '#FFD1F5', '#D1FFE3', '#D1E9FF', '#FFF9BA', '#FFE8D1'
+    # Angepasste Palette mit 20 Farben, die sehr helle Töne vermeidet
+    angepasste_farben = [
+        '#FFB3BA', '#BAFFC9', '#BAE1FF', '#FFD1BA', '#E0BBE4', 
+        '#D4F0F0', '#FFC6FF', '#FFD1DC', '#C1FFC1', '#CCE2FF', 
+        '#FFD1A1', '#E9D1FF', '#D1FFFD', '#FFD1F5', '#D1FFE3', 
+        '#D1E9FF', '#FFDAB9', '#FFE8D1', '#C1D8FF', '#FFCCCB'
     ]
     
     # Basis-Chart für Balken
@@ -107,13 +107,13 @@ def build_chart(data, use_container_width: bool):
 
     # Balken für Aufgaben
     bars = base.mark_bar().encode(
-        color=alt.Color('Aufgabe:N', scale=alt.Scale(range=helle_farben), legend=None)
+        color=alt.Color('Aufgabe:N', scale=alt.Scale(range=angepasste_farben), legend=None)
     )
 
     # Meilensteine als Rauten
     milestones = base.mark_point(shape='diamond', size=100).encode(
         x='Start:Q',
-        color=alt.Color('Aufgabe:N', scale=alt.Scale(range=helle_farben), legend=None)
+        color=alt.Color('Aufgabe:N', scale=alt.Scale(range=angepasste_farben), legend=None)
     ).transform_filter(alt.datum.Start == alt.datum.Ende)
 
     # Texte für Aufgaben
