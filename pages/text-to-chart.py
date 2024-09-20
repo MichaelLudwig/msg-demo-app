@@ -19,13 +19,36 @@ def get_chart_data(prompt):
         model=openAI_model,
         messages=[
             {"role": "system", "content": "Du bist ein Assistent, der Projektpläne in strukturierte Daten umwandelt."},
-            {"role": "user", "content": f"Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart geeignet ist. Jedes Objekt sollte 'task', 'start' und 'end' enthalten. 'start' und 'end' sollten numerische Werte sein, die die Tage seit Projektbeginn darstellen. Hier ist der Plan:\n\n{prompt}"}
+            {"role": "user", "content": f"""
+Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart geeignet ist. 
+Jedes Objekt sollte 'task', 'start' und 'end' enthalten. 
+'start' und 'end' sollten numerische Werte sein, die die Tage seit Projektbeginn darstellen. 
+Gib NUR das JSON-Array zurück, ohne zusätzlichen Text.
+Beispielformat:
+[
+    {{"task": "Aufgabe 1", "start": 0, "end": 30}},
+    {{"task": "Aufgabe 2", "start": 15, "end": 45}}
+]
+
+Hier ist der Plan:
+
+{prompt}
+"""}
         ],
         temperature=0.7,
     )
-    return json.loads(response.choices[0].message.content)
+    
+    try:
+        return json.loads(response.choices[0].message.content)
+    except json.JSONDecodeError:
+        st.error("Fehler beim Parsen der API-Antwort. Bitte versuchen Sie es erneut.")
+        return []
 
 def build_chart(data, use_container_width: bool):
+    if not data:
+        st.warning("Keine gültigen Daten für das Chart vorhanden.")
+        return
+    
     source = pd.DataFrame(data)
     chart = alt.Chart(source).mark_bar().encode(
         x='start',
@@ -38,7 +61,7 @@ def build_chart(data, use_container_width: bool):
 if 'inputtext' not in st.session_state:
     st.session_state.inputtext = ""
 
-st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=200)
+st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufgaben und zeitlichem Ablauf", value=st.session_state.inputtext, height=300)
 
 if st.button("Gantt-Chart erstellen"):
     if st.session_state.inputtext:
