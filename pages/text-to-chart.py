@@ -91,7 +91,7 @@ def build_chart(data, use_container_width: bool):
                     title='Zeit (Monate)', 
                     values=list(range(int(max_end)+1)),
                     tickMinStep=1,
-                    format='d'  # Verwende 'd' für ganzzahlige Darstellung
+                    format='d'
                 )
         ),
         x2='Ende:Q'
@@ -121,11 +121,11 @@ def build_chart(data, use_container_width: bool):
         color='red',
         strokeWidth=1,
         strokeDash=[2, 2],
-        point=alt.OverlayMarkDef(color='red', shape='triangle-right')
+        point=alt.OverlayMarkDef(color='red', shape='triangle-right', size=60)
     ).encode(
         x='Ende:Q',
         y='y_order:O',
-        x2='Ende_2:Q',
+        x2='Start:Q',
         y2='y_order_2:O'
     )
 
