@@ -9,7 +9,7 @@ openAI_model = "gpt-4o-mini"
 
 st.set_page_config(layout="wide")
 main_heading=st.title("AI Text-Chart Demo")
-st.info("""
+st.success("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens an.
 
 Jede Aufgabe sollte mindestens eine Startzeit oder Abhängigkeit zu einem Vorgänger enthalten. Außerdem wird eine Endzeit oder eine Dauer benötigt.
