@@ -14,7 +14,9 @@ Gib in diesem Textfeld den Ablauf deines Vorhabens in Fließtext an.
 
 Jede Aufgabe sollte mindestens eine der Folgenden Informationen enthalten:
    a) Genaue Start- und Endzeiten: "Marktanalyse vom 1. bis zum 2. Monat"
+        
    b) Nur Startzeit mit Dauer: "Design beginnt im 2. Monat und dauert 3 Monate"
+        
    c) Nur Abhängigkeit mit Dauer: "Entwicklung startet nach Abschluss des Designs und dauert 4 Monate"
 
 Verwende klare Formulierungen für Abhängigkeiten, z.B. "beginnt nach Abschluss von...", "startet wenn... beendet ist".
@@ -29,8 +31,7 @@ Die Entwicklung der Kernfunktionen beginnt einen Monat nach Start des Designs un
 Parallel zur Entwicklung, ab deren Halbzeit, implementieren wir zusätzliche Features über einen Zeitraum von 3 Monaten. 
 Die interne Testphase startet, sobald die Kernentwicklung abgeschlossen ist, und läuft 2 Monate. 
 Direkt im Anschluss führen wir einen zweimonatigen Closed Beta-Test durch. 
-Die Marketingkampagne beginnt 2 Monate vor dem geplanten Launch und läuft bis zum Projektende. 
-Der offizielle Launch ist für den letzten Monat des Projekts geplant."
+Die Marketingkampagne beginnt 1 Monat vor dem geplanten Launch am Ende des Betatests."
 """)
 
 
