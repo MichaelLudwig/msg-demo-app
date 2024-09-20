@@ -86,7 +86,14 @@ def build_chart(data, use_container_width: bool):
     # Basis-Chart für Balken
     base = alt.Chart(df).encode(
         y=alt.Y('y_order:O', axis=alt.Axis(title='Aufgaben'), sort='ascending'),
-        x=alt.X('Start:Q', axis=alt.Axis(title='Zeit (Monate)', values=list(range(int(max_end)+1)), tickMinStep=1)),
+        x=alt.X('Start:Q', 
+                axis=alt.Axis(
+                    title='Zeit (Monate)', 
+                    values=list(range(int(max_end)+1)),
+                    tickMinStep=1,
+                    format='d'  # Verwende 'd' für ganzzahlige Darstellung
+                )
+        ),
         x2='Ende:Q'
     )
 
