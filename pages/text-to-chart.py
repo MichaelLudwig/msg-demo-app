@@ -12,10 +12,7 @@ main_heading=st.title("AI Text-Chart Demo")
 st.info("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens in Fließtext an.
 
-Jede Aufgabe sollte mindestens eine der Folgenden Informationen enthalten:
-    a) Genaue Start- und Endzeiten: "Marktanalyse vom 1. bis zum 2. Monat"
-    b) Nur Startzeit mit Dauer: "Design beginnt im 2. Monat und dauert 3 Monate"
-    c) Nur Abhängigkeit mit Dauer: "Entwicklung startet nach Abschluss des Designs und dauert 4 Monate"
+Jede Aufgabe sollte mindestens eine Startzeit oder Abhängigkeit zu einem Vorgänger enthalten. Außerdem wird eine Endzeit oder eine Dauer benötigt.
 
 Verwende klare Formulierungen für Abhängigkeiten, z.B. "beginnt nach Abschluss von...", "startet wenn... beendet ist".
 Je detaillierter und strukturierter die Beschreibung ist, desto genauer wird das resultierende Gantt-Chart. Die KI wird fehlende Informationen basierend auf den angegebenen Abhängigkeiten und Dauern bestmöglich ergänzen.
