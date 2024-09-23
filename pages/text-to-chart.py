@@ -46,6 +46,7 @@ Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart 
 Jedes Objekt sollte 'Aufgabe', 'Start', 'Ende' und 'Abhängigkeiten' enthalten. 
 'Start' und 'Ende' sollten numerische Werte sein, die die Monate seit Projektbeginn darstellen. 
 'Abhängigkeiten' sollte ein Array von Indizes der Aufgaben sein, von denen diese Aufgabe abhängt.
+Ergänze fehlende Informationen wie Dauer oder Vorgänger basierend auf den angegebenen Abhängigkeiten und Dauern.
 Gib NUR das JSON-Array zurück, ohne zusätzlichen Text.
 Beispielformat:
 [
@@ -70,7 +71,7 @@ Hier ist der Plan:
         if json_start != -1 and json_end != -1:
             json_content = content[json_start:json_end]
             parsed_data = json.loads(json_content)
-            return parsed_data
+            return parsed_data, content
         else:
             raise ValueError("Konnte kein gültiges JSON-Array in der Antwort finden.")
     except json.JSONDecodeError as e:
@@ -87,7 +88,7 @@ Hier ist der Plan:
         st.code(content, language="json")
     
     st.error("Konnte die Daten nicht parsen. Bitte überprüfen Sie die API-Antwort oben.")
-    return []
+    return [], content
 
 def build_chart(data, use_container_width: bool):
     if not data:
@@ -195,9 +196,10 @@ st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufg
 if st.button("Gantt-Chart erstellen"):
     if st.session_state.inputtext:
         with st.spinner("Erstelle Gantt-Chart..."):
-            chart_data = get_chart_data(st.session_state.inputtext)
+            chart_data, raw_response = get_chart_data(st.session_state.inputtext)
             st.divider()
             build_chart(chart_data, True)
+            st.text_area("Chatbot Antwort", value=raw_response, height=200)
     else:
         st.warning("Bitte geben Sie zuerst eine Beschreibung Ihres Vorhabens ein.")
 
