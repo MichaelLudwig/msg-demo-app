@@ -20,7 +20,7 @@ if "messages" not in st.session_state:
 # Funktion zum Abrufen der Antwort von der Azure OpenAI Service GPT-4-Instanz
 def get_response(prompt):
     response = client.chat.completions.create(
-        model=openAI_model,  # Ersetzen Sie dies durch den Namen Ihres GPT-4-Deployments
+        engine=openAI_model,  # Ersetzen Sie dies durch den Namen Ihres GPT-4-Deployments
         messages=[
             {"role": "system", "content": "Du bist ein hilfreicher Assistent."},
             {"role": "user", "content": prompt}
