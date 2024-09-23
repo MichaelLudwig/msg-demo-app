@@ -47,12 +47,15 @@ Jedes Objekt sollte 'Aufgabe', 'Start', 'Ende' und 'Abhängigkeiten' enthalten.
 'Start' und 'Ende' sollten numerische Werte sein, die die Monate seit Projektbeginn darstellen. 
 'Abhängigkeiten' sollte ein Array von Indizes der Aufgaben sein, von denen diese Aufgabe abhängt.
 Ergänze fehlende Informationen wie Dauer oder Vorgänger basierend auf den angegebenen Abhängigkeiten und Dauern.
-Gib NUR das JSON-Array zurück, ohne zusätzlichen Text.
+Gib das JSON-Array und eine lesbare Rückantwort zurück, die eventuelle Ergänzungen erläutert.
 Beispielformat:
+JSON:
 [
     {{"Aufgabe": "Aufgabe 1", "Start": 0, "Ende": 2, "Abhängigkeiten": []}},
     {{"Aufgabe": "Aufgabe 2", "Start": 1, "Ende": 3, "Abhängigkeiten": [0]}}
 ]
+Antwort:
+"Ich habe die Dauer der Aufgabe 'Aufgabe 2' ergänzt, da sie nicht angegeben war."
 
 Hier ist der Plan:
 
@@ -65,13 +68,14 @@ Hier ist der Plan:
     content = response.choices[0].message.content.strip()
     
     try:
-        # Versuche, nur den JSON-Teil zu extrahieren
+        # Versuche, JSON und lesbare Antwort zu extrahieren
         json_start = content.find('[')
         json_end = content.rfind(']') + 1
         if json_start != -1 and json_end != -1:
             json_content = content[json_start:json_end]
+            readable_response = content[:json_start].strip() + content[json_end:].strip()
             parsed_data = json.loads(json_content)
-            return parsed_data, content
+            return parsed_data, readable_response
         else:
             raise ValueError("Konnte kein gültiges JSON-Array in der Antwort finden.")
     except json.JSONDecodeError as e:
@@ -196,10 +200,10 @@ st.session_state.inputtext = st.text_area("Beschreiben Sie Ihr Vorhaben mit Aufg
 if st.button("Gantt-Chart erstellen"):
     if st.session_state.inputtext:
         with st.spinner("Erstelle Gantt-Chart..."):
-            chart_data, raw_response = get_chart_data(st.session_state.inputtext)
+            chart_data, readable_response = get_chart_data(st.session_state.inputtext)
             st.divider()
             build_chart(chart_data, True)
-            st.text_area("Chatbot Antwort", value=raw_response, height=200)
+            st.text_area("Chatbot Antwort", value=readable_response, height=200)
     else:
         st.warning("Bitte geben Sie zuerst eine Beschreibung Ihres Vorhabens ein.")
 
