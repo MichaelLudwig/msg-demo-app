@@ -6,7 +6,7 @@ import json
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 openAI_model = "gpt-4o-mini"
-
+st.write(st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(layout="wide")
 main_heading=st.title("AI Text-Chart Demo")
