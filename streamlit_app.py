@@ -23,5 +23,10 @@ st.divider()
 st.page_link("pages/text-to-chart.py", label="AI Text-Chart Demo", icon="📊")
 st.image("gantt.png", width=300)
 
+st.divider()
+
+st.page_link("pages/azure-openai-api-test.py", label="Azure OpenAI API Demo", icon="☁️")
+#st.image("gantt.png", width=300)
+
 
 
