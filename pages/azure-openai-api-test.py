@@ -1,15 +1,14 @@
 import streamlit as st
-from openai import OpenAI
+import openai
 import os
 
-client = OpenAI(api_key="1d304241086e4f81adf346216e983c59")
+client = openai.AzureOpenAI(
+    api_key="1d304241086e4f81adf346216e983c59",
+    api_version="2023-03-15-preview",
+    azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
+    )
 openAI_model = "gpt-4o-mini-sw"
-# Setzen Sie Ihre Azure OpenAI Service API-Schlüssel und Endpunkt
-client.api_type = "azure"
-client.api_base = "https://mlu-azure-openai-service-sw.openai.azure.com/"
-client.api_version = "2023-03-15-preview"
-#client.api_key = "e70fe950222747e790ba6a4ea01f9c6a"
-#openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
+
 
 st.title("Chat-GPT mit Azure OpenAI Service")
 
@@ -20,7 +19,7 @@ if "messages" not in st.session_state:
 # Funktion zum Abrufen der Antwort von der Azure OpenAI Service GPT-4-Instanz
 def get_response(prompt):
     response = client.chat.completions.create(
-        engine=openAI_model,  # Ersetzen Sie dies durch den Namen Ihres GPT-4-Deployments
+        model=openAI_model,  # Ersetzen Sie dies durch den Namen Ihres GPT-4-Deployments
         messages=[
             {"role": "system", "content": "Du bist ein hilfreicher Assistent."},
             {"role": "user", "content": prompt}
