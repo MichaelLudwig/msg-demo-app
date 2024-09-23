@@ -46,7 +46,8 @@ Wandle den folgenden Projektplan in ein JSON-Array um, das für ein Gantt-Chart 
 Jedes Objekt sollte 'Aufgabe', 'Start', 'Ende' und 'Abhängigkeiten' enthalten. 
 'Start' und 'Ende' sollten numerische Werte sein, die die Monate seit Projektbeginn darstellen. 
 'Abhängigkeiten' sollte ein Array von Indizes der Aufgaben sein, von denen diese Aufgabe abhängt.
-Ergänze fehlende Informationen wie Dauer oder Vorgänger basierend auf den angegebenen Abhängigkeiten und Dauern.
+Ergänze fehlende Informationen wie Dauer oder Startzeitpunkt basierend auf den angegebenen Abhängigkeiten und Dauern.
+Weise ebenfalls auf mögliche Inkonsistenten im angegebenen Projektplan hin.
 Gib das JSON-Array und eine lesbare Rückantwort zurück, die eventuelle Ergänzungen erläutert.
 Beispielformat:
 JSON:
