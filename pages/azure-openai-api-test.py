@@ -1,6 +1,6 @@
 import streamlit as st
 import openai
-import os
+
 
 client = openai.AzureOpenAI(
     api_key="1d304241086e4f81adf346216e983c59",
