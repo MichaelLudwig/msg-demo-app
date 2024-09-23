@@ -2,12 +2,12 @@ import streamlit as st
 from openai import OpenAI
 import os
 
-client = OpenAI(api_key="e70fe950222747e790ba6a4ea01f9c6a")
+client = OpenAI(api_key="1d304241086e4f81adf346216e983c59")
 openAI_model = "gpt-4o-mini-sw"
 # Setzen Sie Ihre Azure OpenAI Service API-Schlüssel und Endpunkt
 client.api_type = "azure"
 client.api_base = "https://mlu-azure-openai-service-sw.openai.azure.com/"
-#openai.api_version = "azureml://registries/azure-openai/models/gpt-4o-mini/versions/2024-07-18"
+client.api_version = "2023-03-15-preview"
 #client.api_key = "e70fe950222747e790ba6a4ea01f9c6a"
 #openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
 
