@@ -5,7 +5,7 @@ import os
 # Setzen Sie Ihre Azure OpenAI Service API-Schlüssel und Endpunkt
 openai.api_type = "azure"
 openai.api_base = "https://mlu-azure-openai-service-sw.openai.azure.com/"
-openai.api_version = "azureml://registries/azure-openai/models/gpt-4o-mini/versions/2024-07-18"
+#openai.api_version = "azureml://registries/azure-openai/models/gpt-4o-mini/versions/2024-07-18"
 openai.api_key = "e70fe950222747e790ba6a4ea01f9c6a"
 #openai.api_key = os.getenv("AZURE_OPENAI_API_KEY")
 
