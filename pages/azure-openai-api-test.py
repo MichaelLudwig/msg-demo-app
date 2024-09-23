@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import os
 
 client = OpenAI(api_key="e70fe950222747e790ba6a4ea01f9c6a")
@@ -19,7 +19,7 @@ if "messages" not in st.session_state:
 
 # Funktion zum Abrufen der Antwort von der Azure OpenAI Service GPT-4-Instanz
 def get_response(prompt):
-    response = openai.ChatCompletion.create(
+    response = client.ChatCompletion.create(
         engine=openAI_model,  # Ersetzen Sie dies durch den Namen Ihres GPT-4-Deployments
         messages=[
             {"role": "system", "content": "Du bist ein hilfreicher Assistent."},
