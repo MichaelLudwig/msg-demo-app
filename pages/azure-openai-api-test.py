@@ -35,8 +35,8 @@ if user_prompt:
     st.session_state.chat_history.append({"role": "user", "content": user_prompt})
 
     # send user's message to GPT-4o and get a response
-    response = openai.chat.completions.create(
-        model="gpt-4o",
+    response = client.chat.completions.create(
+        model="openAI_model",
         messages=[
             {"role": "system", "content": "You are a helpful assistant"},
             *st.session_state.chat_history
