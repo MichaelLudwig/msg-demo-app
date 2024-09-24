@@ -1,11 +1,19 @@
 import streamlit as st
-from openai import OpenAI
+#from openai import OpenAI
+import openai
 import pandas as pd
 import altair as alt
 import json
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-openAI_model = "gpt-4o-mini"
+#client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+#openAI_model = "gpt-4o-mini"
+
+client = openai.AzureOpenAI(
+    api_key="1d304241086e4f81adf346216e983c59",
+    api_version="2023-03-15-preview",
+    azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
+    )
+openAI_model = "gpt-4o-mini-sw"
 
 
 st.set_page_config(layout="wide")
