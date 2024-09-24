@@ -8,8 +8,7 @@ import json
 client = openai.AzureOpenAI(
     api_key="1d304241086e4f81adf346216e983c59",
     api_version="2023-03-15-preview",
-    azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/",
-    stream_options={"include_usage": True}
+    azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
 )
 openAI_model = "gpt-4o-mini-sw"
 
