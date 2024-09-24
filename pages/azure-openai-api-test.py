@@ -110,15 +110,24 @@ st.markdown("""
         </div>
         <div class="chat-input">
             <input type="text" id="user-input" placeholder="Geben Sie Ihre Nachricht ein..." maxlength="500">
-            <button id="send-button">Senden</button>
+            <button id="send-button" onclick="sendMessage()">Senden</button>
         </div>
     </div>
+    <script>
+    function sendMessage() {
+        const input = document.getElementById('user-input');
+        const userInput = input.value;
+        if (userInput) {
+            window.parent.postMessage({ type: 'user_input', content: userInput }, '*');
+            input.value = '';
+        }
+    }
+    </script>
 """, unsafe_allow_html=True)
 
 # Benutzer-Eingabe und Senden der Nachricht
-user_input = st.text_input("Du:", key="input", placeholder="Geben Sie Ihre Nachricht ein...", label_visibility="collapsed", max_chars=500)
-
 if st.button("Senden", key="send_button"):
+    user_input = st.session_state.input
     if user_input:
         # Fügen Sie die Benutzer-Nachricht zum Chat-Verlauf hinzu
         st.session_state.messages.append({"role": "user", "content": user_input})
