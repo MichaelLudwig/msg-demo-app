@@ -40,7 +40,7 @@ if user_input:
     
     # GPT-4 Antwort generieren
     with st.spinner("GPT-4 denkt nach..."):
-        response = generate_response(user_input)
+        response = get_response(user_input)
     
     # Antwort im Chat-Verlauf speichern
     st.session_state["messages"].append({"role": "assistant", "content": response})
