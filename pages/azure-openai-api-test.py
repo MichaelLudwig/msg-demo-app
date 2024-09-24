@@ -26,7 +26,7 @@ for message in st.session_state.chat_history:
 
 
 # input field for user's message
-user_prompt = st.chat_input("Frrag GPT-4o-mini...")
+user_prompt = st.chat_input("Frag GPT-4o-mini...")
 
 if user_prompt:
     # add user's message to chat and display it
