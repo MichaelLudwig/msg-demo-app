@@ -52,3 +52,19 @@ if st.session_state["messages"]:
             message(msg["content"], is_user=True, key=str(i) + '_user')
         else:
             message(msg["content"], key=str(i))
+
+# Benutzer-Eingabe und Senden der Nachricht
+if st.button("Senden", key="send_button"):
+    user_input = st.session_state.input  # Hier sollte es st.session_state.input sein
+    if user_input:
+        # Fügen Sie die Benutzer-Nachricht zum Chat-Verlauf hinzu
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        
+        # Abrufen der Antwort von der GPT-4-Instanz
+        response = get_response(user_input)  # Hier muss get_response verwendet werden
+        
+        # Fügen Sie die Antwort zum Chat-Verlauf hinzu
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+        # Leeren des Eingabefelds
+        st.session_state.input = ""
