@@ -27,7 +27,7 @@ if prompt := st.chat_input("Hi"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        for response in client.ChatCompletion.create(
+        for response in client.chat.completions.create(
             model=openAI_model,
             messages=[{"role": m["role"], "content": m["content"]}
                       for m in st.session_state.messages], stream=True):
