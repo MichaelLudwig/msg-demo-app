@@ -25,6 +25,7 @@ def get_response(prompt):
             {"role": "user", "content": prompt}
         ]
     )
+    st.print(response.choices[0].message)
     return response.choices[0].message.content
 
 # CSS-Stile für das Layout
