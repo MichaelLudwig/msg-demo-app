@@ -6,7 +6,7 @@ client = openai.AzureOpenAI(
     api_key="1d304241086e4f81adf346216e983c59",
     api_version="2023-03-15-preview",
     azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
-    )
+)
 openAI_model = "gpt-4o-mini-sw"
 
 
@@ -26,6 +26,7 @@ def get_response(prompt):
         ]
     )
     return response.choices[0].message.content
+
 
 # CSS-Stile für das Layout
 st.markdown("""
@@ -66,29 +67,20 @@ st.markdown("""
         color: white;
         cursor: pointer;
     }
-    .chat-input button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
     .message {
         margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+        max-width: 70%;
     }
     .message.user {
+        background-color: #e1ffc7; /* Hellgrün */
+        margin-left: auto; /* Rechtsbündig */
         text-align: right;
     }
     .message.assistant {
-        text-align: left;
-    }
-    .message .content {
-        display: inline-block;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .message.user .content {
-        background-color: #e1ffc7;
-    }
-    .message.assistant .content {
-        background-color: #f0f0f0;
+        background-color: #cce5ff; /* Hellblau */
+        text-align: left; /* Links */
     }
     </style>
 """, unsafe_allow_html=True)
@@ -104,13 +96,13 @@ for message in st.session_state.messages:
     if message["role"] == "user":
         st.markdown(f"""
             <div class="message user">
-                <div class="content">{message['content']}</div>
+                {message['content']}
             </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
             <div class="message assistant">
-                <div class="content">{message['content']}</div>
+                {message['content']}
             </div>
         """, unsafe_allow_html=True)
 
@@ -121,39 +113,6 @@ st.markdown("""
             <button id="send-button">Senden</button>
         </div>
     </div>
-""", unsafe_allow_html=True)
-
-# JavaScript für die Eingabe und das Senden der Nachricht
-st.markdown("""
-    <script>
-    const input = document.getElementById('user-input');
-    const button = document.getElementById('send-button');
-    const chatHistory = document.getElementById('chat-history');
-
-    button.addEventListener('click', () => {
-        const userInput = input.value;
-        if (userInput) {
-            window.parent.postMessage({ type: 'user_input', content: userInput }, '*');
-            input.value = '';
-        }
-    });
-
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            button.click();
-        }
-    });
-
-    window.addEventListener('message', (event) => {
-        if (event.data.type === 'new_message') {
-            const message = document.createElement('div');
-            message.className = `message ${event.data.role}`;
-            message.innerHTML = `<div class="content">${event.data.content}</div>`;
-            chatHistory.appendChild(message);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-    });
-    </script>
 """, unsafe_allow_html=True)
 
 # Benutzer-Eingabe und Senden der Nachricht
@@ -169,11 +128,7 @@ if st.button("Senden", key="send_button"):
         
         # Fügen Sie die Antwort zum Chat-Verlauf hinzu
         st.session_state.messages.append({"role": "assistant", "content": response})
-        
-        # Senden der neuen Nachrichten an das Frontend
-        st.markdown(f"""
-            <script>
-            window.parent.postMessage({{ type: 'new_message', role: 'user', content: '{user_input}' }}, '*');
-            window.parent.postMessage({{ type: 'new_message', role: 'assistant', content: '{response}' }}, '*');
-            </script>
-        """, unsafe_allow_html=True)
+
+        # Leeren des Eingabefelds
+        st.session_state.input = ""
+
