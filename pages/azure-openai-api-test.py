@@ -20,15 +20,15 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("What is up?"):
+if prompt := st.chat_input("Hi"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        for response in openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+        for response in client.ChatCompletion.create(
+            model=openAI_model,
             messages=[{"role": m["role"], "content": m["content"]}
                       for m in st.session_state.messages], stream=True):
             full_response += response.choices[0].delta.get("content", "")
