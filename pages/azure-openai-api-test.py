@@ -1,6 +1,6 @@
 import streamlit as st
 import openai
-#from streamlit_chat import message
+from streamlit_chat import message
 
 # Streamlit Setup
 st.set_page_config(page_title="Chatbot", page_icon="🤖")
