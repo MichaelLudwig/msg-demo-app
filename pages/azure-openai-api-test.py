@@ -157,8 +157,9 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Benutzer-Eingabe und Senden der Nachricht
+user_input = st.text_input("Du:", key="input", placeholder="Geben Sie Ihre Nachricht ein...", label_visibility="collapsed", max_chars=500)
+
 if st.button("Senden", key="send_button"):
-    user_input = st.text_input("Du:", key="input", placeholder="Geben Sie Ihre Nachricht ein...", label_visibility="collapsed", max_chars=500)
     if user_input:
         # Fügen Sie die Benutzer-Nachricht zum Chat-Verlauf hinzu
         st.session_state.messages.append({"role": "user", "content": user_input})
