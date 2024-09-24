@@ -25,7 +25,7 @@ st.image("gantt.png", width=300)
 
 st.divider()
 
-st.page_link("pages/azure-openai-api-test.py", label="Azure OpenAI API Demo", icon="☁️")
+st.page_link("pages/azure-openai-api-test.py", label="Azure OpenAI API Demo", icon="🤖")
 st.image("AOAI.png", width=300)
 #st.image("gantt.png", width=300)
 
