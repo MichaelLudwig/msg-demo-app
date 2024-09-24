@@ -12,9 +12,11 @@ openAI_model = "gpt-4o-mini-sw"
 # Streamlit-Seite konfigurieren
 st.set_page_config(page_title="Chat-GPT mit Azure OpenAI Service", page_icon="🤖")
 
-# Initialisieren des Chatverlaufs
+# Initialisieren des Chatverlaufs und der Eingabe
 if "messages" not in st.session_state:
     st.session_state.messages = []
+if "input" not in st.session_state:
+    st.session_state.input = ""  # Initialisieren der Eingabe
 
 # Funktion zum Abrufen der Antwort von der Azure OpenAI Service GPT-4-Instanz
 def get_response(prompt):
@@ -108,16 +110,15 @@ for message in st.session_state.messages:
 st.markdown("""
         </div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Geben Sie Ihre Nachricht ein..." maxlength="500">
+            <input type="text" id="user-input" placeholder="Geben Sie Ihre Nachricht ein..." maxlength="500" value="{st.session_state.input}" onkeypress="if(event.key === 'Enter'){document.getElementById('send-button').click();}">
             <button id="send-button">Senden</button>
         </div>
     </div>
 """, unsafe_allow_html=True)
 
 # Benutzer-Eingabe und Senden der Nachricht
-user_input = st.text_input("Du:", key="input", placeholder="Geben Sie Ihre Nachricht ein...", label_visibility="collapsed", max_chars=500)
-
 if st.button("Senden", key="send_button"):
+    user_input = st.session_state.input  # Hier sollte es st.session_state.input sein
     if user_input:
         # Fügen Sie die Benutzer-Nachricht zum Chat-Verlauf hinzu
         st.session_state.messages.append({"role": "user", "content": user_input})
@@ -129,4 +130,4 @@ if st.button("Senden", key="send_button"):
         st.session_state.messages.append({"role": "assistant", "content": response})
 
         # Leeren des Eingabefelds
-        st.session_state.input = ""
+        st.session_state.input = ""  # Hier wird die Eingabe jetzt korrekt geleert
