@@ -8,11 +8,10 @@ resource "azurerm_app_service_plan" "streamlit-demo" {
   location            = azurerm_resource_group.streamlit-demo.location
   resource_group_name = azurerm_resource_group.streamlit-demo.name
 
-  kind             = "Linux"
-  
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier     = "Basic"        # Setze den Tier auf Basic
+    size     = "B1"          # Setze die Größe auf B1
+    capacity = 1              # Anzahl der Instanzen
   }
 }
 
