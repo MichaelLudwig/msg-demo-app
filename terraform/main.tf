@@ -12,9 +12,12 @@ resource "azurerm_service_plan" "streamlit-demo" {
   location            = azurerm_resource_group.streamlit-demo.location
   resource_group_name = azurerm_resource_group.streamlit-demo.name
 
+  os_type             = "Linux"
+
   sku {
     tier = "Shared"  
     size = "Sd1"    
+    capacity = 1
   }
 }
 
