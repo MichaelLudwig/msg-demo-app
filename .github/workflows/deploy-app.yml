@@ -27,4 +27,4 @@ jobs:
 
     - name: Upload Application to Azure
       run: |
-        az webapp deploy --resource-group streamlit-demo-resource-group --name streamlit-demo-streamlit-app --src app.zip
+        az webapp deploy --resource-group streamlit-demo-resource-group --name streamlit-demo-streamlit-app --src-path app.zip
