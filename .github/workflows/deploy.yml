@@ -1,0 +1,49 @@
+name: Deploy to Azure
+
+on:
+  workflow_dispatch:  # Erlaubt manuelles Auslösen des Workflows 
+  #push:
+  #  branches:
+  #    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0
+
+    - name: Build ZIP package
+      run: |
+        cd ./terraform
+        zip -r ../app.zip .   # Annahme: Wenn du die App als ZIP-Datei übergibst
+
+    - name: Terraform Init
+      run: |
+        cd ./terraform
+        terraform init
+
+    - name: Terraform Plan
+      run: |
+        cd ./terraform
+        terraform plan
+
+    - name: Terraform Apply
+      run: |
+        cd ./terraform
+        terraform apply -auto-approve
+      env:
+        ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+    - name: Upload Application to Azure
+      run: |
+        az webapp deployment source config-zip --resource-group streamlit-demo-resource-group --name streamlit-demo-streamlit-app --src app.zip
