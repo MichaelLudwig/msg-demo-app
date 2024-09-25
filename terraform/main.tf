@@ -8,10 +8,12 @@ resource "azurerm_app_service_plan" "streamlit-demo" {
   location            = azurerm_resource_group.streamlit-demo.location
   resource_group_name = azurerm_resource_group.streamlit-demo.name
 
-  os_type             = "Linux"
-  sku_name            = "B1"      # Die Größe des Serviceplans
-  sku_tier            = "Basic"    # Tier des Serviceplans
-  sku_capacity        = 1           # Anzahl der Instanzen
+  kind             = "Linux"
+  
+  sku {
+    tier = "Basic"
+    size = "B1"
+  }
 }
 
 resource "azurerm_app_service" "streamlit-demo" {
