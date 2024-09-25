@@ -13,12 +13,9 @@ resource "azurerm_service_plan" "streamlit-demo" {
   resource_group_name = azurerm_resource_group.streamlit-demo.name
 
   os_type             = "Linux"
-
-  sku {
-    tier = "Shared"  
-    size = "Sd1"    
-    capacity = 1
-  }
+  sku_name            = "Shared"      # Die Größe des Serviceplans
+  sku_tier            = "Sd1"    # Tier des Serviceplans
+  sku_capacity        = 1           # Anzahl der Instanzen
 }
 
 resource "azurerm_app_service" "streamlit-demo" {
