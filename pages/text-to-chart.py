@@ -9,8 +9,6 @@ import os
 #client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 #openAI_model = "gpt-4o-mini"
 
-st.write(os.getenv("AZURE_OPENAI_API_KEY"))
-
 client = openai.AzureOpenAI(
     api_key="1d304241086e4f81adf346216e983c59",
     api_version="2023-03-15-preview",
@@ -20,6 +18,8 @@ openAI_model = "gpt-4o-mini-sw"
 
 
 st.set_page_config(layout="wide")
+st.write(os.getenv("AZURE_OPENAI_API_KEY"))
+st.write(st.secrets["AZURE_OPENAI_API_KEY"])
 main_heading=st.title("AI Text-Chart Demo")
 st.info("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens an.
