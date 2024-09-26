@@ -3,8 +3,9 @@ import streamlit as st
 import openai
 import pandas as pd
 import altair as alt
-import json
 import os
+import json
+
 
 #client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 #openAI_model = "gpt-4o-mini"
@@ -20,7 +21,7 @@ else:
         ai_key = ""
 
 client = openai.AzureOpenAI(
-    api_key="1d304241086e4f81adf346216e983c59",
+    api_key=ai_key,
     api_version="2023-03-15-preview",
     azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
     )
@@ -29,7 +30,7 @@ openAI_model = "gpt-4o-mini-sw"
 
 st.set_page_config(layout="wide")
 #debug ob ai_key in streamlit oder Azure gesetzt wurde
-st.write(ai_key)
+#st.write(ai_key)
 main_heading=st.title("AI Text-Chart Demo")
 st.info("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens an.
