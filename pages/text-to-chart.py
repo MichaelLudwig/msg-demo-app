@@ -4,9 +4,12 @@ import openai
 import pandas as pd
 import altair as alt
 import json
+import os
 
 #client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 #openAI_model = "gpt-4o-mini"
+
+st.write(os.getenv("AZURE_OPENAI_API_KEY"))
 
 client = openai.AzureOpenAI(
     api_key="1d304241086e4f81adf346216e983c59",
