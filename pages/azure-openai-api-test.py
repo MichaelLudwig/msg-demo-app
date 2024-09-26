@@ -6,9 +6,18 @@ import json
 
 st.set_page_config(layout="wide")
 
-# OpenAI API-Client initialisieren
+#hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
+if "AZURE_OPENAI_API_KEY" in os.environ:
+    ai_key = os.getenv("AZURE_OPENAI_API_KEY")
+else:
+    try:
+        ai_key = st.secrets["AZURE_OPENAI_API_KEY"]
+    except KeyError:
+        # Wenn weder die Umgebungsvariable noch der Secret gesetzt ist
+        ai_key = ""
+
 client = openai.AzureOpenAI(
-    api_key="1d304241086e4f81adf346216e983c59",
+    api_key=ai_key,
     api_version="2023-03-15-preview",
     azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
 )
