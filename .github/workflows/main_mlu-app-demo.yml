@@ -5,9 +5,9 @@
 name: Build and deploy Python app to Azure Web App - mlu-app-demo
 
 on:
-  #push:
-  #  branches:
-  #    - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -65,9 +65,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7F4B731188D54195BE498BEE2DA42E10 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_AEBA1D8FEB53404A8BF7FDCD4A266169 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_ACD6F13EE69F4461A1BD0B575233D45D }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_0B0C3167408D42A3BE67AC3DE47E7D6B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_ED2AC1755E244950B67676C567C06903 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_71D7E58594E44B55B524C6300FE3D648 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
