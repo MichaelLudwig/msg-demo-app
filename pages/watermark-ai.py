@@ -48,7 +48,7 @@ def analyze_image(image):
         max_tokens=300,
     )
     
-    return response.choices[0].message['content']
+    return response.choices[0].message.content
 
 st.title("Wasserzeichen-Detektor")
 
