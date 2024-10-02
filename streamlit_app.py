@@ -32,6 +32,12 @@ st.divider()
 
 st.page_link("pages/azure-openai-api-test.py", label="Azure OpenAI Chat Demo", icon="🤖")
 st.image("AOAI.png", width=300)
+
+st.divider()
+
+st.page_link("pages/watermark-ai.py", label="Wasserzeichen AI", icon="☁️")
+#st.image("AOAI.png", width=300)
+
 #st.image("gantt.png", width=300)
 
 
