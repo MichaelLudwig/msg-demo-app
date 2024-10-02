@@ -10,3 +10,4 @@ vega_datasets
 graphviz
 diagrams
 python-dotenv
+Pillow
