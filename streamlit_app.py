@@ -1,6 +1,11 @@
 import streamlit as st
 
 
+st.set_page_config(page_title="Demo Apps", page_icon=":mobile_phone:", layout="wide")
+main_heading=st.title("Demo Apps")
+
+st.divider()
+
 st.page_link("streamlit_app.py", label="Home", icon="🏠")
 
 st.divider()
