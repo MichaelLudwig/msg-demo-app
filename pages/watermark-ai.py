@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import base64
 from PIL import Image
+import io
 
 st.set_page_config(layout="wide")
 
@@ -42,6 +43,10 @@ if image_file:
     # Button zum Starten der Analyse
     if st.button("Bild analysieren"):
         with st.spinner("Analyse läuft..."):    
+            # Bild in einen Byte-Stream umwandeln
+            img_byte_arr = io.BytesIO()
+            small_image_file.save(img_byte_arr, format='PNG')
+            img_byte_arr = img_byte_arr.getvalue()
             base64_image = base64.b64encode(small_image_file).decode('utf-8')
 
             response = client.chat.completions.create(
