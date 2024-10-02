@@ -42,7 +42,7 @@ if image_file:
     # Button zum Starten der Analyse
     if st.button("Bild analysieren"):
         with st.spinner("Analyse läuft..."):    
-            base64_image = base64.b64encode(small_image_file.read()).decode('utf-8')
+            base64_image = base64.b64encode(small_image_file).decode('utf-8')
 
             response = client.chat.completions.create(
                 model = openAI_model,
