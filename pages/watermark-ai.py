@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 import base64
+from PIL import Image
 
 st.set_page_config(layout="wide")
 
@@ -23,12 +24,8 @@ elif "OPENAI_API_KEY" in st.secrets:
 else:
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
-import streamlit as st 
-import os 
-from dotenv import load_dotenv
-import base64
-from openai import OpenAI
-from PIL import Image
+
+
 
 load_dotenv()
 
@@ -41,7 +38,7 @@ image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', '
 
 if image_file:    
     image = Image.open(image_file)
-    small_image_file = image_file.resize((600, 400))
+    small_image_file = image.resize((600, 400))
     st.image(small_image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
 
     # Erstelle einen Button "Image analysieren" , erst bei Klick soll die Analyse starten
