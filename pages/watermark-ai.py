@@ -39,7 +39,7 @@ image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', '
 if image_file:    
     image = Image.open(image_file)
     small_image_file = image.resize([int(0.25 * s) for s in image.size])
-    st.image(small_image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
+    st.image(small_image_file,caption = 'Hochgeladenes Bild')
 
     # Erstelle einen Button "Image analysieren" , erst bei Klick soll die Analyse starten
     # Button zum Starten der Analyse
