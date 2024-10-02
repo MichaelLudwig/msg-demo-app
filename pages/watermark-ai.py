@@ -35,10 +35,10 @@ load_dotenv()
 def encode_image(image):
     return base64.b64encode(image.read()).decode('utf-8')
 
-st.title('Image Analyzer')
-image_file = st.file_uploader('Upload an image file',type = ['png', 'jpg', 'jpeg'])
+st.title('Wasserzeichen AI')
+image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
 if image_file:
-    st.image(image_file,caption = 'Uploaded image',use_column_width =True)
+    st.image(image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
 
     base64_image = encode_image(image_file)
 
@@ -55,5 +55,5 @@ if image_file:
             ],
             temperature=0.0,
         )
-    
+    st.write("Verwendete AI Tokens zur Analyse des Bildes: " + str(response.usage.total_tokens))
     st.markdown(response.choices[0].message.content)
