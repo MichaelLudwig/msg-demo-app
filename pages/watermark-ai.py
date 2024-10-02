@@ -37,16 +37,18 @@ def encode_image(new_image):
 
 
 st.title('Wasserzeichen AI')
-upload_image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
-image_file = upload_image_file.resize((600, 400))
-if image_file:
-    st.image(image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
+image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
+
+if image_file:    
+    image = Image.open(image_file)
+    small_image_file = image_file.resize((600, 400))
+    st.image(small_image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
 
     # Erstelle einen Button "Image analysieren" , erst bei Klick soll die Analyse starten
     # Button zum Starten der Analyse
     if st.button("Bild analysieren"):
         with st.spinner("Analyse läuft..."):    
-            base64_image = encode_image(image_file)
+            base64_image = encode_image(small_image_file)
 
             response = client.chat.completions.create(
                 model = openAI_model,
