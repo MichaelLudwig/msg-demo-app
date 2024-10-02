@@ -34,7 +34,7 @@ def analyze_image(image):
     base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
 
     # Anfrage an GPT-4 Vision senden
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model=openAI_model,
         messages=[
             {
