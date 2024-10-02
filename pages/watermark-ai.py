@@ -28,32 +28,50 @@ import os
 from dotenv import load_dotenv
 import base64
 from openai import OpenAI
-
+from PIL import Image
 
 load_dotenv()
 
 def encode_image(image):
     return base64.b64encode(image.read()).decode('utf-8')
 
+def resize_image(image, max_size=512):
+    """Skaliert das Bild herunter, wobei das Seitenverhältnis beibehalten wird."""
+    width, height = image.size
+    if width > max_size or height > max_size:
+        if width > height:
+            new_width = max_size
+            new_height = int(height * (max_size / width))
+        else:
+            new_height = max_size
+            new_width = int(width * (max_size / height))
+        image = image.resize((new_width, new_height), Image.LANCZOS)
+    return image
+
 st.title('Wasserzeichen AI')
-image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
+upload_image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
+image_file = resize_image(upload_image_file)
 if image_file:
     st.image(image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
 
-    base64_image = encode_image(image_file)
+    # Erstelle einen Button "Image analysieren" , erst bei Klick soll die Analyse starten
+    # Button zum Starten der Analyse
+    if st.button("Bild analysieren"):
+        with st.spinner("Analyse läuft..."):    
+            base64_image = encode_image(image_file)
 
-    response = client.chat.completions.create(
-        model = openAI_model,
-    messages=[
-        {"role": "system", "content": "Du bist ein Assistent der in Markdown antwortet"},
-        {"role": "user", "content": [
-        {"type": "text", "text": "Gibt es in diesem Bild ein Wasserzeichen und wenn ja von welchem Anbieter"},
-            {"type": "image_url", "image_url": {
-            "url": f"data:image/png;base64,{base64_image}"}
-                    }
-                ]}
-            ],
-            temperature=0.0,
-        )
-    st.write("Verwendete AI Tokens zur Analyse des Bildes: " + str(response.usage.total_tokens))
-    st.markdown(response.choices[0].message.content)
+            response = client.chat.completions.create(
+                model = openAI_model,
+            messages=[
+                {"role": "system", "content": "Du bist ein Assistent der in Markdown antwortet"},
+                {"role": "user", "content": [
+                {"type": "text", "text": "Gibt es in diesem Bild ein Wasserzeichen und wenn ja von welchem Anbieter"},
+                    {"type": "image_url", "image_url": {
+                    "url": f"data:image/png;base64,{base64_image}"}
+                            }
+                        ]}
+                    ],
+                    temperature=0.0,
+                )
+            st.write("Verwendete AI Tokens zur Analyse des Bildes: " + str(response.usage.total_tokens))
+            st.markdown(response.choices[0].message.content)
