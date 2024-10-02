@@ -35,22 +35,10 @@ load_dotenv()
 def encode_image(new_image):
     return base64.b64encode(new_image.read()).decode('utf-8')
 
-def resize_image(new_image, max_size=512):
-    """Skaliert das Bild herunter, wobei das Seitenverhältnis beibehalten wird."""
-    width, height = new_image.size
-    if width > max_size or height > max_size:
-        if width > height:
-            new_width = max_size
-            new_height = int(height * (max_size / width))
-        else:
-            new_height = max_size
-            new_width = int(width * (max_size / height))
-        image = image.resize((new_width, new_height), Image.LANCZOS)
-    return image
 
 st.title('Wasserzeichen AI')
 upload_image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
-image_file = resize_image(upload_image_file)
+image_file = upload_image_file.resize((600, 400))
 if image_file:
     st.image(image_file,caption = 'Hochgeladenes Bild',use_column_width =True)
 
