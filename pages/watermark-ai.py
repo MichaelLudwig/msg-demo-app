@@ -3,6 +3,7 @@ import openai
 from openai import OpenAI
 import os
 import io
+from PIL import Image
 
 st.set_page_config(layout="wide")
 
