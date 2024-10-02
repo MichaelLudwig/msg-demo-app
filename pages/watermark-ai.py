@@ -47,7 +47,8 @@ if image_file:
             img_byte_arr = io.BytesIO()
             small_image_file.save(img_byte_arr, format='PNG')
             img_byte_arr = img_byte_arr.getvalue()
-            base64_image = base64.b64encode(small_image_file).decode('utf-8')
+            # Bild in Base64 kodieren
+            base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
 
             response = client.chat.completions.create(
                 model = openAI_model,
