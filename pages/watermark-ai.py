@@ -4,6 +4,7 @@ from openai import OpenAI
 import os
 import io
 from PIL import Image
+import base64
 
 st.set_page_config(layout="wide")
 
@@ -29,6 +30,9 @@ def analyze_image(image):
     image.save(img_byte_arr, format='PNG')
     img_byte_arr = img_byte_arr.getvalue()
 
+    # Bytes in Base64 kodieren
+    base64_image = base64.b64encode(img_byte_arr).decode('utf-8')
+
     # Anfrage an GPT-4 Vision senden
     response = openai.ChatCompletion.create(
         model=openAI_model,
@@ -37,7 +41,7 @@ def analyze_image(image):
                 "role": "user",
                 "content": [
                     {"type": "text", "text": "Analysiere dieses Bild auf Wasserzeichen. Gib die Art des Wasserzeichens und die Wahrscheinlichkeit an, mit der es identifiziert wurde."},
-                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_byte_arr.decode('utf-8')}"}}
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}}
                 ],
             }
         ],
