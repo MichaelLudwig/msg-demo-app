@@ -32,12 +32,12 @@ from PIL import Image
 
 load_dotenv()
 
-def encode_image(image):
-    return base64.b64encode(image.read()).decode('utf-8')
+def encode_image(new_image):
+    return base64.b64encode(new_image.read()).decode('utf-8')
 
-def resize_image(image, max_size=512):
+def resize_image(new_image, max_size=512):
     """Skaliert das Bild herunter, wobei das Seitenverhältnis beibehalten wird."""
-    width, height = image.size
+    width, height = new_image.size
     if width > max_size or height > max_size:
         if width > height:
             new_width = max_size
