@@ -29,9 +29,6 @@ else:
 
 load_dotenv()
 
-def encode_image(new_image):
-    return base64.b64encode(new_image.read()).decode('utf-8')
-
 
 st.title('Wasserzeichen AI')
 image_file = st.file_uploader('Lade eine Bilddatei hoch',type = ['png', 'jpg', 'jpeg'])
@@ -45,7 +42,7 @@ if image_file:
     # Button zum Starten der Analyse
     if st.button("Bild analysieren"):
         with st.spinner("Analyse läuft..."):    
-            base64_image = encode_image(small_image_file)
+            base64_image = base64.b64encode(small_image_file.read()).decode('utf-8')
 
             response = client.chat.completions.create(
                 model = openAI_model,
