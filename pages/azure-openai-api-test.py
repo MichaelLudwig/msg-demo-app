@@ -6,6 +6,9 @@ from azure.identity import DefaultAzureCredential
 
 st.set_page_config(layout="wide")
 
+#Zuweisen von Azure Managed Identity falls vorhanden
+credential = DefaultAzureCredential()
+
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
     client = openai.AzureOpenAI(
@@ -15,19 +18,19 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
-elif "OPENAI_API_KEY" in st.secrets:
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-    openAI_model = "gpt-4o-mini"
-    #st.session_state.ai_api_info="powered by OpenAI"
-else:
-    credential = DefaultAzureCredential()
+elif credential is not None:
     client = openai.AzureOpenAI(
         api_key=os.environ["AZURE_OPENAI_API_KEY"],
         api_version="2023-03-15-preview",
         azure_ad_token_provider=credential
     )
     openAI_model = "gpt-4o-mini-sw"
-    #raise ValueError("Kein gültiger API-Schlüssel gefunden.")
+elif "OPENAI_API_KEY" in st.secrets:
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+    openAI_model = "gpt-4o-mini"
+    #st.session_state.ai_api_info="powered by OpenAI"
+else:
+    raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
 if "chat_history" not in st.session_state:
