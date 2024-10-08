@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 from openai import OpenAI
 import os
-import json
+from azure.identity import DefaultAzureCredential
 
 st.set_page_config(layout="wide")
 
@@ -20,7 +20,14 @@ elif "OPENAI_API_KEY" in st.secrets:
     openAI_model = "gpt-4o-mini"
     #st.session_state.ai_api_info="powered by OpenAI"
 else:
-    raise ValueError("Kein gültiger API-Schlüssel gefunden.")
+    credential = DefaultAzureCredential()
+    client = openai.AzureOpenAI(
+        api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        api_version="2023-03-15-preview",
+        azure_ad_token_provider=credential
+    )
+    openAI_model = "gpt-4o-mini-sw"
+    #raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
 if "chat_history" not in st.session_state:

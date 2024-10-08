@@ -4,6 +4,7 @@ matplotlib
 numpy
 pandas
 openai
+azure-identity
 python-docx
 altair>=4.0.0
 vega_datasets
