@@ -5,14 +5,14 @@ import os
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 st.set_page_config(layout="wide")
-st.text("test")
+
 #Zuweisen von Azure Managed Identity falls vorhanden
 token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
 
-#if 'ai_api_info' not in st.session_state:
-        #st.session_state.ai_api_info = "Kein gültiger API-Schlüssel gefunden."
+if 'ai_api_info' not in st.session_state:
+        st.session_state.ai_api_info = "Kein gültiger API-Schlüssel gefunden."
 
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
@@ -23,8 +23,7 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
         azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
     )
     openAI_model = "gpt-4o-mini-sw"
-    #st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
-    st.write("Azure OpenAI Key - Region Europa")
+    st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
 elif token_provider is not None:
     client = openai.AzureOpenAI(
         azure_ad_token_provider=token_provider,
@@ -32,13 +31,11 @@ elif token_provider is not None:
         azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"        
     )
     openAI_model = "gpt-4o-mini-sw"
-    #st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
-    st.write("Azure OpenAI MI - Region Europa")
+    st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
 elif "OPENAI_API_KEY" in st.secrets:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
-    #st.session_state.ai_api_info="powered by OpenAI"
-    st.write("powered by OpenAI")
+    st.session_state.ai_api_info="powered by OpenAI"
 else:
     #st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
@@ -49,7 +46,7 @@ if "chat_history" not in st.session_state:
 
 # streamlit page title
 st.title("🤖 Azure OpenAI GPT-4o-mini ChatBot")
-#st.write(st.session_state.ai_api_info)
+st.text(st.session_state.ai_api_info)
 
 # display chat history
 for message in st.session_state.chat_history:
