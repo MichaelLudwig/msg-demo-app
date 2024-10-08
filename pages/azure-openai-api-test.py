@@ -12,7 +12,7 @@ token_provider = get_bearer_token_provider(
 )
 
 if 'ai_api_info' not in st.session_state:
-        st.session_state.ai_api_info = " "
+        st.session_state.ai_api_info = "Kein gültiger API-Schlüssel gefunden."
 
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
@@ -44,7 +44,8 @@ else:
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-
+# streamlit page title
+st.title("🤖 Azure OpenAI GPT-4o-mini ChatBot")
 st.write(st.session_state.ai_api_info)
 
 # display chat history
