@@ -10,6 +10,7 @@ st.set_page_config(layout="wide")
 token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
+st.text(DefaultAzureCredential())
 
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
