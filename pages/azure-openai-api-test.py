@@ -5,7 +5,7 @@ import os
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 st.set_page_config(layout="wide")
-
+st.write("test")
 #Zuweisen von Azure Managed Identity falls vorhanden
 token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
