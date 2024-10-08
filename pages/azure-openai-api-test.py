@@ -10,11 +10,14 @@ st.set_page_config(layout="wide")
 token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
-st.text(DefaultAzureCredential())
 
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
 
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except KeyError:
+    api_key = None
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
@@ -25,8 +28,8 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
-elif "OPENAI_API_KEY" in st.secrets:
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+elif api_key is not None:
+    client = OpenAI(api_key)
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
 elif token_provider is not None:
