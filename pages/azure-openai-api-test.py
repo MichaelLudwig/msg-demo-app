@@ -46,7 +46,7 @@ if "chat_history" not in st.session_state:
 
 # streamlit page title
 st.title("🤖 Azure OpenAI GPT-4o-mini ChatBot")
-st.write(str(st.session_state.ai_api_info))
+st.write(st.session_state.ai_api_info)
 
 # display chat history
 for message in st.session_state.chat_history:
