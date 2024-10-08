@@ -14,11 +14,6 @@ token_provider = get_bearer_token_provider(
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
 
-try:
-    api_key = st.secrets["OPENAI_API_KEY"]
-except KeyError:
-    api_key = None
-
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
     client = openai.AzureOpenAI(
@@ -28,11 +23,11 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
-elif api_key is not None:
-    client = OpenAI(api_key=api_key)
+elif os.getenv('STREAMLIT_ENV') == 'cloud':
+    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
-elif token_provider is not None:
+elif os.getenv('WEBSITE_INSTANCE_ID'):
     client = openai.AzureOpenAI(
         azure_ad_token_provider=token_provider,
         api_version="2023-03-15-preview",
