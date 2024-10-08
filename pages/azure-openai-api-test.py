@@ -9,6 +9,7 @@ st.set_page_config(layout="wide")
 #Zuweisen von Azure Managed Identity falls vorhanden
 credential = DefaultAzureCredential()
 st.write = (credential)
+st.session_state.ai_api_info = ""
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
@@ -32,6 +33,7 @@ elif "OPENAI_API_KEY" in st.secrets:
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
 else:
+    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
