@@ -13,7 +13,7 @@ token_provider = get_bearer_token_provider(
 st.text(str(token_provider))
 
 if 'ai_api_info' not in st.session_state:
-        st.session_state.ai_api_info = "Kein gültiger API-Schlüssel gefunden."
+        st.session_state.ai_api_info = ""
 
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
@@ -38,7 +38,7 @@ elif "OPENAI_API_KEY" in st.secrets:
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
 else:
-    #st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
+    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
