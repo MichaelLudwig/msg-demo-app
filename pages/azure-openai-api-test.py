@@ -14,7 +14,6 @@ token_provider = get_bearer_token_provider(
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
 
-st.text(os.getenv('USER'))
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
