@@ -24,6 +24,7 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     #st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
+    st.write("Azure OpenAI Key - Region Europa")
 elif token_provider is not None:
     client = openai.AzureOpenAI(
         azure_ad_token_provider=token_provider,
@@ -32,10 +33,12 @@ elif token_provider is not None:
     )
     openAI_model = "gpt-4o-mini-sw"
     #st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
+    st.write("Azure OpenAI MI - Region Europa")
 elif "OPENAI_API_KEY" in st.secrets:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
     #st.session_state.ai_api_info="powered by OpenAI"
+    st.write("powered by OpenAI")
 else:
     #st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
