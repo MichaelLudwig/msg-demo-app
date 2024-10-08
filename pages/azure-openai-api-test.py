@@ -2,13 +2,16 @@ import streamlit as st
 import openai
 from openai import OpenAI
 import os
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 st.set_page_config(layout="wide")
 
 #Zuweisen von Azure Managed Identity falls vorhanden
-credential = DefaultAzureCredential()
-st.write = (credential)
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+)
+
+st.write = (token_provider)
 st.session_state.ai_api_info = ""
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
@@ -20,9 +23,9 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
-elif credential is not None:
+elif token_provider is not None:
     client = openai.AzureOpenAI(
-        azure_ad_token_provider=credential,
+        azure_ad_token_provider=token_provider,
         api_version="2023-03-15-preview",
         azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"        
     )
