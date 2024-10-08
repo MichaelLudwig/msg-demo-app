@@ -18,7 +18,7 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
         azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
     )
     openAI_model = "gpt-4o-mini-sw"
-    #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
+    st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
 elif credential is not None:
     client = openai.AzureOpenAI(
         azure_ad_token_provider=credential,
@@ -26,10 +26,11 @@ elif credential is not None:
         azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"        
     )
     openAI_model = "gpt-4o-mini-sw"
+    st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
 elif "OPENAI_API_KEY" in st.secrets:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
-    #st.session_state.ai_api_info="powered by OpenAI"
+    st.session_state.ai_api_info="powered by OpenAI"
 else:
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
@@ -39,6 +40,7 @@ if "chat_history" not in st.session_state:
 
 # streamlit page title
 st.title("🤖 Azure OpenAI GPT-4o-mini ChatBot")
+st.write(st.session_state.ai_api_info)
 
 # display chat history
 for message in st.session_state.chat_history:
