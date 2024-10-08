@@ -25,7 +25,7 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     )
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
-elif os.getenv('STREAMLIT_ENV') == 'cloud':
+elif os.getenv('USER') == 'appuser':
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
