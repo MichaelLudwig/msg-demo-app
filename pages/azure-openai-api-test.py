@@ -29,7 +29,7 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
 elif api_key is not None:
-    client = OpenAI(api_key)
+    client = OpenAI(api_key=api_key)
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
 elif token_provider is not None:
