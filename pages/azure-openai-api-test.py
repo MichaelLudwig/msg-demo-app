@@ -8,6 +8,7 @@ st.set_page_config(layout="wide")
 
 #Zuweisen von Azure Managed Identity falls vorhanden
 credential = DefaultAzureCredential()
+st.write = (credential)
 
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 if "AZURE_OPENAI_API_KEY" in os.environ:
@@ -20,8 +21,8 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
 elif credential is not None:
     client = openai.AzureOpenAI(
-        api_key=os.environ["AZURE_OPENAI_API_KEY"],
         api_version="2023-03-15-preview",
+        azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
         azure_ad_token_provider=credential
     )
     openAI_model = "gpt-4o-mini-sw"
