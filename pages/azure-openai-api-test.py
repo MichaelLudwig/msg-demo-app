@@ -21,9 +21,9 @@ if "AZURE_OPENAI_API_KEY" in os.environ:
     #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
 elif credential is not None:
     client = openai.AzureOpenAI(
+        azure_ad_token_provider=credential,
         api_version="2023-03-15-preview",
-        azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
-        azure_ad_token_provider=credential
+        azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"        
     )
     openAI_model = "gpt-4o-mini-sw"
 elif "OPENAI_API_KEY" in st.secrets:
