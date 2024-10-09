@@ -25,9 +25,7 @@ def is_managed_identity_available():
         return False
 
 #Vorbereitung für Zugriff über Azure Managed Identity falls vorhanden
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
-)
+
 
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
@@ -46,7 +44,11 @@ elif os.getenv('USER') == 'appuser':
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
-elif os.getenv('WEBSITE_INSTANCE_ID'):
+#elif os.getenv('WEBSITE_INSTANCE_ID'):
+elif is_managed_identity_available():
+    token_provider = get_bearer_token_provider(
+        DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+    )
     client = openai.AzureOpenAI(
         azure_ad_token_provider=token_provider,
         api_version="2023-03-15-preview",
@@ -55,7 +57,7 @@ elif os.getenv('WEBSITE_INSTANCE_ID'):
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
 else:
-    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
+    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden und Managed Identity nicht abrufbar."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
