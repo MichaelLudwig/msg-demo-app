@@ -3,29 +3,9 @@ import openai
 from openai import OpenAI
 import os
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-from azure.core.exceptions import ClientAuthenticationError
+
 
 st.set_page_config(layout="wide")
-
-def is_managed_identity_available():
-    try:
-        credential = DefaultAzureCredential()
-        token_provider = get_bearer_token_provider(
-            credential, "https://cognitiveservices.azure.com/.default"
-        )
-        # Versuchen Sie, einen Token zu erhalten
-        token = token_provider()
-        return True
-        st.text("Token erhalten: " + token)
-    except ClientAuthenticationError:
-        st.text("ClientAuthenticationError")
-        return False
-    except Exception as e:
-        st.text("Unerwarteter Fehler beim Abrufen des Tokens: " + {str(e)})
-        return False
-
-#Vorbereitung für Zugriff über Azure Managed Identity falls vorhanden
-
 
 if 'ai_api_info' not in st.session_state:
         st.session_state.ai_api_info = ""
@@ -44,8 +24,7 @@ elif os.getenv('USER') == 'appuser':
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     openAI_model = "gpt-4o-mini"
     st.session_state.ai_api_info="powered by OpenAI"
-#elif os.getenv('WEBSITE_INSTANCE_ID'):
-elif is_managed_identity_available():
+elif os.getenv('WEBSITE_INSTANCE_ID'):
     token_provider = get_bearer_token_provider(
         DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
     )
@@ -57,7 +36,7 @@ elif is_managed_identity_available():
     openAI_model = "gpt-4o-mini-sw"
     st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
 else:
-    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden und Managed Identity nicht abrufbar."
+    st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
     raise ValueError("Kein gültiger API-Schlüssel gefunden.")
 
 # initialize chat session in streamlit if not already present
