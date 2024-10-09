@@ -42,7 +42,8 @@ else:
 st.set_page_config(layout="wide")
 #debug ob ai_key in streamlit oder Azure gesetzt wurde
 #st.write(ai_key)
-main_heading=st.title("AI Text-Chart Demo")
+main_heading=st.title("📊 AI Text-to-Chart Demo")
+st.text(st.session_state.ai_api_info)
 st.info("""
 Gib in diesem Textfeld den Ablauf deines Vorhabens an.
 
