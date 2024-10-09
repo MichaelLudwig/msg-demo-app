@@ -5,6 +5,7 @@ numpy
 pandas
 openai
 azure-identity
+azure-core
 python-docx
 altair>=4.0.0
 vega_datasets

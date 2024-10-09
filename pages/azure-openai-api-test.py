@@ -3,10 +3,28 @@ import openai
 from openai import OpenAI
 import os
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from azure.core.exceptions import ClientAuthenticationError
 
 st.set_page_config(layout="wide")
 
-#Zuweisen von Azure Managed Identity falls vorhanden
+def is_managed_identity_available():
+    try:
+        credential = DefaultAzureCredential()
+        token_provider = get_bearer_token_provider(
+            credential, "https://cognitiveservices.azure.com/.default"
+        )
+        # Versuchen Sie, einen Token zu erhalten
+        token = token_provider()
+        return True
+        st.text("Token erhalten: " + token)
+    except ClientAuthenticationError:
+        st.text("ClientAuthenticationError")
+        return False
+    except Exception as e:
+        st.text("Unerwarteter Fehler beim Abrufen des Tokens: " + {str(e)})
+        return False
+
+#Vorbereitung für Zugriff über Azure Managed Identity falls vorhanden
 token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
