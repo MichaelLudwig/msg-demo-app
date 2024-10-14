@@ -1,7 +1,23 @@
 import streamlit as st
+import streamlit_app
+import pages.architecture_demo as architecture_demo
+import pages.azure_openai_api_test as azure_openai_api_test
+import pages.watermark_ai as watermark_ai
 
+# Definiere die Seiten
+PAGES = {
+    "Concept Designer 📝": streamlit_app,
+    "Architektur Schaubilder ☁️": architecture_demo,
+    "Wasserzeichen ☁️": watermark_ai,
+}
 
 st.set_page_config(page_title="Demo Apps", page_icon=":iphone:", layout="wide")
+
+# Seiten-Navigation in der Sidebar
+st.sidebar.title("Navigation")
+selection = st.sidebar.radio("Gehe zu", list(PAGES.keys()))
+
+
 main_heading=st.title("Demo Apps")
 
 st.divider()
