@@ -2,12 +2,19 @@ import streamlit as st
 import streamlit_app
 import pages.architecture_demo as architecture_demo
 import pages.azure_openai_api_test as azure_openai_api_test
+import pages.charts_demo as charts_demo
+import pages.report_demo as report_demo
+import pages.text_to_chart as text_to_chart
 import pages.watermark_ai as watermark_ai
 
 # Definiere die Seiten
 PAGES = {
     "Concept Designer 📝": streamlit_app,
     "Architektur Schaubilder ☁️": architecture_demo,
+    "Azure Openai Test 🤖": azure_openai_api_test,
+    "Chart Demo📊": charts_demo,
+    "Report Demo 📝": report_demo,
+    "Gantt Chart Demo 📊": text_to_chart,
     "Wasserzeichen ☁️": watermark_ai,
 }
 
