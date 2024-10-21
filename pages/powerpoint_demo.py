@@ -3,6 +3,7 @@ from pptx import Presentation
 from io import BytesIO
 from pptx.util import Inches, Pt
 from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
+from pptx.dml.color import RGBColor
 
 
 def open_pptx_template():
@@ -99,23 +100,19 @@ aws_migration_slides = [
     }
 ]
 
-def add_slides(presentation,slides):
-
-    # Definiere das Layout für die neuen Folien
-    #slide_layout = presentation.slide_layouts[6]  # Layout mit Titel und Inhalt
-    
-    # Wähle das Layout "Titel und Inhalt weiß"
+def add_slides(presentation, slides_data):
+    # Wähle das Layout "Titel und Inhalt"
     slide_layout = None
     for layout in presentation.slide_layouts:
         if layout.name == "Titel und Inhalt weiß":
             slide_layout = layout
             break
-
+    
     if not slide_layout:
         slide_layout = presentation.slide_layouts[1]
     
      # Füge die neuen Folien nach der Titelfolie ein
-    for index, slide_data in enumerate(slides, start=1):
+    for index, slide_data in enumerate(slides_data, start=1):
         # Füge eine neue Folie nach der Titelfolie ein
         new_slide = presentation.slides.add_slide(slide_layout)
         
@@ -135,6 +132,7 @@ def add_slides(presentation,slides):
         content = new_slide.placeholders[1] if len(new_slide.placeholders) > 1 else None
         if content:
             tf = content.text_frame
+            tf.clear()  # Entferne vorhandenen Text
             
             for punkt in slide_data.get("inhalt", []):
                 p = tf.add_paragraph()
