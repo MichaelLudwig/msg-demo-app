@@ -20,8 +20,17 @@ def open_pptx_template():
         return None
 
 
-def generate_ppt(presentation):
-     # Speichern der Präsentation in einem BytesIO-Objekt
+def generate_ppt(presentation, title, subtitle):
+    # Ändern des Titels und Untertitels
+    for slide in presentation.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                if shape.text == "*title*":
+                    shape.text = title
+                elif shape.text == "*subtitle*":
+                    shape.text = subtitle
+    
+    # Speichern der Präsentation in einem BytesIO-Objekt
     buffer = BytesIO()
     presentation.save(buffer)
     buffer.seek(0)
@@ -44,18 +53,24 @@ if presentation:
 else:
     st.write("Die Präsentation konnte nicht geöffnet werden.")
 
+
+
+
+
+#--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
+ppt_title=st.text_input("Titel der Präsentation")
+ppt_subtitle=st.text_input("Untertitel der Präsentaion")
+
 #--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
 st.sidebar.title("App-Steuerung")
-
-
 
 
 #Schaltflächen für den Word Export
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
-    generate_ppt(presentation)
+    generate_ppt(presentation, ppt_title, ppt_subtitle)
 
-#--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
