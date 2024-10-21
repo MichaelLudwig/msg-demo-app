@@ -2,6 +2,7 @@ import streamlit as st
 from pptx import Presentation
 from io import BytesIO
 from pptx.util import Inches, Pt
+from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 
 
 def open_pptx_template():
