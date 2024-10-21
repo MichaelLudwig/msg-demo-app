@@ -20,11 +20,45 @@ def open_pptx_template():
         return None
 
 
+def generate_ppt(presentation):
+     # Speichern der Präsentation in einem BytesIO-Objekt
+    buffer = BytesIO()
+    presentation.save(buffer)
+    buffer.seek(0)
+    pptx_file = buffer
+
+    # Bereitstellen der Datei zum Download
+    st.sidebar.download_button(
+        label="PowerPoint-Präsentation herunterladen",
+        data=pptx_file,
+        file_name="Praesentation.pptx",
+        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    )
+
+
+
+
+#--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
+st.sidebar.title("App-Steuerung")
+
+
+
+
+#Schaltflächen für den Word Export
+st.sidebar.subheader("PowerPoint Export", divider='grey')
+if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
+    generate_ppt(presentation)
+
+#--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
+st.sidebar.title("App-Steuerung")
 st.title("PowerPoint AI")
 
-
-pres = open_pptx_template()
-if pres:
+presentaion = open_pptx_template()
+if presentaion:
     st.write("Sie können jetzt mit der Präsentation arbeiten.")
 else:
     st.write("Die Präsentation konnte nicht geöffnet werden.")
+
+
+
+
