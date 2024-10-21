@@ -100,6 +100,12 @@ aws_migration_slides = [
     }
 ]
 
+def move_slide(old_index, new_index):
+    xml_slides = presentation.slides._sldIdLst
+    slides = list(xml_slides)
+    xml_slides.remove(slides[old_index])
+    xml_slides.insert(new_index, slides[old_index])
+
 def add_slides(presentation, slides_data):
     # Wähle das Layout "Titel und Inhalt"
     slide_layout = None
@@ -116,10 +122,10 @@ def add_slides(presentation, slides_data):
         # Füge eine neue Folie nach der Titelfolie ein
         new_slide = presentation.slides.add_slide(slide_layout)
         
-         # Verschiebe die neue Folie an die richtige Position (index + 1, da die Zählung bei 0 beginnt)
-        #xml_slides = presentation.slides._sldIdLst
-        #xml_slides.insert(index, xml_slides[-1])  # Verschiebe das letzte Element an die richtige Position
-        #del xml_slides[-1]  # Entferne das duplizierte letzte Element
+        #verschiebe Folie vom Ende zur entsprechenden Position nach der Titelseite
+        slide_id = presentation.slides.index(new_slide)
+        move_slide(slide_id, index)
+
         
         # Setze den Titel
         title_shape = new_slide.shapes.title
