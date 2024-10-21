@@ -6,6 +6,7 @@ pandas
 openai
 azure-identity
 python-docx
+python-pptx
 altair>=4.0.0
 vega_datasets
 graphviz
