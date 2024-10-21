@@ -106,27 +106,34 @@ def add_slides(presentation,slides):
         new_slide = presentation.slides.add_slide(slide_layout)
         
         # Setze den Titel
-        title = new_slide.shapes.title
-        title.text = slide_data["titel"]
+        title_shape = new_slide.shapes.title
+        if title_shape:
+            title_shape.text = slide_data.get("titel", "")
+        else:
+            print(f"Warnung: Kein Titeltextfeld für Folie '{slide_data.get('titel', '')}'")
         
         # Füge den Inhalt hinzu
-        content = new_slide.placeholders[1]
-        tf = content.text_frame
-        
-        for punkt in slide_data["inhalt"]:
-            p = tf.add_paragraph()
-            p.text = punkt
-            p.level = 0
-        
-        # Formatiere den Text
-        for paragraph in tf.paragraphs:
-            paragraph.font.size = Pt(18)
+        content = new_slide.placeholders[1] if len(new_slide.placeholders) > 1 else None
+        if content:
+            tf = content.text_frame
+            
+            for punkt in slide_data.get("inhalt", []):
+                p = tf.add_paragraph()
+                p.text = punkt
+                p.level = 0
+            
+            # Formatiere den Text
+            for paragraph in tf.paragraphs:
+                if paragraph.font:
+                    paragraph.font.size = Pt(18)
+        else:
+            print(f"Warnung: Kein Inhaltstextfeld für Folie '{slide_data.get('titel', '')}'")
     
 
 st.title("PowerPoint AI")
 
 presentation = open_pptx_template()
-add_slides(presentation,aws_migration_slides)
+add_slides(presentation, aws_migration_slides)
 
 
 
