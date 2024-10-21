@@ -53,7 +53,7 @@ st.sidebar.title("App-Steuerung")
 #Schaltflächen für den Word Export
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
-    generate_ppt(presentaion)
+    generate_ppt(presentation)
 
 #--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
 
