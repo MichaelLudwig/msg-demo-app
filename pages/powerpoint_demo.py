@@ -135,11 +135,14 @@ def add_slides(presentation,slides):
                 p = tf.add_paragraph()
                 p.text = punkt
                 p.level = 0
+                p.bullet.visible = True # Füge Aufzählungszeichen hinzu
+                p.bullet.style = None  # Verwende Standard-Aufzählungszeichen
             
             # Formatiere den Text
             for paragraph in tf.paragraphs:
                 if paragraph.font:
                     paragraph.font.size = Pt(18)
+                    paragraph.space_before = Pt(6)
         else:
             print(f"Warnung: Kein Inhaltstextfeld für Folie '{slide_data.get('titel', '')}'")
     
