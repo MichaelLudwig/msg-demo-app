@@ -7,7 +7,7 @@ st.set_page_config(page_title="Demo Apps", page_icon=":iphone:")
 
 
 
-main_heading=st.title("Demo Apps")
+main_heading=st.title("Demo Aps")
 
 st.divider()
 
