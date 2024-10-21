@@ -31,12 +31,18 @@ def generate_ppt(presentation):
     st.sidebar.download_button(
         label="PowerPoint-Präsentation herunterladen",
         data=pptx_file,
-        file_name="Praesentation.pptx",
+        file_name="Präsentation.pptx",
         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
 
 
+st.title("PowerPoint AI")
 
+presentation = open_pptx_template()
+if presentation:
+    st.write("Sie können jetzt mit der Präsentation arbeiten.")
+else:
+    st.write("Die Präsentation konnte nicht geöffnet werden.")
 
 #--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
 st.sidebar.title("App-Steuerung")
@@ -47,17 +53,13 @@ st.sidebar.title("App-Steuerung")
 #Schaltflächen für den Word Export
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
-    generate_ppt(presentation)
+    generate_ppt(presentaion)
 
 #--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
-st.sidebar.title("App-Steuerung")
-st.title("PowerPoint AI")
 
-presentaion = open_pptx_template()
-if presentaion:
-    st.write("Sie können jetzt mit der Präsentation arbeiten.")
-else:
-    st.write("Die Präsentation konnte nicht geöffnet werden.")
+
+
+
 
 
 
