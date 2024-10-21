@@ -3,11 +3,6 @@ from pptx import Presentation
 from io import BytesIO
 from pptx.util import Inches, Pt
 
-#Temporäre Hilfsfunktion
-def print_slide_layouts(prs):
-    st.write("Verfügbare Folienlayouts:")
-    for index, layout in enumerate(prs.slide_layouts):
-        st.write(f"{index}: {layout.name}")
 
 def open_pptx_template():
     # Pfad zur PowerPoint-Datei
@@ -153,7 +148,6 @@ def add_slides(presentation,slides):
 st.title("PowerPoint AI")
 
 presentation = open_pptx_template()
-print_slide_layouts(presentation)
 add_slides(presentation, aws_migration_slides)
 
 
