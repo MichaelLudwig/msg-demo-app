@@ -135,9 +135,8 @@ def add_slides(presentation,slides):
             for punkt in slide_data.get("inhalt", []):
                 p = tf.add_paragraph()
                 p.text = punkt
-                p.level = 0
-                p.bullet.visible = True # Füge Aufzählungszeichen hinzu
-                p.bullet.style = None  # Verwende Standard-Aufzählungszeichen
+                p.level = 1
+
             
             # Formatiere den Text
             for paragraph in tf.paragraphs:
