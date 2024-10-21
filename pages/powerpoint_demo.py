@@ -3,6 +3,12 @@ from pptx import Presentation
 from io import BytesIO
 from pptx.util import Inches, Pt
 
+#Temporäre Hilfsfunktion
+def print_slide_layouts(prs):
+    st.write("Verfügbare Folienlayouts:")
+    for index, layout in enumerate(prs.slide_layouts):
+        st.write(f"{index}: {layout.name}")
+
 def open_pptx_template():
     # Pfad zur PowerPoint-Datei
     pptx_path = "msg_digital_template.pptx"
@@ -19,6 +25,8 @@ def open_pptx_template():
 
 
 def generate_ppt(presentation, title, subtitle):
+    
+      
     # Ändern des Titels und Untertitels
     for slide in presentation.slides:
         for shape in slide.shapes:
@@ -98,12 +106,23 @@ aws_migration_slides = [
 def add_slides(presentation,slides):
 
     # Definiere das Layout für die neuen Folien
-    slide_layout = presentation.slide_layouts[1]  # Layout mit Titel und Inhalt
+    #slide_layout = presentation.slide_layouts[6]  # Layout mit Titel und Inhalt
     
-    # Füge die neuen Folien ein
-    for slide_data in slides:
-        # Füge eine neue Folie hinter der ersten Folie ein
+    # Wähle das Layout "Titel und Inhalt weiß"
+    slide_layout = None
+    for layout in presentation.slide_layouts:
+        if layout.name == "Titel und Inhalt weiß":
+            slide_layout = layout
+            break
+
+    if not slide_layout:
+        slide_layout = presentation.slide_layouts[1]
+    
+     # Füge die neuen Folien nach der Titelfolie ein
+    for index, slide_data in enumerate(slides, start=1):
+        # Füge eine neue Folie nach der Titelfolie ein
         new_slide = presentation.slides.add_slide(slide_layout)
+        presentation.slides._sldIdLst.insert(index, new_slide._element)
         
         # Setze den Titel
         title_shape = new_slide.shapes.title
@@ -129,10 +148,12 @@ def add_slides(presentation,slides):
         else:
             print(f"Warnung: Kein Inhaltstextfeld für Folie '{slide_data.get('titel', '')}'")
     
+    
 
 st.title("PowerPoint AI")
 
 presentation = open_pptx_template()
+print_slide_layouts(presentation)
 add_slides(presentation, aws_migration_slides)
 
 
