@@ -117,9 +117,9 @@ def add_slides(presentation, slides_data):
         new_slide = presentation.slides.add_slide(slide_layout)
         
          # Verschiebe die neue Folie an die richtige Position (index + 1, da die Zählung bei 0 beginnt)
-        xml_slides = presentation.slides._sldIdLst
-        xml_slides.insert(index, xml_slides[-1])  # Verschiebe das letzte Element an die richtige Position
-        del xml_slides[-1]  # Entferne das duplizierte letzte Element
+        #xml_slides = presentation.slides._sldIdLst
+        #xml_slides.insert(index, xml_slides[-1])  # Verschiebe das letzte Element an die richtige Position
+        #del xml_slides[-1]  # Entferne das duplizierte letzte Element
         
         # Setze den Titel
         title_shape = new_slide.shapes.title
