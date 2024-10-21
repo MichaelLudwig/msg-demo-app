@@ -126,7 +126,7 @@ def add_slides(presentation,slides):
 st.title("PowerPoint AI")
 
 presentation = open_pptx_template()
-presentation = add_slides(presentation,aws_migration_slides)
+add_slides(presentation,aws_migration_slides)
 
 
 
