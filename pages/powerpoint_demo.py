@@ -457,7 +457,7 @@ def update_session_state(key, value):
 # Erstellen der Webseiten-Struktur mit Überschriften, Infoboxen und Textboxen
 for i, item in enumerate(st.session_state.toc_list):
     #title_text = st.session_state.kapitel_header[i]
-    title_text = st.session_state.toc_list[i]["title"]
+    title_text = item["title"]
     anchor = generate_anchor(title_text)
     
     st.markdown(f'<a name="{anchor}"></a>', unsafe_allow_html=True)
