@@ -40,20 +40,33 @@ initialize_session_state()
 #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
 #Azure OpenAI Connection
 def get_oai_client():
+    #hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
     if "AZURE_OPENAI_API_KEY" in os.environ:
         client = openai.AzureOpenAI(
             api_key=os.environ["AZURE_OPENAI_API_KEY"],
             api_version="2023-03-15-preview",
             azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
         )
-        st.session_state["openai_model"] = "gpt-4o-mini-sw"   
-    elif "OPENAI_API_KEY" in st.secrets:
+        openAI_model = "gpt-4o-mini-sw"
+        st.session_state.ai_api_info="Azure OpenAI Key - Region Europa"
+    elif os.getenv('USER') == 'appuser':
         client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-        st.session_state["openai_model"] = "gpt-4o-mini"
-        #st.session_state.ai_api_info="powered by OpenAI"
+        openAI_model = "gpt-4o-mini"
+        st.session_state.ai_api_info="powered by OpenAI"
+    elif os.getenv('WEBSITE_INSTANCE_ID'):
+        token_provider = get_bearer_token_provider(
+            DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+        )
+        client = openai.AzureOpenAI(
+            azure_ad_token_provider=token_provider,
+            api_version="2023-03-15-preview",
+            azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"        
+        )
+        openAI_model = "gpt-4o-mini-sw"
+        st.session_state.ai_api_info="Azure OpenAI MI - Region Europa"
     else:
+        st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
         raise ValueError("Kein gültiger API-Schlüssel gefunden.")
-    return client
 
 
 client = get_oai_client()
