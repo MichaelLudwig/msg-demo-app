@@ -143,13 +143,6 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
 st.set_page_config(page_title="PowerPoint AI", page_icon=":mechanical_arm:", layout="wide")
 st.title("PowerPoint AI")
 
-# LLM Info abrufen
-if "AZURE_OPENAI_API_KEY" in os.environ:
-    st.session_state.ai_api_info="Azure OpenAI - Region Europa"
-elif "OPENAI_API_KEY" in st.secrets:
-    st.session_state.ai_api_info="powered by OpenAI"
-else:
-    st.session_state.ai_api_info="OpenAI"
 
 st.write(st.session_state.ai_api_info)
 
