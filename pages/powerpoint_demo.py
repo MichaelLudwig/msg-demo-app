@@ -8,6 +8,8 @@ from io import BytesIO
 from pptx.util import Inches, Pt
 from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 from pptx.dml.color import RGBColor
+import re
+import unicodedata
 
 
 # Funktion zum Initialisieren der session_state Variablen
