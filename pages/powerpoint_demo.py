@@ -190,58 +190,7 @@ def generate_ppt(presentation, title):
         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
 
-aws_migration_slides = [
-    {
-        "titel": "Einführung in AWS Migration",
-        "inhalt": [
-            "Definition von Cloud-Migration",
-            "Vorteile der Migration zu AWS",
-            "Überblick über den AWS-Migrationsansatz",
-            "Wichtige Überlegungen vor der Migration",
-            "AWS Migration Competency Partner"
-        ]
-    },
-    {
-        "titel": "AWS Migration-Strategien",
-        "inhalt": [
-            "Rehosting (Lift-and-Shift)",
-            "Replatforming",
-            "Refactoring / Re-architecting",
-            "Repurchasing",
-            "Retire und Retain Strategien"
-        ]
-    },
-    {
-        "titel": "AWS Migration Tools",
-        "inhalt": [
-            "AWS Migration Hub",
-            "AWS Application Discovery Service",
-            "AWS Database Migration Service (DMS)",
-            "AWS Server Migration Service (SMS)",
-            "AWS CloudEndure Migration"
-        ]
-    },
-    {
-        "titel": "Phasen der AWS Migration",
-        "inhalt": [
-            "Assess: Bewertung der Migrationsbereitschaft",
-            "Mobilize: Vorbereitung der Organisation",
-            "Migrate & Modernize: Durchführung der Migration",
-            "Operate & Optimize: Betrieb in der Cloud",
-            "Sicherheit und Compliance während der Migration"
-        ]
-    },
-    {
-        "titel": "Best Practices für AWS Migration",
-        "inhalt": [
-            "Erstellung einer klaren Migrationsstrategie",
-            "Durchführung von Proof-of-Concepts",
-            "Automatisierung des Migrationsprozesses",
-            "Kontinuierliche Überwachung und Optimierung",
-            "Schulung und Vorbereitung des Teams"
-        ]
-    }
-]
+
 
 def move_slide(old_index, new_index):
     xml_slides = presentation.slides._sldIdLst
