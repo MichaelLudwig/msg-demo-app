@@ -135,7 +135,7 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
 
     st.write("Verwendete AI Tokens zur Erstellung der Folien: " + str(response.usage.total_tokens))
     #### debug
-    st.write(toc_list)
+    #st.write(toc_list)
 
     return toc_list
 
