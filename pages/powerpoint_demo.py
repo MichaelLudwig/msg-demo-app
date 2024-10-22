@@ -67,6 +67,7 @@ def get_oai_client():
     else:
         st.session_state.ai_api_info="Kein gültiger API-Schlüssel gefunden."
         raise ValueError("Kein gültiger API-Schlüssel gefunden.")
+    return client
 
 
 client = get_oai_client()
