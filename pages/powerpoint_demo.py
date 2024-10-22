@@ -24,14 +24,12 @@ def initialize_session_state():
         st.session_state.new_doctype = "Sales Folien"
     if 'new_chapter_count' not in st.session_state:
         st.session_state.new_chapter_count = 8
-    if 'new_word_count' not in st.session_state:
-        st.session_state.new_word_count = 100
-    if 'new_writing_style' not in st.session_state:
-        st.session_state.new_writing_style = "msg Konzept"
+
     if 'new_context' not in st.session_state:
         st.session_state.new_context = ""
     if 'new_stakeholder' not in st.session_state:
         st.session_state.new_stakeholder = "Technisches Fachpersonal"
+
     if 'toc_list' not in st.session_state:
         st.session_state.toc_list = []
     if 'kapitel_header' not in st.session_state:
@@ -44,8 +42,6 @@ def initialize_session_state():
         st.session_state.kapitel_prompt = []
     if 'image_prompt' not in st.session_state:
         st.session_state.kapitel_prompt = []
-    if 'glossar' not in st.session_state:
-        st.session_state.glossar = ""
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = ""
 
@@ -62,12 +58,7 @@ def get_oai_client():
             api_version="2023-03-15-preview",
             azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
         )
-        st.session_state["openai_model"] = "gpt-4o-mini-sw"
-        #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
-    #if "AZURE_OPENAI_API_KEY" in os.environ:
-    #    client = OpenAI(api_key=os.environ["AZURE_OPENAI_API_KEY"])
-    #    openAI_model = "gpt-4o-mini"
-        #st.session_state.ai_api_info="Azure OpenAI - Region Europa"    
+        st.session_state["openai_model"] = "gpt-4o-mini-sw"   
     elif "OPENAI_API_KEY" in st.secrets:
         client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
         st.session_state["openai_model"] = "gpt-4o-mini"
@@ -107,6 +98,10 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
                                         "type": "string",
                                         "description": "The title of the slide"
                                     },
+                                    "content_text": {
+                                        "type": "string",
+                                        "description": "Notes for the slide"
+                                    },
                                     "help_text": {
                                         "type": "string",
                                         "description": "Notes for the slide"
@@ -120,7 +115,7 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
                                         "description": "A prompt to make a chatbot like chatgpt generate an image for this specific slide."
                                     }
                                 },
-                                "required": ["title", "help_text", "prompt_text", "image_prompt_text"]
+                                "required": ["title", "content_text", "help_text", "prompt_text", "image_prompt_text"]
                             },
                             "description": "The generated table of contents with help texts"
                         }
@@ -344,7 +339,6 @@ st.session_state.new_chapter_count = newdoc_form.slider("Anzahl der Kapitel.", m
 new_submitted = newdoc_form.form_submit_button("Foliensatz erstellen")
 
 #Schaltflächen für den Word Export
-st.sidebar.subheader("PowerPoint Export Steuerelemente", divider='grey') 
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
     generate_ppt(presentation, ppt_title, ppt_subtitle)
@@ -365,10 +359,10 @@ if new_submitted:
     # Leere SessionState Elemente erzeugen die im Weiteren mit Inhalten gefüllt werden
     st.session_state.kapitel_header = [item["title"] for item in st.session_state.toc_list]
     st.session_state.kapitel_info = [item["help_text"] for item in st.session_state.toc_list]
+    st.session_state.kapitel_inhalt = [item["content_text"] for item in st.session_state.toc_list]
     st.session_state.kapitel_prompt = [item["prompt_text"] for item in st.session_state.toc_list]
     st.session_state.image_prompt = [item["image_prompt_text"] for item in st.session_state.toc_list]
-    st.session_state.kapitel_inhalt = [""] * len(st.session_state.toc_list)
-    st.session_state.glossar = ""
+
 
 
 
