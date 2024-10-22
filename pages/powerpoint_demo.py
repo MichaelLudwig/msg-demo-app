@@ -10,7 +10,7 @@ from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 from pptx.dml.color import RGBColor
 import re
 import unicodedata
-
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 # Funktion zum Initialisieren der session_state Variablen
 def initialize_session_state():
