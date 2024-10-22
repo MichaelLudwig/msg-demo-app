@@ -1,4 +1,8 @@
 import streamlit as st
+from openai import OpenAI
+import openai
+import os
+import json
 from pptx import Presentation
 from io import BytesIO
 from pptx.util import Inches, Pt
@@ -6,6 +10,155 @@ from pptx.enum.text import PP_PARAGRAPH_ALIGNMENT
 from pptx.dml.color import RGBColor
 
 
+# Funktion zum Initialisieren der session_state Variablen
+def initialize_session_state():
+    if 'new_title' not in st.session_state:
+        st.session_state.new_title = ""
+    if 'ai_api_info' not in st.session_state:
+        st.session_state.ai_api_info = ""
+    if 'new_header' not in st.session_state:
+        st.session_state.new_header = ""
+    if 'new_content_focus' not in st.session_state:
+        st.session_state.new_content_focus = ""
+    if 'new_doctype' not in st.session_state:
+        st.session_state.new_doctype = "Sales Folien"
+    if 'new_chapter_count' not in st.session_state:
+        st.session_state.new_chapter_count = 8
+    if 'new_word_count' not in st.session_state:
+        st.session_state.new_word_count = 100
+    if 'new_writing_style' not in st.session_state:
+        st.session_state.new_writing_style = "msg Konzept"
+    if 'new_context' not in st.session_state:
+        st.session_state.new_context = ""
+    if 'new_stakeholder' not in st.session_state:
+        st.session_state.new_stakeholder = "Technisches Fachpersonal"
+    if 'toc_list' not in st.session_state:
+        st.session_state.toc_list = []
+    if 'kapitel_header' not in st.session_state:
+        st.session_state.kapitel_header = []
+    if 'kapitel_info' not in st.session_state:
+        st.session_state.kapitel_info = []
+    if 'kapitel_inhalt' not in st.session_state:
+        st.session_state.kapitel_inhalt = []
+    if 'kapitel_prompt' not in st.session_state:
+        st.session_state.kapitel_prompt = []
+    if 'image_prompt' not in st.session_state:
+        st.session_state.kapitel_prompt = []
+    if 'glossar' not in st.session_state:
+        st.session_state.glossar = ""
+    if "openai_model" not in st.session_state:
+        st.session_state["openai_model"] = ""
+
+# Initialisiere session_state
+initialize_session_state()
+
+# Funktionen ---------------------------------------------------------------------------------------------------------------------------
+#hole dir den ai_key entweder aus der OS Umgebungsvariable oder dem Streamlit Secret Vault
+#Azure OpenAI Connection
+def get_oai_client():
+    if "AZURE_OPENAI_API_KEY" in os.environ:
+        client = openai.AzureOpenAI(
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+            api_version="2023-03-15-preview",
+            azure_endpoint="https://mlu-azure-openai-service-sw.openai.azure.com/"
+        )
+        st.session_state["openai_model"] = "gpt-4o-mini-sw"
+        #st.session_state.ai_api_info="Azure OpenAI - Region Europa"
+    #if "AZURE_OPENAI_API_KEY" in os.environ:
+    #    client = OpenAI(api_key=os.environ["AZURE_OPENAI_API_KEY"])
+    #    openAI_model = "gpt-4o-mini"
+        #st.session_state.ai_api_info="Azure OpenAI - Region Europa"    
+    elif "OPENAI_API_KEY" in st.secrets:
+        client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+        st.session_state["openai_model"] = "gpt-4o-mini"
+        #st.session_state.ai_api_info="powered by OpenAI"
+    else:
+        raise ValueError("Kein gültiger API-Schlüssel gefunden.")
+    return client
+
+
+client = get_oai_client()
+
+def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
+
+    response = client.chat.completions.create(
+        model=st.session_state["openai_model"],
+        messages=[
+            {"role": "system", "content": "Du bist ein Assistent, der eine Story für eine Powerpointpräsentation erstellt"},
+            {"role":"user" , "content": "Erstelle Inhalte für Powerpointfolien mit Folientitel und Stichpunkten für den Folieninhalt für eine Präsentation vom Typ " + new_doctype + " zum Thema " + new_title + " mit etwa " + str(new_chapter_count) + " Folien."},
+            {"role":"user" , "content": "Der inhaltliche Schwerpunkt sollte auf folgende Punkte gesetzt werden: " + new_content_focus},
+            {"role": "user", "content": "Erstelle zu jeder Folie Notizen, welche kurz erklären, was zu dieser Folie auf der Tonspur erzählt werden sollte"},
+            {"role": "user", "content": "Erstelle zu jeder Folie einen Chatprompt, um den Folieninhalt ggf. noch mal neu zu generieren"},
+            {"role": "user", "content": "Erstelle zu jeder Folie einen Chatprompt, um ein Bild für diese Inhaltsfolie zu generieren"}
+        ],
+        functions=[
+            {
+                "name": "generate_toc",
+                "description": "Generates a table of contents with notes for a given topic",
+                "parameters": {
+                    "type": "object",                    
+                    "properties": {
+                        "toc": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "The title of the slide"
+                                    },
+                                    "help_text": {
+                                        "type": "string",
+                                        "description": "Notes for the slide"
+                                    },
+                                    "prompt_text": {
+                                        "type": "string",
+                                        "description": "A prompt to make a chatbot like chatgpt generate the content for this specific slide."
+                                    },
+                                    "image_prompt_text": {
+                                        "type": "string",
+                                        "description": "A prompt to make a chatbot like chatgpt generate an image for this specific slide."
+                                    }
+                                },
+                                "required": ["title", "help_text", "prompt_text", "image_prompt_text"]
+                            },
+                            "description": "The generated table of contents with help texts"
+                        }
+                    },
+                    "required": ["toc"]
+                }
+            }
+        ],
+        function_call="auto"
+    )
+
+    # Parse the response
+    toc = json.loads(response.choices[0].message.function_call.arguments)
+    toc_list = toc["toc"]
+
+    st.write("Verwendete AI Tokens zur Erstellung der Folien: " + str(response.usage.total_tokens))
+    #### debug
+    st.write(toc_list)
+
+    return toc_list
+
+# Haupseite -------------------------------------------------------------------------------------------------------------------------------------
+st.set_page_config(page_title="PowerPoint AI", page_icon=":mechanical_arm:", layout="wide")
+st.title("PowerPoint AI")
+
+# LLM Info abrufen
+if "AZURE_OPENAI_API_KEY" in os.environ:
+    st.session_state.ai_api_info="Azure OpenAI - Region Europa"
+elif "OPENAI_API_KEY" in st.secrets:
+    st.session_state.ai_api_info="powered by OpenAI"
+else:
+    st.session_state.ai_api_info="OpenAI"
+
+st.write(st.session_state.ai_api_info)
+
+
+
+# Funktionen für die PPT Verarbeitung ---------------------------------------------------------------
 def open_pptx_template():
     # Pfad zur PowerPoint-Datei
     pptx_path = "msg_digital_template.pptx"
@@ -156,7 +309,7 @@ def add_slides(presentation, slides_data):
     
     
 
-st.title("PowerPoint AI")
+
 
 presentation = open_pptx_template()
 add_slides(presentation, aws_migration_slides)
@@ -165,21 +318,57 @@ add_slides(presentation, aws_migration_slides)
 
 
 #--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
-ppt_title=st.text_input("Titel der Präsentation")
-ppt_subtitle=st.text_input("Untertitel der Präsentaion")
+
+
+
 
 #--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
 st.sidebar.title("App-Steuerung")
 
 
+#Schaltflächen für neues Dokument
+st.sidebar.subheader("Neue Präsentation", divider='grey')
+newdoc_form = st.sidebar.form("newdoc_form_key")
+st.session_state.new_title = newdoc_form.text_input("Präsnetationstitel", value=st.session_state.new_title, help="Der Titel, den die Präsentation haben soll")
+
+document_types = ["Sales Folien", "IT Konzept Folien"]
+default_index = document_types.index(st.session_state.new_doctype) if st.session_state.new_doctype in document_types else 0
+st.session_state.new_doctype = newdoc_form.selectbox("Folientyp", 
+    options=document_types,
+    index=default_index)
+
+st.session_state.new_content_focus = newdoc_form.text_area("Inhaltlicher Schwerpunkt", value=st.session_state.new_content_focus, help="Nenne alle Aspekte, die in der Präsentation zwingend behandelt werden sollen.")
+
+st.session_state.new_chapter_count = newdoc_form.slider("Anzahl der Kapitel.", min_value=1, max_value=30, value=st.session_state.new_chapter_count)
+
+new_submitted = newdoc_form.form_submit_button("Foliensatz erstellen")
+
 #Schaltflächen für den Word Export
+st.sidebar.subheader("PowerPoint Export Steuerelemente", divider='grey') 
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
     generate_ppt(presentation, ppt_title, ppt_subtitle)
 
 
 
+#--App Logik ---------------------------------------------------------------------------------------------------------------------------------------
+# Foliensatz aus gegebenen Parametern per ChatBot erstellen lassen
+if new_submitted:
+    
+    # Überschriften für Hauptbereich aus Parametern erzeugen
+    st.session_state.new_header = st.session_state.new_doctype + ": " + st.session_state.new_title
 
+    with st.spinner(text="Foliensatz wird erstellt ..."):
+        # Inhaltsverzeichnis + Infotexte + Prompts aus Paramtetern per Chatbot erzeugen
+        st.session_state.toc_list = generate_toc(st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_content_focus, st.session_state.new_chapter_count)
+    
+    # Leere SessionState Elemente erzeugen die im Weiteren mit Inhalten gefüllt werden
+    st.session_state.kapitel_header = [item["title"] for item in st.session_state.toc_list]
+    st.session_state.kapitel_info = [item["help_text"] for item in st.session_state.toc_list]
+    st.session_state.kapitel_prompt = [item["prompt_text"] for item in st.session_state.toc_list]
+    st.session_state.image_prompt = [item["image_prompt_text"] for item in st.session_state.toc_list]
+    st.session_state.kapitel_inhalt = [""] * len(st.session_state.toc_list)
+    st.session_state.glossar = ""
 
 
 
