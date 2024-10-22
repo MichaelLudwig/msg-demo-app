@@ -102,7 +102,7 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
                                     },
                                     "content_text": {
                                         "type": "string",
-                                        "description": "Notes for the slide"
+                                        "description": "Up to 8 Content bulletpoints for this slide"
                                     },
                                     "help_text": {
                                         "type": "string",
