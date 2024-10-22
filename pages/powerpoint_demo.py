@@ -157,9 +157,7 @@ def open_pptx_template():
         return None
 
 
-def generate_ppt(presentation, title):
-    
-      
+def generate_ppt(presentation, title):    
     # Ändern des Titels und Untertitels
     for slide in presentation.slides:
         for shape in slide.shapes:
@@ -255,18 +253,6 @@ def add_slides(presentation, slides_data):
             text_frame.text = help_text
 
 
-
-
-
-
-
-
-
-#--Hauptbereich ---------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
 #--Sidebar ---------------------------------------------------------------------------------------------------------------------------------------
 st.sidebar.title("App-Steuerung")
 
@@ -299,10 +285,8 @@ if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
 #--App Logik ---------------------------------------------------------------------------------------------------------------------------------------
 # Foliensatz aus gegebenen Parametern per ChatBot erstellen lassen
 if new_submitted:
-    
     # Überschriften für Hauptbereich aus Parametern erzeugen
     st.session_state.new_header = st.session_state.new_doctype + ": " + st.session_state.new_title
-
     with st.spinner(text="Foliensatz wird erstellt ..."):
         # Inhaltsverzeichnis + Infotexte + Prompts aus Paramtetern per Chatbot erzeugen
         st.session_state.toc_list = generate_toc(st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_content_focus, st.session_state.new_chapter_count)
