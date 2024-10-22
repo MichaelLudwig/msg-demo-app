@@ -36,14 +36,7 @@ def initialize_session_state():
         st.session_state.toc_list = []
     if 'kapitel_header' not in st.session_state:
         st.session_state.kapitel_header = []
-    if 'kapitel_info' not in st.session_state:
-        st.session_state.kapitel_info = []
-    if 'kapitel_inhalt' not in st.session_state:
-        st.session_state.kapitel_inhalt = []
-    if 'kapitel_prompt' not in st.session_state:
-        st.session_state.kapitel_prompt = []
-    if 'image_prompt' not in st.session_state:
-        st.session_state.kapitel_prompt = []
+
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = ""
 
@@ -365,13 +358,6 @@ if new_submitted:
     with st.spinner(text="Foliensatz wird erstellt ..."):
         # Inhaltsverzeichnis + Infotexte + Prompts aus Paramtetern per Chatbot erzeugen
         st.session_state.toc_list = generate_toc(st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_content_focus, st.session_state.new_chapter_count)
-    
-    # Leere SessionState Elemente erzeugen die im Weiteren mit Inhalten gefüllt werden
-    st.session_state.kapitel_header = [item["title"] for item in st.session_state.toc_list]
-    st.session_state.kapitel_info = [item["help_text"] for item in st.session_state.toc_list]
-    st.session_state.kapitel_inhalt = [item["content_text"] for item in st.session_state.toc_list]
-    st.session_state.kapitel_prompt = [item["prompt_text"] for item in st.session_state.toc_list]
-    st.session_state.image_prompt = [item["image_prompt_text"] for item in st.session_state.toc_list]
 
 
 # Hauptbereich ------------------------------------------------
@@ -386,7 +372,7 @@ def generate_anchor(text):
     return text
 
 # Funktion zur Erstellung des farbigen Inhaltsverzeichnisses
-def create_colored_toc():
+def create_toc():
     st.subheader("Inhaltsverzeichnis")
 
     if not st.session_state.toc_list:
@@ -424,9 +410,8 @@ def create_colored_toc():
 
 # Füge einen Anker für das Inhaltsverzeichnis hinzu
 st.markdown('<a name="inhaltsverzeichnis"></a>', unsafe_allow_html=True)
-
 # Inhaltsverzeichnis erstellen
-create_colored_toc()
+create_toc()
 
 # Funktion zum Aktualisieren des Session States
 def update_session_state(key, value):
