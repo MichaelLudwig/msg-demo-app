@@ -275,7 +275,7 @@ def add_slides(presentation, slides_data):
         if title_shape:
             title_shape.text = slide_data.get("title", "")
         else:
-            print(f"Warnung: Kein Titeltextfeld für Folie '{slide_data.get('titel', '')}'")
+            print(f"Warnung: Kein Titeltextfeld für Folie '{slide_data.get('title', '')}'")
         
         # Füge den Inhalt hinzu
         content = new_slide.placeholders[1] if len(new_slide.placeholders) > 1 else None
@@ -304,8 +304,14 @@ def add_slides(presentation, slides_data):
                     paragraph.space_before = Pt(6)
         else:
             print(f"Warnung: Kein Inhaltstextfeld für Folie '{slide_data.get('titel', '')}'")
-    
-    
+        
+        # Füge den Hilfetext zu den Foliennotizen hinzu
+        help_text = slide_data.get("help_text", "")
+        if help_text:
+            notes_slide = new_slide.notes_slide
+            text_frame = notes_slide.notes_text_frame
+            text_frame.text = help_text
+
 
 
 
@@ -442,6 +448,7 @@ for i, item in enumerate(st.session_state.toc_list):
     item["content_text"] = st.text_area(f"Textbaustein für {title_text}", value=item["content_text"], height=200)
 
     item["help_text"] = st.text_area(f"Foliennotizen für {title_text}", value=item["help_text"], height=100)
+
 
 
 
