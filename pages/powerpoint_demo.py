@@ -16,8 +16,6 @@ import unicodedata
 def initialize_session_state():
     if 'new_title' not in st.session_state:
         st.session_state.new_title = ""
-    if 'ai_api_info' not in st.session_state:
-        st.session_state.ai_api_info = ""
     if 'new_header' not in st.session_state:
         st.session_state.new_header = ""
     if 'new_content_focus' not in st.session_state:
@@ -27,16 +25,11 @@ def initialize_session_state():
     if 'new_chapter_count' not in st.session_state:
         st.session_state.new_chapter_count = 8
 
-    if 'new_context' not in st.session_state:
-        st.session_state.new_context = ""
-    if 'new_stakeholder' not in st.session_state:
-        st.session_state.new_stakeholder = "Technisches Fachpersonal"
-
     if 'toc_list' not in st.session_state:
         st.session_state.toc_list = []
-    if 'kapitel_header' not in st.session_state:
-        st.session_state.kapitel_header = []
 
+    if 'ai_api_info' not in st.session_state:
+        st.session_state.ai_api_info = ""
     if "openai_model" not in st.session_state:
         st.session_state["openai_model"] = ""
 
@@ -374,7 +367,6 @@ def update_session_state(key, value):
 
 # Erstellen der Webseiten-Struktur mit Überschriften, Infoboxen und Textboxen
 for i, item in enumerate(st.session_state.toc_list):
-    #title_text = st.session_state.kapitel_header[i]
     title_text = item["title"]
     anchor = generate_anchor(title_text)
     
@@ -392,7 +384,7 @@ for i, item in enumerate(st.session_state.toc_list):
     item["prompt_text"] = st.text_area(f"Prompt zum generieren des Inhalts", value=item["prompt_text"], height=30)
     
     #if st.button("Kapitel " + title_text + " generieren", key=f"button_chapter_{i}"):
-        #generate_chapter(title_text, st.session_state.kapitel_prompt[i], st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_writing_style, st.session_state.new_word_count, st.session_state.new_context, st.session_state.new_stakeholder, i)
+        #generate_chapter(title_text, st.session_state.kapitel_prompt[i], st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_writing_style, st.session_state.new_word_count, i)
     
     item["content_text"] = st.text_area(f"Textbaustein für {title_text}", value=item["content_text"], height=200)
 
