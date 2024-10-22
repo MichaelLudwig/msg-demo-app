@@ -290,12 +290,20 @@ def add_slides(presentation, slides_data):
             tf = content.text_frame
             tf.clear()  # Entferne vorhandenen Text
             
-            for punkt in slide_data.get("content_text", ""):
-                p = tf.add_paragraph()
-                p.text = punkt
-                p.level = 1
-
+            # Behandle content_text als einen einzigen String
+            content_text = slide_data.get("content_text", "")
             
+            # Teile den Text in Zeilen
+            lines = content_text.split('\n')
+            
+            for i, line in enumerate(lines):
+                if i == 0:
+                    p = tf.paragraphs[0]
+                else:
+                    p = tf.add_paragraph()
+                p.text = line.strip()
+                p.level = 0 if line.strip() else 1  # Hauptpunkte Level 0, Unterpunkte Level 1
+
             # Formatiere den Text
             for paragraph in tf.paragraphs:
                 if paragraph.font:
