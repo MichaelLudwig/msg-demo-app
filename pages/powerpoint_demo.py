@@ -461,7 +461,6 @@ for i, item in enumerate(st.session_state.toc_list):
     anchor = generate_anchor(title_text)
     
     st.markdown(f'<a name="{anchor}"></a>', unsafe_allow_html=True)
-    
     # Erstelle die Überschrift mit dem "Zurück zum Inhaltsverzeichnis" Icon
     st.markdown(f"""
     <h2 style="display: flex; justify-content: left; align-items: center;">
@@ -472,7 +471,7 @@ for i, item in enumerate(st.session_state.toc_list):
     </h2>
     """, unsafe_allow_html=True)
     
-    st.info(st.session_state.kapitel_info[i])
+    st.info(item["help_text"])
     st.session_state.kapitel_prompt[i] = st.text_area(f"Prompt zum generieren des Inhalts", value=st.session_state.kapitel_prompt[i], height=100)
     
     #if st.button("Kapitel " + title_text + " generieren", key=f"button_chapter_{i}"):
