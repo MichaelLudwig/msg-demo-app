@@ -280,7 +280,7 @@ def add_slides(presentation, slides_data):
         # Setze den Titel
         title_shape = new_slide.shapes.title
         if title_shape:
-            title_shape.text = slide_data.get("titel", "")
+            title_shape.text = slide_data.get("title", "")
         else:
             print(f"Warnung: Kein Titeltextfeld für Folie '{slide_data.get('titel', '')}'")
         
@@ -290,7 +290,7 @@ def add_slides(presentation, slides_data):
             tf = content.text_frame
             tf.clear()  # Entferne vorhandenen Text
             
-            for punkt in slide_data.get("content_text", []):
+            for punkt in slide_data.get("content_text", ""):
                 p = tf.add_paragraph()
                 p.text = punkt
                 p.level = 1
