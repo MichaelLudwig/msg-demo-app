@@ -108,7 +108,7 @@ def generate_toc(new_title, new_doctype, new_content_focus, new_chapter_count):
                                     },
                                     "prompt_text": {
                                         "type": "string",
-                                        "description": "A prompt to make a chatbot like chatgpt generate the content for this specific slide."
+                                        "description": "A prompt to make a chatbot like chatgpt generate up to 6 bulletpoints as content for this specific slide."
                                     },
                                     "image_prompt_text": {
                                         "type": "string",
@@ -306,8 +306,7 @@ def add_slides(presentation, slides_data):
 
 
 
-presentation = open_pptx_template()
-add_slides(presentation, aws_migration_slides)
+
 
 
 
@@ -333,15 +332,16 @@ st.session_state.new_doctype = newdoc_form.selectbox("Folientyp",
     index=default_index)
 
 st.session_state.new_content_focus = newdoc_form.text_area("Inhaltlicher Schwerpunkt", value=st.session_state.new_content_focus, help="Nenne alle Aspekte, die in der Präsentation zwingend behandelt werden sollen.")
-
 st.session_state.new_chapter_count = newdoc_form.slider("Anzahl der Kapitel.", min_value=1, max_value=30, value=st.session_state.new_chapter_count)
 
 new_submitted = newdoc_form.form_submit_button("Foliensatz erstellen")
 
-#Schaltflächen für den Word Export
+#Schaltflächen für den PPT Export
 st.sidebar.subheader("PowerPoint Export", divider='grey')
 if st.sidebar.button("PowerPoint Dokument generieren", key="ppt_export"):
-    generate_ppt(presentation, ppt_title, ppt_subtitle)
+    presentation = open_pptx_template()
+    add_slides(presentation, st.session_state.toc_list)
+    generate_ppt(presentation, st.session_state.new_title)
 
 
 
@@ -364,6 +364,110 @@ if new_submitted:
     st.session_state.image_prompt = [item["image_prompt_text"] for item in st.session_state.toc_list]
 
 
+# Hauptbereich ------------------------------------------------
+st.header(st.session_state.new_header, divider='grey') 
+
+# Funktion zur Generierung von URL-freundlichen Ankern
+def generate_anchor(text):
+    # Entferne Umlaute und konvertiere zu ASCII
+    text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('ASCII')
+    # Konvertiere zu Kleinbuchstaben und ersetze Leerzeichen durch Bindestriche
+    text = re.sub(r'\W+', '-', text.lower()).strip('-')
+    return text
+
+# Funktion zur Erstellung des farbigen Inhaltsverzeichnisses
+def create_colored_toc():
+    st.subheader("Inhaltsverzeichnis")
+
+    if not st.session_state.toc_list:
+        st.info("""
+        **Hinweis zur Erstellung des Inhaltsverzeichnisses:**
+        
+        Um ein Inhaltsverzeichnis zu erstellen, füllen Sie bitte die Felder im Bereich "Neue Präsentation" in der Seitenleiste aus und klicken Sie dann auf "Präsentation erstellen".
+        
+        Sobald die Folienstruktur generiert wurde, wird hier das Inhaltsverzeichnis angezeigt.
+        """)
+        return
+    
+    for i, item in enumerate(st.session_state.toc_list):
+        title_text = item["title"]
+        anchor = generate_anchor(title_text)
+        
+        # Überprüfen, ob Inhalt für dieses Kapitel vorhanden ist
+        has_content = st.session_state.kapitel_inhalt[i].strip() != ""
+        
+        if has_content:
+            color = "#d4edda"  # Grün (success)
+            border_color = "#c3e6cb"
+            icon = "✓"  # Grünes Häkchen
+            icon_color = "#28a745"  # Grün
+        else:
+            color = "#cce5ff"  # Blau (info)
+            border_color = "#b8daff"
+            icon = "!"  # Ausrufezeichen
+            icon_color = "#007bff"  # Blau
+        
+        # HTML für farbigen Link erstellen
+        colored_link = f"""
+        <div style="
+            background-color: {color};
+            border: 1px solid {border_color};
+            border-radius: 5px;
+            padding: 5px;
+            margin: 2px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;">
+            <a href="#{anchor}" style="
+                color: #333;
+                text-decoration: none;
+                font-weight: bold;">
+                {title_text}
+            </a>
+            <span style="
+                color: {icon_color};
+                font-weight: bold;">
+                {icon}
+            </span>
+        </div>
+        """
+        
+        st.markdown(colored_link, unsafe_allow_html=True)
+
+# Füge einen Anker für das Inhaltsverzeichnis hinzu
+st.markdown('<a name="inhaltsverzeichnis"></a>', unsafe_allow_html=True)
+
+# Inhaltsverzeichnis erstellen
+create_colored_toc()
+
+# Funktion zum Aktualisieren des Session States
+def update_session_state(key, value):
+    st.session_state[key] = value
+
+# Erstellen der Webseiten-Struktur mit Überschriften, Infoboxen und Textboxen
+for i, item in enumerate(st.session_state.toc_list):
+    title_text = st.session_state.kapitel_header[i]
+    anchor = generate_anchor(title_text)
+    
+    st.markdown(f'<a name="{anchor}"></a>', unsafe_allow_html=True)
+    
+    # Erstelle die Überschrift mit dem "Zurück zum Inhaltsverzeichnis" Icon
+    st.markdown(f"""
+    <h2 style="display: flex; justify-content: left; align-items: center;">
+        {title_text}
+        <a href="#inhaltsverzeichnis" style="text-decoration: none; color: inherit; font-size: 0.8em; margin-left: 5px;">
+            &#128196; 
+        </a>
+    </h2>
+    """, unsafe_allow_html=True)
+    
+    st.info(st.session_state.kapitel_info[i])
+    st.session_state.kapitel_prompt[i] = st.text_area(f"Prompt zum generieren des Inhalts", value=st.session_state.kapitel_prompt[i], height=100)
+    
+    #if st.button("Kapitel " + title_text + " generieren", key=f"button_chapter_{i}"):
+        #generate_chapter(title_text, st.session_state.kapitel_prompt[i], st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_writing_style, st.session_state.new_word_count, st.session_state.new_context, st.session_state.new_stakeholder, i)
+    
+    st.session_state.kapitel_inhalt[i] = st.text_area(f"Textbaustein für {title_text}", value=st.session_state.kapitel_inhalt[i], height=300)
 
 
 
