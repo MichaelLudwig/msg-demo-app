@@ -441,7 +441,7 @@ for i, item in enumerate(st.session_state.toc_list):
     
     item["content_text"] = st.text_area(f"Textbaustein für {title_text}", value=item["content_text"], height=200)
 
-    item["help_text"] = st.text_area(f"Foliennotizen für {title_text}", value=item["help_text"], height=200)
+    item["help_text"] = st.text_area(f"Foliennotizen für {title_text}", value=item["help_text"], height=100)
 
 
 
