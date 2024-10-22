@@ -290,7 +290,7 @@ def add_slides(presentation, slides_data):
             tf = content.text_frame
             tf.clear()  # Entferne vorhandenen Text
             
-            for punkt in slide_data.get("inhalt", []):
+            for punkt in slide_data.get("content_text", []):
                 p = tf.add_paragraph()
                 p.text = punkt
                 p.level = 1
