@@ -399,50 +399,28 @@ def create_colored_toc():
         """)
         return
     
-    for i, item in enumerate(st.session_state.toc_list):
+    for item in st.session_state.toc_list:
         title_text = item["title"]
         anchor = generate_anchor(title_text)
         
-        # Überprüfen, ob Inhalt für dieses Kapitel vorhanden ist
-        has_content = st.session_state.kapitel_inhalt[i].strip() != ""
-        
-        if has_content:
-            color = "#d4edda"  # Grün (success)
-            border_color = "#c3e6cb"
-            icon = "✓"  # Grünes Häkchen
-            icon_color = "#28a745"  # Grün
-        else:
-            color = "#cce5ff"  # Blau (info)
-            border_color = "#b8daff"
-            icon = "!"  # Ausrufezeichen
-            icon_color = "#007bff"  # Blau
-        
-        # HTML für farbigen Link erstellen
-        colored_link = f"""
+        # HTML für Link erstellen
+        link_html = f"""
         <div style="
-            background-color: {color};
-            border: 1px solid {border_color};
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
             border-radius: 5px;
             padding: 5px;
-            margin: 2px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;">
+            margin: 2px 0;">
             <a href="#{anchor}" style="
                 color: #333;
                 text-decoration: none;
                 font-weight: bold;">
                 {title_text}
             </a>
-            <span style="
-                color: {icon_color};
-                font-weight: bold;">
-                {icon}
-            </span>
         </div>
         """
         
-        st.markdown(colored_link, unsafe_allow_html=True)
+        st.markdown(link_html, unsafe_allow_html=True)
 
 # Füge einen Anker für das Inhaltsverzeichnis hinzu
 st.markdown('<a name="inhaltsverzeichnis"></a>', unsafe_allow_html=True)
@@ -472,12 +450,13 @@ for i, item in enumerate(st.session_state.toc_list):
     """, unsafe_allow_html=True)
     
     st.info(item["help_text"])
-    item["prompt_text"] = st.text_area(f"Prompt zum generieren des Inhalts", value=item["prompt_text"], height=50)
+    item["prompt_text"] = st.text_area(f"Prompt zum generieren des Inhalts", value=item["prompt_text"], height=30)
     
     #if st.button("Kapitel " + title_text + " generieren", key=f"button_chapter_{i}"):
         #generate_chapter(title_text, st.session_state.kapitel_prompt[i], st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_writing_style, st.session_state.new_word_count, st.session_state.new_context, st.session_state.new_stakeholder, i)
     
     item["content_text"] = st.text_area(f"Textbaustein für {title_text}", value=item["content_text"], height=200)
+
 
 
 
