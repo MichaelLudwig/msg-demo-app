@@ -472,12 +472,12 @@ for i, item in enumerate(st.session_state.toc_list):
     """, unsafe_allow_html=True)
     
     st.info(item["help_text"])
-    item["prompt_text"] = st.text_area(f"Prompt zum generieren des Inhalts", value=item["prompt_text"], height=100)
+    item["prompt_text"] = st.text_area(f"Prompt zum generieren des Inhalts", value=item["prompt_text"], height=50)
     
     #if st.button("Kapitel " + title_text + " generieren", key=f"button_chapter_{i}"):
         #generate_chapter(title_text, st.session_state.kapitel_prompt[i], st.session_state.new_doctype, st.session_state.new_title, st.session_state.new_writing_style, st.session_state.new_word_count, st.session_state.new_context, st.session_state.new_stakeholder, i)
     
-    st.session_state.kapitel_inhalt[i] = st.text_area(f"Textbaustein für {title_text}", value=st.session_state.kapitel_inhalt[i], height=300)
+    item["content_text"] = st.text_area(f"Textbaustein für {title_text}", value=item["content_text"], height=200)
 
 
 
