@@ -171,7 +171,7 @@ def open_pptx_template():
         return None
 
 
-def generate_ppt(presentation, title, subtitle):
+def generate_ppt(presentation, title):
     
       
     # Ändern des Titels und Untertitels
@@ -180,8 +180,8 @@ def generate_ppt(presentation, title, subtitle):
             if shape.has_text_frame:
                 if shape.text == "*title*":
                     shape.text = title
-                elif shape.text == "*subtitle*":
-                    shape.text = subtitle
+                #elif shape.text == "*subtitle*":
+                #    shape.text = subtitle
     
     # Speichern der Präsentation in einem BytesIO-Objekt
     buffer = BytesIO()
