@@ -82,33 +82,7 @@ if user_prompt:
         #        }  
         #    ]  
         #} 
-        extra_body={
-        "data_sources": [{
-          "type": "azure_search",
-          "parameters": {
-            "filter": None,
-            "endpoint": "https://azure-openai-search-services.search.windows.net",
-            "index_name": "vector-msg-knowledge",
-            "semantic_configuration": "vector-msg-knowledge-semantic-configuration",
-            "authentication": {
-              "type": "api_key",
-              "key": "12345"
-            },
-            "embedding_dependency": {
-              "type": "endpoint",
-              "endpoint": "https://mlu-azure-openai-service-sw.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-03-15-preview",
-              "authentication": {
-                "type": "api_key",
-                "key": "e70fe950222747e790ba6a4ea01f9c6a"
-              }
-            },
-            "query_type": "vector_simple_hybrid",
-            "in_scope": True,
-            "role_information": "Sie sind KI-Assistent und helfen Personen, Informationen zu finden.",
-            "strictness": 3,
-            "top_n_documents": 5
-          }
-        }]}
+        
     )
 
     assistant_response = response.choices[0].message.content
