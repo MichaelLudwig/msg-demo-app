@@ -68,20 +68,20 @@ if user_prompt:
             *st.session_state.chat_history
         ],
         # Wissenpool über die Azure Retrieval Augmented Generation Technologie mit einbinden
-        extra_body={  
-            "data_sources": [  
-                {  
-                    "type": "azure_search",  
-                    "parameters": {  
-                        "endpoint": "https://azure-openai-search-services.search.windows.net",  
-                        "index_name": "vector-msg-knowledge",  
-                        "authentication": {  
-                            "type": "azure_ad"  
-                        }  
-                    }  
-                }  
-            ]  
-        } 
+        #extra_body={  
+        #    "data_sources": [  
+        #        {  
+        #            "type": "azure_search",  
+        #            "parameters": {  
+        #                "endpoint": "https://azure-openai-search-services.search.windows.net",  
+        #                "index_name": "vector-msg-knowledge",  
+        #                "authentication": {  
+        #                    "type": "azure_ad"  
+        #                }  
+        #            }  
+        #        }  
+        #    ]  
+        #} 
     )
 
     assistant_response = response.choices[0].message.content
